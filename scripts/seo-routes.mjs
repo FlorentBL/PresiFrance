@@ -80,6 +80,7 @@ export const staticRoutes = [
   "/explorer",
   "/presidentielle-2027",
   ...candidate2027Routes,
+  "/integrer",
 ];
 
 export function getDepartmentName(code) {
@@ -173,4 +174,9 @@ export const seoPrerenderRoutes = [
     title: `${c.prenom} ${c.nom} — présidentielle 2027 — ${defaultSiteName}`,
     description: `Fiche de ${c.prenom} ${c.nom}, présidentielle 2027 : soutien, date de déclaration, source et historique électoral.`,
   })),
+  {
+    path: "/integrer",
+    title: `Intégrer nos cartes et résultats — ${defaultSiteName}`,
+    description: "Médias et blogs locaux : intégrez gratuitement les cartes et résultats de la présidentielle de PrésiFrance avec un code iframe.",
+  },
 ];

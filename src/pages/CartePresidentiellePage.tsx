@@ -1,4 +1,6 @@
-import { Database, MapPin, Search } from "lucide-react";
+import { Code2, Database, MapPin, Search } from "lucide-react";
+
+import { Link } from "react-router-dom";
 
 import SeoConnectorPage from "./SeoConnectorPage";
 
@@ -17,6 +19,15 @@ export default function CartePresidentiellePage() {
         { title: "Accès local", text: "Descendre rapidement vers les fiches communes et les pages départementales.", Icon: Search },
         { title: "Données ouvertes", text: "S'appuyer sur des données publiques structurées pour explorer le vote.", Icon: Database },
       ]}
+      heroActions={
+        <Link
+          to="/integrer"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <Code2 className="h-3.5 w-3.5" aria-hidden="true" />
+          Intégrer
+        </Link>
+      }
       stepsTitle="Comment explorer la carte ?"
       steps={[
         "Choisissez une entrée par commune, département ou année électorale.",

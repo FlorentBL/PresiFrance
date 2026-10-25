@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { BarChart3, GitCompare, LucideIcon, MapPin, Search } from "lucide-react";
 
 import { GlowCard, PageHero, Reveal, Section } from "@/components/design";
@@ -25,6 +26,7 @@ interface ConnectorPageProps {
   steps: string[];
   faq: Array<{ question: string; answer: string }>;
   cards: ConnectorCard[];
+  heroActions?: ReactNode;
 }
 
 export default function SeoConnectorPage({
@@ -39,6 +41,7 @@ export default function SeoConnectorPage({
   steps,
   faq,
   cards,
+  heroActions,
 }: ConnectorPageProps) {
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -53,7 +56,7 @@ export default function SeoConnectorPage({
       <SiteHeader />
 
       <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
-        <PageHero eyebrow={eyebrow} title={title} description={intro} />
+        <PageHero eyebrow={eyebrow} title={title} description={intro} actions={heroActions} />
 
         <Section width="narrow" className="pb-0 sm:pb-0">
           <Reveal>
