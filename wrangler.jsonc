@@ -8,5 +8,9 @@
     "not_found_handling": "single-page-application",
     // Les pages SEO pré-générées sont dans <route>/index.html et leurs canonical n'ont pas de slash final.
     "html_handling": "drop-trailing-slash"
-  }
+  },
+  // www.presifrance.fr -> presifrance.fr : règle de redirection de la zone Cloudflare.
+  "routes": [
+    { "pattern": "presifrance.fr", "custom_domain": true }
+  ]
 }
