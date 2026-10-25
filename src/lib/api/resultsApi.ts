@@ -9,7 +9,7 @@
  */
 
 import { PresidentialYear, Round } from "@/lib/elections";
-import { decodeCompactRow, type CompactDepFile } from "@/lib/api/compactResults";
+import { aggregateCompactFile, decodeCompactRow, type CompactDepFile } from "@/lib/api/compactResults";
 
 export const RESOURCES = {
   // Kept for future use elsewhere in the app
@@ -252,4 +252,18 @@ export async function getCommuneResults(
   }
 
   return null;
+}
+
+/** Résultat agrégé du département d'une commune (somme des communes du fichier compact). */
+export async function getDepartmentAggregate(
+  depCode: string,
+  round: Round = 1,
+  year: PresidentialYear = 2022
+): Promise<ElectionResult | null> {
+  try {
+    const file = await loadDepFile(year, round, depCode);
+    return file ? aggregateCompactFile(file) : null;
+  } catch {
+    return null;
+  }
 }

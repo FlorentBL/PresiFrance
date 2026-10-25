@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom"
 import SEOHead from "@/components/SEOHead";
 import JsonLd from "@/components/JsonLd";
 import SeoConnectorLinks from "@/components/SeoConnectorLinks";
-import { ArrowLeft, Loader2, Share2, GitCompare } from "lucide-react";
+import { ArrowLeft, Loader2, GitCompare } from "lucide-react";
 import { useQuery, useQueries } from "@tanstack/react-query";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -13,14 +13,28 @@ import { CommuneVsNational } from "@/components/commune/CommuneVsNational";
 import { CommuneEvolution } from "@/components/commune/CommuneEvolution";
 import { CommuneTurnout } from "@/components/commune/CommuneTurnout";
 import { CommuneMap } from "@/components/commune/CommuneMap";
-import { getCommuneWithCoords } from "@/lib/api/geoApi";
-import { getCommuneResults, ElectionResult } from "@/lib/api/resultsApi";
+import { CommuneSummaryCard } from "@/components/commune/CommuneSummaryCard";
+import { CommuneComparison } from "@/components/commune/CommuneComparison";
+import { CommuneNeighbours } from "@/components/commune/CommuneNeighbours";
+import { CommuneShare } from "@/components/commune/CommuneShare";
+import { Presidentielle2027Teaser } from "@/components/commune/Presidentielle2027Teaser";
+import {
+  buildCommuneSummary,
+  buildShareCardData,
+  communeSeoDescription,
+  communeSeoTitle,
+  communeShareUrl,
+  nearestCommunes,
+} from "@/lib/communeShare";
+import { getCandidateColor } from "@/lib/candidateColors";
+import { SITE_URL } from "@/lib/site";
+import { getCommuneWithCoords, getDepartmentCommunes } from "@/lib/api/geoApi";
+import { getCommuneResults, getDepartmentAggregate, ElectionResult } from "@/lib/api/resultsApi";
 import { getNationalResults } from "@/lib/api/nationalResultsApi";
 import { addToSearchHistory } from "@/lib/searchHistory";
-import { toast } from "@/components/ui/sonner";
 import { DEFAULT_YEAR, PresidentialYear } from "@/lib/elections";
 
-const EVOLUTION_YEARS = [2002, 2007, 2012, 2017, 2022] as const;
+const EVOLUTION_YEARS = [1995, 2002, 2007, 2012, 2017, 2022] as const;
 
 const actionBtn =
   "inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card/60 px-4 py-2 text-sm font-medium backdrop-blur transition-colors hover:bg-accent";
@@ -58,6 +72,19 @@ const CommunePage = () => {
     queryFn: () => getNationalResults(year, round),
     enabled: !!code,
     staleTime: Infinity,
+  });
+
+  const depCode = geo?.codeDepartement;
+  const { data: departmentAgg } = useQuery({
+    queryKey: ["dep-aggregate", depCode, year, round],
+    queryFn: () => getDepartmentAggregate(depCode!, round, year),
+    enabled: !!depCode,
+  });
+
+  const { data: depCommunes } = useQuery({
+    queryKey: ["dep-communes", depCode],
+    queryFn: () => getDepartmentCommunes(depCode!),
+    enabled: !!depCode,
   });
 
   const evolutionData = evolutionQueries
@@ -115,12 +142,24 @@ const CommunePage = () => {
   const title = isDep ? results.nomDepartement || `Département ${geo.codeDepartement}` : geo.nom;
   const pop = geo.population?.toLocaleString("fr-FR");
   const scopeLabel = isDep ? `le département ${results.nomDepartement}` : geo.nom;
+  const summary = buildCommuneSummary({ commune: geo.nom, year, round, results, national: national ?? null });
+  const shareUrl = communeShareUrl(geo.code, year, round, typeof window !== "undefined" ? window.location.origin : SITE_URL);
+  const shareCard = buildShareCardData({
+    commune: geo.nom,
+    year,
+    round,
+    results,
+    national: national ?? null,
+    colorOf: (c, i) => getCandidateColor(c.prenom, c.nom, i),
+    url: `${SITE_URL}/commune/${geo.code}`,
+  });
+  const neighbours = depCommunes ? nearestCommunes(geo, depCommunes, 6) : [];
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead
-        title={`Résultats présidentielle ${year} à ${geo.nom}`}
-        description={`Résultats de l'élection présidentielle ${year} à ${geo.nom} : scores des candidats, participation, abstention et évolution du vote.`}
+        title={communeSeoTitle(geo.nom)}
+        description={communeSeoDescription(geo.nom, summary.sentence)}
         path={`/commune/${code}`}
       />
       <JsonLd
@@ -157,17 +196,12 @@ const CommunePage = () => {
                 <GitCompare className="h-4 w-4" aria-hidden="true" />
                 Comparer avec une autre
               </Link>
-              <button
-                type="button"
-                onClick={() => {
-                  const url = `${window.location.origin}/commune/${geo.code}?year=${year}&round=${round}`;
-                  navigator.clipboard.writeText(url).then(() => toast.success("Lien copié dans le presse-papier"));
-                }}
-                className={actionBtn}
-              >
-                <Share2 className="h-4 w-4" aria-hidden="true" />
-                Copier le lien
-              </button>
+              <CommuneShare
+                url={shareUrl}
+                title={communeSeoTitle(geo.nom)}
+                text={summary.sentence}
+                card={shareCard}
+              />
               <SegmentedControl<1 | 2>
                 label="Tour de scrutin"
                 value={round}
@@ -191,6 +225,10 @@ const CommunePage = () => {
           </div>
         )}
 
+        <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-8">
+          <CommuneSummaryCard sentence={summary.sentence} />
+        </div>
+
         <Section eyebrow="Mobilisation" title="Participation et abstention" width="default">
           <CommuneTurnout results={results} />
         </Section>
@@ -205,12 +243,24 @@ const CommunePage = () => {
           </Section>
         )}
 
+        {!isDep && (
+          <Section eyebrow="Comparaison" title="Commune, département et France" width="default">
+            <CommuneComparison
+              commune={geo.nom}
+              results={results}
+              department={departmentAgg ?? null}
+              departmentName={geo.departement?.nom ?? results.nomDepartement ?? `Département ${geo.codeDepartement}`}
+              national={national ?? null}
+            />
+          </Section>
+        )}
+
         <div className="mx-auto max-w-6xl px-4 sm:px-8">
           <SeoConnectorLinks context="commune" communeName={geo.nom} />
         </div>
 
         {evolutionData.length >= 2 && (
-          <Section eyebrow="Historique" title="Évolution dans le temps (1er tour)" width="default">
+          <Section eyebrow="Historique" title="Évolution depuis 1995 (1er tour)" width="default">
             <CommuneEvolution data={evolutionData} />
           </Section>
         )}
@@ -220,6 +270,16 @@ const CommunePage = () => {
             <CommuneMap lat={geo.centre.coordinates[1]} lon={geo.centre.coordinates[0]} nom={geo.nom} />
           </Section>
         )}
+
+        {neighbours.length > 0 && (
+          <Section eyebrow="Autour" title="Communes voisines" width="default">
+            <CommuneNeighbours neighbours={neighbours} year={year} />
+          </Section>
+        )}
+
+        <div className="mx-auto max-w-6xl px-4 pb-14 sm:px-8">
+          <Presidentielle2027Teaser />
+        </div>
       </main>
 
       <SiteFooter />
