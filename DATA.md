@@ -17,6 +17,7 @@ Les donnees et assets tiers ne sont pas couverts par la licence MIT du code sour
 - `public/data/presidential/manifest.json`
 - `public/data/presidential/national-results.json`
 - `public/data/presidential/home-map.json` (candidat en tête par département et par année, 1er tour ; carte de l'accueil, généré par `node scripts/build-home-map.mjs` après `build:data`)
+- `public/data/geo/departements-paths.json` (tracés SVG simplifiés des 96 départements métropolitains pour la carte de l'accueil ; IGN Admin Express COG 2018, Licence Ouverte, via gregoiredavid/france-geojson ; généré par `node scripts/build-france-map.mjs`)
 - `public/data/presidential/polls-2022-round1.json`
 - `public/data/presidential/macron-promises-bilan.json`
 - `public/data/parrainages/manifest.json`

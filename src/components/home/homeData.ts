@@ -41,6 +41,26 @@ export function useHomeMap() {
   });
 }
 
+export interface FrancePaths {
+  w: number;
+  h: number;
+  /** Code département → nom, tracé SVG et centre approximatif. */
+  depts: Record<string, { n: string; d: string; c: [number, number] }>;
+}
+
+/** Tracés simplifiés des départements métropolitains (scripts/build-france-map.mjs, ~12 Ko compressé). */
+export function useFrancePaths() {
+  return useQuery({
+    queryKey: ["france-paths"],
+    queryFn: async (): Promise<FrancePaths> => {
+      const res = await fetch("/data/geo/departements-paths.json");
+      if (!res.ok) throw new Error("departements-paths indisponible");
+      return (await res.json()) as FrancePaths;
+    },
+    staleTime: Infinity,
+  });
+}
+
 /** Couleur d'un libellé « Prénom NOM » ou « NOM » (libellés de home-map.json). */
 export function colorFromLabel(label: string, index = 0): string {
   const tokens = label.split(" ");

@@ -16,6 +16,7 @@ Sources principales :
 - Ministere de l'Interieur : resultats electoraux officiels publies en open data.
 - Conseil constitutionnel via data.gouv.fr : parrainages des candidats.
 - geo.api.gouv.fr : donnees geographiques des communes.
+- IGN Admin Express COG 2018 (Licence Ouverte Etalab), via le depot gregoiredavid/france-geojson : contours simplifies des departements de la carte d'accueil (`public/data/geo/departements-paths.json`).
 - Wikipedia : tableau de sondages 2022 utilise par `scripts/build-polls-2022-round1.mjs`, sous CC BY-SA pour le texte Wikipedia, avec prudence supplementaire pour les donnees issues des instituts.
 - franceinfo et sources presse/institutionnelles citees dans `public/data/presidential/macron-promises-bilan.json`.
 

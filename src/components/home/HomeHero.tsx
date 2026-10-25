@@ -5,7 +5,7 @@ import CommuneSearch from "@/components/CommuneSearch";
 import type { GeoCommune } from "@/lib/api/geoApi";
 import type { HistoryEntry } from "@/lib/searchHistory";
 
-const FranceTileMap = lazy(() => import("./FranceTileMap"));
+const FranceMap = lazy(() => import("./FranceMap"));
 
 interface HomeHeroProps {
   year: number;
@@ -17,13 +17,13 @@ interface HomeHeroProps {
 
 function MapSlot({ year, className }: { year: number; className?: string }) {
   return (
-    <Suspense fallback={<div className={className} style={{ aspectRatio: "1 / 1" }} aria-hidden="true" />}>
-      <FranceTileMap year={year} className={className} />
+    <Suspense fallback={<div className={className} style={{ aspectRatio: "1 / 1.1" }} aria-hidden="true" />}>
+      <FranceMap year={year} className={className} />
     </Suspense>
   );
 }
 
-/** Hero plein écran : titre XXL, recherche de commune centrale, historique et carte de France animée. */
+/** Hero plein écran : titre XXL, recherche de commune centrale, historique et carte des départements animée. */
 export default function HomeHero({ year, history, onSelect, onOpenHistory, onClearHistory }: HomeHeroProps) {
   return (
     <>
@@ -64,13 +64,12 @@ export default function HomeHero({ year, history, onSelect, onOpenHistory, onCle
                 </button>
               </div>
             )}
+            {/* Sur mobile, la carte reste dans le hero, sous la recherche. */}
+            <MapSlot year={year} className="mx-auto w-full max-w-md pt-6 lg:hidden" />
           </div>
         }
         aside={<MapSlot year={year} className="w-[28rem] xl:w-[32rem]" />}
       />
-      <div className="mx-auto -mt-6 max-w-md px-6 pb-10 lg:hidden">
-        <MapSlot year={year} />
-      </div>
     </>
   );
 }

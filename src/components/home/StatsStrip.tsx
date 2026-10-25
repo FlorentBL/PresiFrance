@@ -8,7 +8,7 @@ export default function StatsStrip() {
   const voix = t1 ? t1.candidates.reduce((s, c) => s + c.voix, 0) : 0;
 
   const stats = [
-    { label: "voix exprimées au 1er tour 2022", value: voix, decimals: 0, suffix: "", glow: "blue" as const, show: voix > 0 },
+    { label: "voix exprimées au 1er tour 2022", value: voix / 1e6, decimals: 1, suffix: " M", glow: "blue" as const, show: voix > 0 },
     { label: "de participation au 1er tour 2022", value: t1?.participation ?? 0, decimals: 1, suffix: " %", glow: "red" as const, show: !!t1 },
     { label: "communes explorables", value: 35000, decimals: 0, suffix: "+", glow: "white" as const, show: true },
     { label: "élections présidentielles depuis 1965", value: 11, decimals: 0, suffix: "", glow: "blue" as const, show: true },
