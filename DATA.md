@@ -49,13 +49,23 @@ L'URL de publication 2027 du Conseil constitutionnel n'est pas connue a ce jour 
 
 1. Mettre a jour (sans pousser) : `PARRAINAGES_2027_URL=<url du CSV> npm run build:parrainages -- --year 2027`, ou depuis un CSV telecharge : `npm run build:parrainages -- --year 2027 --file chemin/vers/parrainages.csv` (variable `PARRAINAGES_2027_FILE` equivalente). Le CSV doit suivre le format 2022 (`Civilite;Nom;Prenom;Mandat;Circonscription;Departement;Candidat;Date de publication`). Si la source repond une erreur (404...), l'annee reste en « publication a venir ».
 2. Verifier la sortie du script (parrainages, candidats, departements), que `public/data/parrainages/manifest.json` liste 2027 dans `years` (plus dans `pending`), que `2027-history.json` a gagne une ligne datee (le script n'ajoute une ligne que si le contenu a change), puis `npm test` et ouvrir `/parrainages?year=2027`.
-3. Committer les fichiers `public/data/parrainages/*` et deployer manuellement : `npm run deploy` depuis main, par Florent uniquement.
+3. En routine : renseigner l'URL du CSV dans `scripts/data-sources-2027.json` (`parrainagesCsvUrl`, avec sa source et sa date de verification) ; la mise a jour automatique (section suivante) la reprend chaque jour et met en ligne.
 
 Validation de la chaine sans donnees reelles : `npm run build:parrainages -- --year 2027 --file scripts/fixtures/parrainages-sample-2022.csv` (fichier d'exemple fictif au format 2022). **Ne pas committer** les fichiers 2027 ainsi produits : supprimer `2027*.json` puis `git checkout public/data/parrainages/manifest.json` et relancer le script sans source pour retrouver l'etat « a venir ». Les tests (`npm test`) valident la chaine sans toucher a `public/`.
 
 Regle de recevabilite affichee sur la page (`src/lib/parrainagesTracking.ts`) : 500 presentations, d'au moins 30 departements ou collectivites d'outre-mer, au plus 50 (un dixieme) d'un meme departement — loi n° 62-1292 du 6 novembre 1962, art. 3-I. Texte cite de memoire, non reverifie en ligne le 25 octobre 2026 : a controler sur Legifrance avant le scrutin.
 
 `npm run build:photos` telecharge les portraits candidats depuis Wikipedia/Wikimedia. Les portraits doivent etre verifies fichier par fichier avant toute redistribution publique ou commerciale.
+
+### Mise a jour automatique des donnees 2027
+
+Decision de Florent du 25 octobre 2026 : les mises a jour **de donnees** (sondages, parrainages, candidats, calendrier) sont mises en ligne sans feu vert individuel si tous les controles passent ; toute modification de **code** reste soumise a son feu vert.
+
+- Script : `npm run update:data` (`scripts/update-data-2027.sh`, option `--no-deploy`). Il part de `main` a jour, regenere les sondages (refus si le nombre de sondages baisse, la date de generation seule n'est pas consideree comme un changement), les parrainages si `parrainagesCsvUrl` est renseignee dans `scripts/data-sources-2027.json`, puis lance typecheck et tests, commit, push et `npm run deploy`.
+- Garde-fou de mise en ligne : le tag git `prod` marque la version en production (`postdeploy` le deplace a chaque `npm run deploy`). Le script ne deploie que si tout ce qui separe `prod` de `main` est sous `public/data/` ou dans `scripts/data-sources-2027.json` ; sinon il s'arrete (code de sortie 5) et la mise en ligne attend le feu vert de Florent.
+- Codes de sortie : 0 a jour ou publie, 2 depot invalide, 3 anomalie de donnees, 4 controles en echec, 5 mise en ligne refusee (code non publie), 6 echec du deploiement.
+- Routines Timon (agent `presifrance.coder`, taches `chore`) : chaque jour a 7 h le script ; chaque lundi a 7 h 30 la verification editoriale de `candidats.json`, `calendrier.json` et de l'URL des parrainages 2027, suivie du script.
+- Les routines tournent sur le poste de Florent (daemon Timon) : machine eteinte = pas de mise a jour ce jour-la.
 
 ## Regles de contribution
 
