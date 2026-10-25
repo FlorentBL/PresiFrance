@@ -31,7 +31,7 @@ export default function ResultatsParCommunePage() {
       />
       <SiteHeader />
 
-      <main className="flex-1 container max-w-6xl mx-auto px-4 py-10">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1 container max-w-6xl mx-auto px-4 py-10">
         <header className="max-w-3xl mb-10">
           <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3">Recherche locale</p>
           <h1 className="text-3xl sm:text-5xl font-black font-heading tracking-tight mb-4">

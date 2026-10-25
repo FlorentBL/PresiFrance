@@ -26,7 +26,7 @@ export function LegalLayout({
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead title={seoTitle} path={path} />
       <SiteHeader />
-      <main className="flex-1">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow={eyebrow}
           title={title}

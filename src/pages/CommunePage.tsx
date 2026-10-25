@@ -134,7 +134,7 @@ const CommunePage = () => {
       />
       <SiteHeader />
 
-      <main className="flex-1">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow={isDep ? `Résultats par département · ${year}` : `Département ${geo.codeDepartement} · Présidentielle ${year}`}
           title={title}

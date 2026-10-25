@@ -19,7 +19,7 @@ export default function ResultatsPresidentiellePage() {
       <JsonLd path="/resultats-presidentielle" breadcrumbs={[{ name: "Résultats présidentielle", path: "/resultats-presidentielle" }]} />
       <SiteHeader />
 
-      <main className="flex-1">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Hub résultats"
           title="Résultats des élections présidentielles françaises"

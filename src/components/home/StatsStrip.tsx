@@ -17,20 +17,20 @@ export default function StatsStrip() {
   return (
     <Section width="wide" className="py-10 sm:py-14" id="chiffres-cles">
       <h2 className="sr-only">Chiffres clés</h2>
-      <dl className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-5">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-5">
         {stats.map((s, i) => (
           <Reveal key={s.label} delay={i * 0.08}>
             <GlowCard glow={s.glow} className="h-full">
-              <div className="flex flex-col-reverse">
+              <dl className="flex flex-col-reverse">
               <dt className="mt-2 text-sm text-muted-foreground">{s.label}</dt>
               <dd className="font-heading text-3xl font-extrabold tracking-tight sm:text-4xl xl:text-5xl">
                 {s.show ? <AnimatedNumber value={s.value} decimals={s.decimals} suffix={s.suffix} /> : <span aria-hidden="true">—</span>}
               </dd>
-              </div>
+              </dl>
             </GlowCard>
           </Reveal>
         ))}
-      </dl>
+      </div>
     </Section>
   );
 }

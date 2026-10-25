@@ -35,8 +35,16 @@ const queryClient = new QueryClient({
 
 function RouteFallback() {
   return (
-    <div className="min-h-screen bg-background px-6 py-10 text-sm font-medium text-muted-foreground">
-      Chargement...
+    <div
+      role="status"
+      aria-live="polite"
+      className="night-bg flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-6"
+    >
+      <span className="font-heading text-3xl font-bold tracking-tight text-foreground">
+        Prési<span className="text-primary">France</span>
+      </span>
+      <div className="tricolor-bar h-1 w-40 overflow-hidden rounded-full motion-safe:animate-pulse" aria-hidden="true" />
+      <span className="sr-only">Chargement de la page…</span>
     </div>
   );
 }

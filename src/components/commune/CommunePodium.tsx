@@ -25,7 +25,7 @@ export function CommunePodium({ candidates }: { candidates: CandidateResult[] })
                 <CandidateAvatar prenom={c.prenom} nom={c.nom} color={color} size={rank === 0 ? "lg" : "md"} />
                 <p className="mt-3 text-xs font-semibold leading-tight sm:text-sm">{c.prenom}</p>
                 <p className="text-sm font-bold uppercase leading-tight tracking-wide sm:text-base">{c.nom}</p>
-                <p className="mt-1 font-heading text-xl font-extrabold tabular-nums sm:text-3xl" style={{ color }}>
+                <p className="mt-1 font-heading text-xl font-extrabold tabular-nums sm:text-3xl">
                   {fmtPct(c.pourcentExprimes)}
                 </p>
                 <p className="text-[11px] tabular-nums text-muted-foreground sm:text-xs">{fmtInt(c.voix)} voix</p>

@@ -26,7 +26,7 @@ export default function PresidentialYearPage() {
       <div className="min-h-screen bg-background flex flex-col">
         <SEOHead title="Année présidentielle introuvable" description="Cette année de présidentielle n'est pas disponible sur PrésiFrance." path="/resultats-presidentielle" />
         <SiteHeader />
-        <main className="flex-1">
+        <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
           <PageHero
             title="Année introuvable"
             size="lg"
@@ -54,7 +54,7 @@ export default function PresidentialYearPage() {
       />
       <SiteHeader />
 
-      <main className="flex-1">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Élection présidentielle"
           title={<>Résultats présidentielle <span className="text-gradient-tricolor">{year}</span></>}

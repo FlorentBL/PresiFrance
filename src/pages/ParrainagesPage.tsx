@@ -151,7 +151,7 @@ const ParrainagesPage = () => {
       <JsonLd path="/parrainages" breadcrumbs={[{ name: "Parrainages", path: "/parrainages" }]} />
       <SiteHeader />
 
-      <main className="flex-1">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Conseil constitutionnel"
           title="Parrainages présidentiels"
@@ -195,7 +195,7 @@ const ParrainagesPage = () => {
                       href="https://www.data.gouv.fr/posts/donnees-liees-aux-elections-presidentielles"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-primary hover:underline"
+                      className="text-primary underline underline-offset-2 hover:no-underline"
                     >
                       data.gouv.fr
                     </a>
