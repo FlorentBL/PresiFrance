@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from "vitest";
 
 import { chunkSitemap, escapeXml, isoDate } from "./generate-sitemap.js";
