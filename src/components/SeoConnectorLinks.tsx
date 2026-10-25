@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { BarChart3, Map, MapPin, Search, UsersRound } from "lucide-react";
 
+import { GlowCard } from "@/components/design";
+
 interface SeoConnectorLinksProps {
   context: "commune" | "department" | "year";
   communeName?: string;
@@ -59,32 +61,34 @@ export default function SeoConnectorLinks({ context, communeName, departmentName
   ];
 
   return (
-    <section className="mb-12 rounded-xl border border-border bg-card p-5 sm:p-6">
-      <div className="flex items-start gap-3 mb-5">
-        <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-          <MapPin className="h-5 w-5 text-primary" />
+    <section className="mb-12">
+      <GlowCard interactive={false} className="p-5 sm:p-8">
+        <div className="mb-6 flex items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+            <MapPin className="h-5 w-5 text-primary" aria-hidden="true" />
+          </div>
+          <div>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">{copy.eyebrow}</p>
+            <h2 className="font-heading text-2xl font-semibold tracking-tight sm:text-3xl">{copy.title}</h2>
+            <p className="mt-2 max-w-3xl text-sm text-muted-foreground">{copy.intro}</p>
+          </div>
         </div>
-        <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-primary mb-1">{copy.eyebrow}</p>
-          <h2 className="text-2xl font-black tracking-tight">{copy.title}</h2>
-          <p className="text-sm text-muted-foreground mt-2 max-w-3xl">{copy.intro}</p>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {links.map(({ to, label, text, Icon }) => (
+            <Link
+              key={to}
+              to={to}
+              className="group/link rounded-xl border border-border bg-background/60 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/5 motion-reduce:transform-none"
+            >
+              <div className="mb-2 flex items-center gap-2 text-sm font-bold">
+                <Icon className="h-4 w-4 text-primary" aria-hidden="true" />
+                {label}
+              </div>
+              <p className="text-xs leading-relaxed text-muted-foreground">{text}</p>
+            </Link>
+          ))}
         </div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {links.map(({ to, label, text, Icon }) => (
-          <Link
-            key={to}
-            to={to}
-            className="rounded-lg border border-border bg-background p-4 hover:border-primary/50 hover:bg-primary/5 transition-colors"
-          >
-            <div className="flex items-center gap-2 font-bold text-sm mb-2">
-              <Icon className="h-4 w-4 text-primary" />
-              {label}
-            </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">{text}</p>
-          </Link>
-        ))}
-      </div>
+      </GlowCard>
     </section>
   );
 }
