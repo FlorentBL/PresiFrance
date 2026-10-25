@@ -22,3 +22,7 @@ Méthode : build de production servi par `vite preview` (port dédié, service w
 - Les captures « avant » correspondent à l'état de `main` avant ce volet (mêmes pages, défauts axe ci-dessus) ; seules les captures « après » sont versionnées ici (échantillon sombre/clair, mobile/desktop).
 - LCP mesuré en local, non sur le site déployé. Aucun déploiement effectué.
 - Libellé « 1er tour » du graphique des sondages légèrement rogné à droite (cosmétique, non traité).
+
+## Correctif après recette (25/10/2026)
+
+Les fonds CARTO `dark_all` renvoient désormais une tuile « API KEY REQUIRED » sans clé : la carte de la fiche commune utilise de nouveau les tuiles OpenStreetMap standard, inversées par filtre CSS en thème sombre. Vérifié dans un Chromium de test isolé, en sombre et en clair, sans erreur console (`commune-map__dark__fix.png`).
