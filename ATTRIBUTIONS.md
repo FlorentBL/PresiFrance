@@ -18,6 +18,7 @@ Sources principales :
 - geo.api.gouv.fr : donnees geographiques des communes.
 - IGN Admin Express COG 2018 (Licence Ouverte Etalab), via le depot gregoiredavid/france-geojson : contours simplifies des departements de la carte d'accueil (`public/data/geo/departements-paths.json`).
 - Wikipedia : tableau de sondages 2022 utilise par `scripts/build-polls-2022-round1.mjs`, sous CC BY-SA pour le texte Wikipedia, avec prudence supplementaire pour les donnees issues des instituts.
+- Wikipedia (en), « Opinion polling for the 2027 French presidential election » (https://en.wikipedia.org/wiki/Opinion_polling_for_the_2027_French_presidential_election), releve le 25 octobre 2026 par `scripts/build-polls-2027.mjs` : texte et tableaux sous licence CC BY-SA 4.0 (attribution aux contributeurs de la page, partage dans les memes conditions pour les donnees derivees `public/data/presidential/polls-2027-round1.json`). Les resultats et notices restent ceux des instituts de sondage et de la Commission des sondages.
 - franceinfo et sources presse/institutionnelles citees dans `public/data/presidential/macron-promises-bilan.json`.
 
 Les manifests de donnees conservent les URL sources quand elles sont disponibles, notamment `public/data/presidential/manifest.json`, `public/data/parrainages/manifest.json` et les champs `sources` des fichiers JSON editoriaux.

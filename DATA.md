@@ -9,7 +9,8 @@ Les donnees et assets tiers ne sont pas couverts par la licence MIT du code sour
 - Resultats presidentiels : Ministere de l'Interieur et ressources publiees via data.gouv.fr.
 - Parrainages : Conseil constitutionnel (2022 et 2017 via data.gouv.fr ; 2027 : publication du Conseil constitutionnel, URL à confirmer).
 - Geographie des communes : geo.api.gouv.fr.
-- Sondages 2022 : tableau Wikipedia exploite par `scripts/build-polls-2022-round1.mjs`, avec prudence sur les sources primaires des instituts.
+- Sondages 2022 (archive, page `/analyse`) : tableau Wikipedia exploite par `scripts/build-polls-2022-round1.mjs`, avec prudence sur les sources primaires des instituts.
+- Sondages 2027 (page `/sondages-presidentielle-2027`) : section « First round » de la page Wikipedia (en) `Opinion polling for the 2027 French presidential election`, exploitee par `scripts/build-polls-2027.mjs` (parseur dans `scripts/lib/polls-2027.mjs`). Chaque sondage porte ses hypotheses (listes de candidats testees), ses dates de terrain, son echantillon et le lien de notice de la source. Regeneration : `node scripts/build-polls-2027.mjs` (telechargement) ou `--input reponse-api.json`. Donnees relevees le 25 octobre 2026.
 - Promesses / bilan : sources presse et institutionnelles referencees dans `public/data/presidential/macron-promises-bilan.json`.
 
 ## Points d'entree
@@ -19,6 +20,7 @@ Les donnees et assets tiers ne sont pas couverts par la licence MIT du code sour
 - `public/data/presidential/home-map.json` (candidat en tête par département et par année, 1er tour ; carte de l'accueil, généré par `node scripts/build-home-map.mjs` après `build:data`)
 - `public/data/geo/departements-paths.json` (tracés SVG simplifiés des 96 départements métropolitains pour la carte de l'accueil ; IGN Admin Express COG 2018, Licence Ouverte, via gregoiredavid/france-geojson ; généré par `node scripts/build-france-map.mjs`)
 - `public/data/presidential/polls-2022-round1.json`
+- `public/data/presidential/polls-2027-round1.json`
 - `public/data/presidential/macron-promises-bilan.json`
 - `public/data/parrainages/manifest.json`
 - `public/data/parrainages/2017.json`

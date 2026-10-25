@@ -17,7 +17,9 @@ interface PollChartProps {
   lines: PollLegendItem[];
   highlighted: string | null;
   onHighlight: (id: string | null) => void;
-  electionDate: string;
+  electionDate?: string;
+  ariaLabel?: string;
+  yMax?: number;
 }
 
 /** Courbes de sondages animées (tracé progressif) ; la courbe survolée passe devant, les autres s'estompent. */
@@ -27,9 +29,11 @@ export function PollChart({
   highlighted,
   onHighlight,
   electionDate,
+  ariaLabel = "Graphique des intentions de vote au 1er tour de 2022, par candidat",
+  yMax = 36,
 }: PollChartProps) {
   const reduce = useReducedMotion();
-  const electionTick = data.find((r) => r.date === electionDate)?.labelShort;
+  const electionTick = electionDate ? data.find((r) => r.date === electionDate)?.labelShort : undefined;
   // la courbe mise en avant est dessinée en dernier (au premier plan)
   const ordered = [...lines].sort(
     (a, b) => Number(a.id === highlighted) - Number(b.id === highlighted),
@@ -39,7 +43,7 @@ export function PollChart({
     <div
       className="h-[340px] w-full min-w-0 sm:h-[440px]"
       role="img"
-      aria-label="Graphique des intentions de vote au 1er tour de 2022, par candidat"
+      aria-label={ariaLabel}
     >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
@@ -58,7 +62,7 @@ export function PollChart({
             interval="preserveStartEnd"
           />
           <YAxis
-            domain={[0, 36]}
+            domain={[0, yMax]}
             tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
             width={40}
             tickFormatter={(v) => `${v}%`}

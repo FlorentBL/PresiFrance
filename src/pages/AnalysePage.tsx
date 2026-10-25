@@ -87,22 +87,29 @@ export default function AnalysePage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead
-        title="Sondages présidentielle 2022 — 1er tour"
-        description="Chronologie des intentions de vote au 1er tour (mars–avril 2022) : courbes lissées à partir des sondages publiés après la liste officielle des candidats."
+        title="Archive — Sondages présidentielle 2022, 1er tour"
+        description="Archive des sondages du 1er tour de la présidentielle 2022 (mars–avril 2022) : courbes lissées à partir des sondages publiés après la liste officielle des candidats. Pour 2027, consultez la page dédiée."
         path="/analyse"
       />
       <JsonLd
         path="/analyse"
-        breadcrumbs={[{ name: "Sondages 2022", path: "/analyse" }]}
+        breadcrumbs={[{ name: "Archive sondages 2022", path: "/analyse" }]}
       />
       <SiteHeader />
 
       <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
-          eyebrow="Sondages · 2022"
-          title="Chronologie des sondages — 1er tour"
+          eyebrow="Archive · Sondages 2022"
+          title="Sondages 2022 — 1er tour (archive)"
           description={
             <>
+              Archive figée de la campagne 2022, terminée le 10 avril 2022.{" "}
+              <Link
+                to="/sondages-presidentielle-2027"
+                className="font-semibold text-primary underline-offset-4 hover:underline"
+              >
+                Voir les sondages de la présidentielle 2027 →
+              </Link>{" "}
               <strong className="text-foreground">Présidentielle 2022</strong>,{" "}
               <strong className="text-foreground">1er tour</strong> (10 avril).
               Période : du 7 mars au 10 avril, comme le tableau «&nbsp;Official

@@ -21,6 +21,7 @@ const PresidentialYearPage = lazy(() => import("./pages/PresidentialYearPage"));
 const ParrainagesPage = lazy(() => import("./pages/ParrainagesPage"));
 const ComparerPage = lazy(() => import("./pages/ComparerPage"));
 const AnalysePage = lazy(() => import("./pages/AnalysePage"));
+const Sondages2027Page = lazy(() => import("./pages/Sondages2027Page"));
 const PromessesBilanPage = lazy(() => import("./pages/PromessesBilanPage"));
 const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
 const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite"));
@@ -78,6 +79,7 @@ const App = () => (
             <Route path="/parrainages" element={<ParrainagesPage />} />
             <Route path="/comparer" element={<ComparerPage />} />
             <Route path="/analyse" element={<AnalysePage />} />
+            <Route path="/sondages-presidentielle-2027" element={<Sondages2027Page />} />
             <Route path="/promesses-bilan" element={<PromessesBilanPage />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
