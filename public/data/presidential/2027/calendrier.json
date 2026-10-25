@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "election": 2027,
+    "dateVerification": "2026-10-25"
+  },
+  "evenements": [
+    {
+      "id": "fixation-dates",
+      "label": "Fixation des dates du scrutin par le Conseil des ministres",
+      "date": "2026-07-01",
+      "dateFin": null,
+      "statut": "officiel",
+      "detail": "Dates du scrutin arrêtées lors du Conseil des ministres du 1er juillet 2026.",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/actualites/A15053?lang=fr",
+      "sourceLabel": "Service-public.fr, « Élection 2027 » (publié le 02/07/2026)",
+      "dateVerification": "2026-10-25"
+    },
+    {
+      "id": "decret-convocation",
+      "label": "Décret de convocation des électeurs",
+      "date": null,
+      "dateFin": null,
+      "statut": "a_confirmer",
+      "detail": "Date à confirmer : le décret n'est pas encore publié.",
+      "sourceUrl": null,
+      "sourceLabel": null,
+      "dateVerification": "2026-10-25"
+    },
+    {
+      "id": "parrainages",
+      "label": "Collecte et publication des parrainages par le Conseil constitutionnel",
+      "date": null,
+      "dateFin": null,
+      "statut": "a_confirmer",
+      "detail": "Calendrier à confirmer.",
+      "sourceUrl": null,
+      "sourceLabel": null,
+      "dateVerification": "2026-10-25"
+    },
+    {
+      "id": "liste-candidats",
+      "label": "Publication de la liste officielle des candidats",
+      "date": null,
+      "dateFin": null,
+      "statut": "a_confirmer",
+      "detail": "Date à confirmer : liste arrêtée par le Conseil constitutionnel.",
+      "sourceUrl": null,
+      "sourceLabel": null,
+      "dateVerification": "2026-10-25"
+    },
+    {
+      "id": "outre-mer-t1",
+      "label": "1er tour — collectivités d'outre-mer concernées (vote anticipé du samedi)",
+      "date": "2027-04-17",
+      "dateFin": null,
+      "statut": "officiel",
+      "detail": "Guadeloupe, Martinique, Guyane, Saint-Pierre-et-Miquelon, Saint-Barthélemy, Saint-Martin, Polynésie française.",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/actualites/A15053?lang=fr",
+      "sourceLabel": "Service-public.fr, « Élection 2027 » (publié le 02/07/2026)",
+      "dateVerification": "2026-10-25"
+    },
+    {
+      "id": "t1",
+      "label": "1er tour de l'élection présidentielle",
+      "date": "2027-04-18",
+      "dateFin": null,
+      "statut": "officiel",
+      "detail": "Dimanche 18 avril 2027.",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/actualites/A15053?lang=fr",
+      "sourceLabel": "Service-public.fr, « Élection 2027 » (publié le 02/07/2026)",
+      "dateVerification": "2026-10-25"
+    },
+    {
+      "id": "outre-mer-t2",
+      "label": "2nd tour — collectivités d'outre-mer concernées (vote anticipé du samedi)",
+      "date": "2027-05-01",
+      "dateFin": null,
+      "statut": "officiel",
+      "detail": "Mêmes collectivités qu'au 1er tour.",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/actualites/A15053?lang=fr",
+      "sourceLabel": "Service-public.fr, « Élection 2027 » (publié le 02/07/2026)",
+      "dateVerification": "2026-10-25"
+    },
+    {
+      "id": "t2",
+      "label": "2nd tour de l'élection présidentielle",
+      "date": "2027-05-02",
+      "dateFin": null,
+      "statut": "officiel",
+      "detail": "Dimanche 2 mai 2027.",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/actualites/A15053?lang=fr",
+      "sourceLabel": "Service-public.fr, « Élection 2027 » (publié le 02/07/2026)",
+      "dateVerification": "2026-10-25"
+    },
+    {
+      "id": "proclamation",
+      "label": "Proclamation des résultats par le Conseil constitutionnel",
+      "date": null,
+      "dateFin": null,
+      "statut": "a_confirmer",
+      "detail": "Date à confirmer.",
+      "sourceUrl": null,
+      "sourceLabel": null,
+      "dateVerification": "2026-10-25"
+    }
+  ]
+}

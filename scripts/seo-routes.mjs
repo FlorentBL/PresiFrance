@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 export const presidentialYears = [2022, 2017, 2012, 2007, 2002, 1995, 1988, 1981, 1974, 1969, 1965];
 
 export const presidentialYearSummaries = [
@@ -52,6 +54,12 @@ export const departmentNames = {
   "973": "Guyane", "974": "La Réunion", "976": "Mayotte",
 };
 
+const candidates2027 = JSON.parse(
+  readFileSync(new URL("../public/data/presidential/2027/candidats.json", import.meta.url), "utf8"),
+).candidats;
+
+export const candidate2027Routes = candidates2027.map((c) => `/presidentielle-2027/candidats/${c.slug}`);
+
 export const presidentialYearRoutes = presidentialYears.map((year) => `/presidentielle-${year}`);
 export const departmentRoutes = departmentCodes.map((code) => `/explorer/${code}`);
 
@@ -70,6 +78,8 @@ export const staticRoutes = [
   "/mentions-legales",
   "/politique-de-confidentialite",
   "/explorer",
+  "/presidentielle-2027",
+  ...candidate2027Routes,
 ];
 
 export function getDepartmentName(code) {
@@ -153,4 +163,14 @@ export const seoPrerenderRoutes = [
     title: `Promesses 2017 vs bilan 2017-2022 — ${defaultSiteName}`,
     description: "Synthèse pédagogique des engagements de campagne 2017 et de leur mise en œuvre sur le premier quinquennat d'Emmanuel Macron.",
   },
+  {
+    path: "/presidentielle-2027",
+    title: `Présidentielle 2027 : candidats et calendrier — ${defaultSiteName}`,
+    description: "Élection présidentielle 2027 : liste alphabétique des candidats déclarés et pressentis avec sources, calendrier du scrutin et accès aux données.",
+  },
+  ...candidates2027.map((c) => ({
+    path: `/presidentielle-2027/candidats/${c.slug}`,
+    title: `${c.prenom} ${c.nom} — présidentielle 2027 — ${defaultSiteName}`,
+    description: `Fiche de ${c.prenom} ${c.nom}, présidentielle 2027 : soutien, date de déclaration, source et historique électoral.`,
+  })),
 ];

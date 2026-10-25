@@ -1,6 +1,8 @@
+// @vitest-environment node
 import { describe, expect, it } from "vitest";
 
 import {
+  candidate2027Routes,
   departmentRoutes,
   getDepartmentIntro,
   seoPrerenderRoutes,
@@ -53,6 +55,16 @@ describe("seo routes", () => {
     expect(turnoutConnector?.description).toContain("participation");
     expect(abstentionConnector?.description).toContain("abstention");
     expect(seoPrerenderRoutes.length).toBeGreaterThan(110);
+  });
+
+  it("expose le hub et les fiches candidats 2027 au prérendu et au sitemap", () => {
+    expect(staticRoutes).toContain("/presidentielle-2027");
+    expect(candidate2027Routes.length).toBeGreaterThan(0);
+    for (const route of candidate2027Routes) {
+      expect(staticRoutes).toContain(route);
+      expect(seoPrerenderRoutes.some((r) => r.path === route)).toBe(true);
+    }
+    expect(seoPrerenderRoutes.some((r) => r.path === "/presidentielle-2027")).toBe(true);
   });
 
   it("creates useful department intros with source and commune intent", () => {

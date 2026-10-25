@@ -58,3 +58,10 @@ Le depot est volontairement autonome, mais `public/data` represente la grande ma
 3. publier les donnees volumineuses en GitHub Releases ;
 4. separer les donnees dans un depot ou package dedie ;
 5. utiliser Git LFS seulement si le flux contributeur reste simple.
+
+## Présidentielle 2027 (hub et fiches candidats)
+
+- `public/data/presidential/2027/candidats.json` : candidats déclarés, pressentis ou retirés, édités à la main. Chaque entrée porte `sourceUrl`, `sourceLabel` et `dateVerification` ; une date ou un soutien inconnu vaut `null` ou « à confirmer », jamais une valeur supposée. Ordre d'affichage : alphabétique (nom, prénom), calculé à l'affichage.
+- `public/data/presidential/2027/calendrier.json` : seules les dates officielles sourcées (service-public.fr) sont renseignées ; les autres événements restent `date: null`, `statut: "a_confirmer"`.
+- Ajouter un candidat ajoute automatiquement sa fiche `/presidentielle-2027/candidats/<slug>` au prérendu et au sitemap (`scripts/seo-routes.mjs` lit le JSON). L'historique électoral est déduit de `national-results.json` par nom.
+- Les sources de presse ne valent pas liste officielle : la liste officielle viendra du Conseil constitutionnel après validation des parrainages. Dernière vérification : 2026-10-25.
