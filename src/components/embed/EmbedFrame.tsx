@@ -22,7 +22,7 @@ export function EmbedFrame({ title, sourcePath, children }: EmbedFrameProps) {
   }, [title]);
 
   return (
-    <main id="contenu" className="flex min-h-screen flex-col bg-background px-3 py-3 text-foreground">
+    <main id="contenu" aria-label="Contenu intégré PrésiFrance" className="flex min-h-screen flex-col bg-background px-3 py-3 text-foreground">
       <h1 className="mb-2 font-heading text-base font-bold leading-tight sm:text-lg">{title}</h1>
       <div className="flex-1">{children}</div>
       <p className="mt-2 border-t border-border pt-2 text-xs text-muted-foreground">

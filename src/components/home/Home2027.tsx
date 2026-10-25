@@ -14,6 +14,16 @@ export function ElectionCountdown() {
         <>
           <p className="mt-2 font-heading text-5xl font-extrabold tabular-nums">{days}</p>
           <p className="text-sm text-muted-foreground">jour{days > 1 ? "s" : ""} avant le 1er tour</p>
+          {ELECTION_2027.firstRoundDate && (
+            <p className="mt-2 text-sm font-medium first-letter:uppercase">
+              {new Date(`${ELECTION_2027.firstRoundDate}T12:00:00`).toLocaleDateString("fr-FR", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
+          )}
         </>
       ) : (
         <>

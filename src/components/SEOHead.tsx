@@ -7,9 +7,9 @@ interface Props {
   path?: string;
 }
 
-const DEFAULT_TITLE = `${SITE_NAME} — Élections présidentielles françaises`;
+const DEFAULT_TITLE = `${SITE_NAME} — Présidentielle 2027 et résultats de 1965 à 2022`;
 const DEFAULT_DESC =
-  "Explorez les résultats par commune, la participation et les parrainages des élections présidentielles. Données ouvertes.";
+  "Présidentielle 2027 : candidats, sondages, parrainages et calendrier. Résultats de toutes les présidentielles depuis 1965, commune par commune. Données ouvertes.";
 
 const SEOHead = ({ title, description, path }: Props): null => {
   useEffect(() => {

@@ -98,8 +98,8 @@ const defaultSiteName = "PrésiFrance";
 export const seoPrerenderRoutes = [
   {
     path: "/",
-    title: `${defaultSiteName} — Élections présidentielles françaises`,
-    description: "Explorez les résultats par commune, la participation et les parrainages des élections présidentielles françaises. Données ouvertes.",
+    title: `${defaultSiteName} — Présidentielle 2027 et résultats de 1965 à 2022`,
+    description: "Présidentielle 2027 : candidats, sondages, parrainages et calendrier. Résultats de toutes les présidentielles depuis 1965, commune par commune. Données ouvertes.",
   },
   {
     path: "/resultats-presidentielle",

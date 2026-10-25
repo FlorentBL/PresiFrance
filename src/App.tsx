@@ -55,12 +55,15 @@ function RouteFallback() {
   );
 }
 
+// Les embeds (/embed/*) sont chargés seuls dans une iframe : pas de zones de notification.
+const IS_EMBED = typeof window !== "undefined" && window.location.pathname.startsWith("/embed/");
+
 const App = () => (
   <ThemeProvider attribute="class" defaultTheme="dark" themes={["dark", "light"]} enableSystem={false}>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
+      {!IS_EMBED && <Toaster />}
+      {!IS_EMBED && <Sonner />}
       <BrowserRouter>
         <Suspense fallback={<RouteFallback />}>
           <Routes>

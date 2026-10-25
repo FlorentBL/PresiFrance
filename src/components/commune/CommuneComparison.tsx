@@ -35,7 +35,7 @@ export function CommuneComparison({ commune, results, department, departmentName
 
   return (
     <GlowCard className="p-4 sm:p-6">
-      <div className="overflow-x-auto">
+      <div tabIndex={0} className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         <table className="w-full min-w-[32rem] text-left text-sm">
           <caption className="sr-only">Comparaison de {commune} avec son département et la France</caption>
           <thead>

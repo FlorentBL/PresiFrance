@@ -38,7 +38,7 @@ export default function SiteFooter() {
           </div>
 
           <nav aria-label="Pied de page">
-            <h4 className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Navigation</h4>
+            <h2 className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Navigation</h2>
             <ul className="space-y-2 text-sm">
               {NAV_LINKS.map((l) => (
                 <li key={l.to}>
@@ -48,7 +48,7 @@ export default function SiteFooter() {
                 </li>
               ))}
             </ul>
-            <h4 className="mb-4 mt-8 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Archives</h4>
+            <h2 className="mb-4 mt-8 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Archives</h2>
             <ul className="space-y-2 text-sm">
               {ARCHIVE_LINKS.map((l) => (
                 <li key={l.to}>
@@ -61,7 +61,7 @@ export default function SiteFooter() {
           </nav>
 
           <div>
-            <h4 className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Légal</h4>
+            <h2 className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Légal</h2>
             <ul className="space-y-2 text-sm">
               <li><Link to="/mentions-legales" className="text-foreground/85 transition-colors hover:text-primary">Mentions Légales</Link></li>
               <li><Link to="/politique-de-confidentialite" className="text-foreground/85 transition-colors hover:text-primary">Confidentialité</Link></li>
