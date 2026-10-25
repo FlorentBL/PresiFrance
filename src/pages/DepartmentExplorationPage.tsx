@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ChevronLeft, MapPin, Search, Loader2 } from "lucide-react";
+import { PageHero, Section } from "@/components/design";
 import SEOHead from "@/components/SEOHead";
 import JsonLd from "@/components/JsonLd";
 import SeoConnectorLinks from "@/components/SeoConnectorLinks";
@@ -9,9 +10,6 @@ import SiteFooter from "@/components/SiteFooter";
 import { getDepartmentCommunes, GeoCommuneWithCoords } from "@/lib/api/geoApi";
 import { getDepartmentIntro } from "@/lib/departmentSeo";
 import { getDepartmentName } from "@/lib/departments";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 
 const DepartmentExplorationPage = () => {
   const { depCode } = useParams<{ depCode: string }>();
@@ -39,9 +37,9 @@ const DepartmentExplorationPage = () => {
   const departmentIntro = getDepartmentIntro(depCode);
 
   return (
-    <div className="min-h-screen bg-neutral-100 flex flex-col">
-      <SEOHead 
-        title={`Résultats présidentielle : ${departmentName}`} 
+    <div className="min-h-screen bg-background flex flex-col">
+      <SEOHead
+        title={`Résultats présidentielle : ${departmentName}`}
         description={`Liste des communes pour le département ${departmentName}. Retrouvez les résultats de l'élection présidentielle par ville, village et commune.`}
         path={depCode ? `/explorer/${depCode}` : "/explorer"}
       />
@@ -52,85 +50,82 @@ const DepartmentExplorationPage = () => {
           { name: departmentName, path: depCode ? `/explorer/${depCode}` : "/explorer" },
         ]}
       />
-      
+
       <SiteHeader />
-      
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="max-w-5xl mx-auto">
-          <Link to="/explorer" className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 mb-6 transition-colors">
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            Retour à la liste des départements
-          </Link>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-neutral-200 p-6 mb-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-100 uppercase font-bold px-2 py-0.5 rounded text-xs">
-                    Département {depCode}
-                  </Badge>
-                </div>
-                <h1 className="text-3xl font-bold text-neutral-900 font-serif">
-                  Communes du {departmentName}
-                </h1>
-                <p className="text-sm text-neutral-500 mt-2 max-w-2xl">
-                  {departmentIntro}
-                </p>
-              </div>
-              
-              <div className="relative max-w-sm w-full">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
-                <Input
-                  placeholder="Rechercher une commune..."
-                  className="pl-10 h-11 bg-neutral-50 border-neutral-200 focus:bg-white transition-all rounded-xl"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </div>
+      <main className="flex-1">
+        <PageHero
+          eyebrow={`Département ${depCode}`}
+          title={`Communes du ${departmentName}`}
+          description={departmentIntro}
+          actions={
+            <Link
+              to="/explorer"
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-card/60 px-4 py-2 text-sm font-medium backdrop-blur transition-colors hover:bg-accent"
+            >
+              <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+              Retour à la liste des départements
+            </Link>
+          }
+        />
 
-            {loading ? (
-              <div className="flex flex-col items-center justify-center py-20 text-neutral-400">
-                <Loader2 className="w-8 h-8 animate-spin mb-4" />
-                <p>Chargement des communes...</p>
-              </div>
-            ) : (
-              <div>
-                <p className="text-sm text-neutral-500 mb-6 font-medium">
-                  {filteredCommunes.length} commune{filteredCommunes.length > 1 && 's'} trouvée{filteredCommunes.length > 1 && 's'}
-                </p>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                  {filteredCommunes.map((commune) => (
-                    <Link key={commune.code} to={`/commune/${commune.code}`} className="block">
-                      <Card className="hover:border-blue-300 hover:bg-blue-50/30 transition-all duration-200 group border-neutral-100 shadow-none bg-neutral-50/50">
-                        <CardContent className="p-3 flex items-center justify-between">
-                          <div className="flex items-center gap-3 overflow-hidden">
-                            <MapPin className="w-4 h-4 text-neutral-300 flex-shrink-0 group-hover:text-blue-400 transition-colors" />
-                            <span className="text-sm font-medium text-neutral-700 group-hover:text-neutral-900 transition-colors truncate">
-                              {commune.nom}
-                            </span>
-                          </div>
-                          <span className="text-[10px] font-mono text-neutral-400 group-hover:text-blue-400 transition-colors ml-2 bg-white px-1.5 py-0.5 rounded border border-neutral-100">
-                            {commune.code}
-                          </span>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
-
-                {filteredCommunes.length === 0 && (
-                  <div className="text-center py-12 text-neutral-500 bg-neutral-50 rounded-xl border border-dashed border-neutral-200">
-                    Aucune commune ne correspond à votre recherche.
-                  </div>
-                )}
-              </div>
-            )}
+        <Section width="wide" className="!pt-10 sm:!pt-12">
+          <div className="relative mb-6 w-full max-w-md">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+            <label htmlFor="commune-filter" className="sr-only">Rechercher une commune du département</label>
+            <input
+              id="commune-filter"
+              type="search"
+              placeholder="Rechercher une commune..."
+              autoComplete="off"
+              className="glass h-12 w-full rounded-full border border-border pl-11 pr-4 text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
 
-          <SeoConnectorLinks context="department" departmentName={departmentName} />
-        </div>
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground" role="status">
+              <Loader2 className="mb-4 h-8 w-8 animate-spin text-primary" />
+              <p>Chargement des communes...</p>
+            </div>
+          ) : (
+            <div>
+              <p className="mb-6 text-sm font-medium text-muted-foreground" role="status" aria-live="polite">
+                {filteredCommunes.length} commune{filteredCommunes.length > 1 && "s"} trouvée{filteredCommunes.length > 1 && "s"}
+              </p>
+
+              <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {filteredCommunes.map((commune) => (
+                  <li key={commune.code}>
+                    <Link
+                      to={`/commune/${commune.code}`}
+                      className="group flex min-h-[44px] items-center justify-between gap-2 rounded-xl border border-border bg-card/60 px-3 py-2.5 transition-colors hover:border-primary/50 hover:bg-accent"
+                    >
+                      <span className="flex min-w-0 items-center gap-3">
+                        <MapPin className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" aria-hidden="true" />
+                        <span className="truncate text-sm font-medium">{commune.nom}</span>
+                      </span>
+                      <span className="shrink-0 rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[11px] tabular-nums text-muted-foreground">
+                        {commune.code}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+
+              {filteredCommunes.length === 0 && (
+                <div className="rounded-2xl border border-dashed border-border py-12 text-center text-muted-foreground">
+                  Aucune commune ne correspond à votre recherche.
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="mt-12">
+            <SeoConnectorLinks context="department" departmentName={departmentName} />
+          </div>
+        </Section>
       </main>
 
       <SiteFooter />
