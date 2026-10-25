@@ -7,7 +7,7 @@ Les donnees et assets tiers ne sont pas couverts par la licence MIT du code sour
 ## Sources principales
 
 - Resultats presidentiels : Ministere de l'Interieur et ressources publiees via data.gouv.fr.
-- Parrainages : Conseil constitutionnel via data.gouv.fr.
+- Parrainages : Conseil constitutionnel (2022 et 2017 via data.gouv.fr ; 2027 : publication du Conseil constitutionnel, URL à confirmer).
 - Geographie des communes : geo.api.gouv.fr.
 - Sondages 2022 : tableau Wikipedia exploite par `scripts/build-polls-2022-round1.mjs`, avec prudence sur les sources primaires des instituts.
 - Promesses / bilan : sources presse et institutionnelles referencees dans `public/data/presidential/macron-promises-bilan.json`.
@@ -23,6 +23,7 @@ Les donnees et assets tiers ne sont pas couverts par la licence MIT du code sour
 - `public/data/parrainages/manifest.json`
 - `public/data/parrainages/2017.json`
 - `public/data/parrainages/2022.json`
+- `public/data/parrainages/2027.json`, `2027-by-dep.json` et `2027-history.json` (créés à la première publication 2027 ; tant qu'ils n'existent pas, le manifest porte `pending: [2027]` et la page affiche « publication à venir »)
 
 ## Regeneration
 
@@ -39,6 +40,18 @@ npm run build:photos
 Les fichiers `public/data/presidential/{annee}/t{tour}/{dep}.json` utilisent un format compact (voir `scripts/lib/compact-results.mjs`) : noms des candidats une seule fois par fichier, puis une ligne de comptes par commune. Les pourcentages sont recalcules dans le navigateur (`src/lib/api/compactResults.ts`). `npm run compact:data` convertit d'anciens fichiers au format compact. Si le format change, incrementer `DEP_FILE_VERSION` dans `src/lib/api/resultsApi.ts` pour contourner les caches navigateur.
 
 `npm run build:parrainages` reconstruit les fichiers de parrainages dans `public/data/parrainages`. Les CSV sources locaux `parrainages*.csv` sont ignores par Git.
+
+### Parrainages 2027 (suivi en direct)
+
+L'URL de publication 2027 du Conseil constitutionnel n'est pas connue a ce jour : elle n'est donc volontairement pas codee en dur (en 2022 : `https://presidentielle2022.conseil-constitutionnel.fr/telechargement/parrainagestotal.csv`). Procedure de mise a jour a chaque publication :
+
+1. Mettre a jour (sans pousser) : `PARRAINAGES_2027_URL=<url du CSV> npm run build:parrainages -- --year 2027`, ou depuis un CSV telecharge : `npm run build:parrainages -- --year 2027 --file chemin/vers/parrainages.csv` (variable `PARRAINAGES_2027_FILE` equivalente). Le CSV doit suivre le format 2022 (`Civilite;Nom;Prenom;Mandat;Circonscription;Departement;Candidat;Date de publication`). Si la source repond une erreur (404...), l'annee reste en « publication a venir ».
+2. Verifier la sortie du script (parrainages, candidats, departements), que `public/data/parrainages/manifest.json` liste 2027 dans `years` (plus dans `pending`), que `2027-history.json` a gagne une ligne datee (le script n'ajoute une ligne que si le contenu a change), puis `npm test` et ouvrir `/parrainages?year=2027`.
+3. Committer les fichiers `public/data/parrainages/*` et deployer manuellement : `npm run deploy` depuis main, par Florent uniquement.
+
+Validation de la chaine sans donnees reelles : `npm run build:parrainages -- --year 2027 --file scripts/fixtures/parrainages-sample-2022.csv` (fichier d'exemple fictif au format 2022). **Ne pas committer** les fichiers 2027 ainsi produits : supprimer `2027*.json` puis `git checkout public/data/parrainages/manifest.json` et relancer le script sans source pour retrouver l'etat « a venir ». Les tests (`npm test`) valident la chaine sans toucher a `public/`.
+
+Regle de recevabilite affichee sur la page (`src/lib/parrainagesTracking.ts`) : 500 presentations, d'au moins 30 departements ou collectivites d'outre-mer, au plus 50 (un dixieme) d'un meme departement — loi n° 62-1292 du 6 novembre 1962, art. 3-I. Texte cite de memoire, non reverifie en ligne le 25 octobre 2026 : a controler sur Legifrance avant le scrutin.
 
 `npm run build:photos` telecharge les portraits candidats depuis Wikipedia/Wikimedia. Les portraits doivent etre verifies fichier par fichier avant toute redistribution publique ou commerciale.
 

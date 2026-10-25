@@ -18,6 +18,7 @@ dist/
 
 # Data (CSV sources)
 parrainages*.csv
+!scripts/fixtures/parrainages-sample-2022.csv
 
 # Build scripts — cache téléchargement Wikipédia
 .tmp-wiki-polls.json
