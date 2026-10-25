@@ -24,6 +24,8 @@ const AnalysePage = lazy(() => import("./pages/AnalysePage"));
 const PromessesBilanPage = lazy(() => import("./pages/PromessesBilanPage"));
 const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
 const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite"));
+const Presidentielle2027Page = lazy(() => import("./pages/Presidentielle2027Page"));
+const Candidat2027Page = lazy(() => import("./pages/Candidat2027Page"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Données publiées statiques : inutile de les recharger pendant la session.
@@ -76,6 +78,8 @@ const App = () => (
             <Route path="/promesses-bilan" element={<PromessesBilanPage />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+            <Route path="/presidentielle-2027" element={<Presidentielle2027Page />} />
+            <Route path="/presidentielle-2027/candidats/:slug" element={<Candidat2027Page />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
