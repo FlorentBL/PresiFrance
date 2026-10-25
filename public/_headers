@@ -20,3 +20,13 @@
 
 /og-image.png
   Cache-Control: public, max-age=86400
+
+# Anti-clickjacking : iframe réservée au site lui-même, sauf cartes intégrables (/embed/*).
+/*
+  Content-Security-Policy: frame-ancestors 'self'
+
+/embed/*
+  ! Content-Security-Policy
+  Content-Security-Policy: frame-ancestors *
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: public, max-age=300

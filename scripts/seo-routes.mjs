@@ -70,6 +70,7 @@ export const staticRoutes = [
   "/mentions-legales",
   "/politique-de-confidentialite",
   "/explorer",
+  "/integrer",
 ];
 
 export function getDepartmentName(code) {
@@ -152,5 +153,10 @@ export const seoPrerenderRoutes = [
     path: "/promesses-bilan",
     title: `Promesses 2017 vs bilan 2017-2022 — ${defaultSiteName}`,
     description: "Synthèse pédagogique des engagements de campagne 2017 et de leur mise en œuvre sur le premier quinquennat d'Emmanuel Macron.",
+  },
+  {
+    path: "/integrer",
+    title: `Intégrer nos cartes et résultats — ${defaultSiteName}`,
+    description: "Médias et blogs locaux : intégrez gratuitement les cartes et résultats de la présidentielle de PrésiFrance avec un code iframe.",
   },
 ];

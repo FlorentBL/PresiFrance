@@ -63,4 +63,10 @@ describe("seo routes", () => {
     expect(intro).toContain("données officielles");
     expect(intro.length).toBeGreaterThan(240);
   });
+
+  it("indexes /integrer and keeps embeds out of sitemap and prerender", () => {
+    expect(staticRoutes).toContain("/integrer");
+    expect(seoPrerenderRoutes.some((route) => route.path === "/integrer")).toBe(true);
+    expect([...staticRoutes, ...seoPrerenderRoutes.map((r) => r.path)].some((p) => p.startsWith("/embed"))).toBe(false);
+  });
 });

@@ -24,6 +24,9 @@ const AnalysePage = lazy(() => import("./pages/AnalysePage"));
 const PromessesBilanPage = lazy(() => import("./pages/PromessesBilanPage"));
 const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
 const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite"));
+const EmbedCartePage = lazy(() => import("./pages/EmbedCartePage"));
+const EmbedCommunePage = lazy(() => import("./pages/EmbedCommunePage"));
+const IntegrerPage = lazy(() => import("./pages/IntegrerPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Données publiées statiques : inutile de les recharger pendant la session.
@@ -76,6 +79,9 @@ const App = () => (
             <Route path="/promesses-bilan" element={<PromessesBilanPage />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+            <Route path="/embed/carte" element={<EmbedCartePage />} />
+            <Route path="/embed/commune/:code" element={<EmbedCommunePage />} />
+            <Route path="/integrer" element={<IntegrerPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
