@@ -8,7 +8,7 @@
  *
  * Outputs:
  *   public/data/presidential/manifest.json
- *   public/data/presidential/{year}/t{round}/{dep}.json
+ *   public/data/presidential/{year}/t{round}/{dep}.json (compact format, see scripts/lib/compact-results.mjs)
  *
  * Run:
  *   node scripts/build-election-data.mjs
@@ -16,6 +16,7 @@
 
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { encodeDepResults } from "./lib/compact-results.mjs";
 
 const API_BASE = "https://www.data.gouv.fr/api/1";
 const OUT_BASE = path.resolve(process.cwd(), "public", "data", "presidential");
@@ -896,7 +897,7 @@ async function writeDepFiles(year, round, depMap) {
   const deps = Object.keys(depMap);
   for (const dep of deps) {
     const fp = path.join(dir, `${dep}.json`);
-    await writeFile(fp, JSON.stringify(depMap[dep]), "utf8");
+    await writeFile(fp, JSON.stringify(encodeDepResults(depMap[dep])), "utf8");
   }
   return deps;
 }

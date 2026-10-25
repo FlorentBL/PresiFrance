@@ -30,8 +30,6 @@ export type ParrainagesData = {
   candidats: string[];
   stats: ParrainageStats[];
   byCandidat: Record<string, ParrainageEntry[]>;
-  byDep: Record<string, Record<string, number>>;
-  list: ParrainageEntry[];
 };
 
 export type ParrainagesManifest = {

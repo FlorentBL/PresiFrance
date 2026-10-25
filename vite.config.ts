@@ -54,7 +54,7 @@ export default defineConfig(({ mode }) => ({
     googleSiteVerificationMeta(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg', 'logo.svg'],
+      includeAssets: ['favicon.png', 'apple-touch-icon.png', 'logo.webp', 'logo.svg'],
       workbox: {
         globPatterns: ['**/*.{html,css,ico,svg,webmanifest}'],
         runtimeCaching: [

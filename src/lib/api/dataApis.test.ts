@@ -31,7 +31,7 @@ describe("data API loaders", () => {
     });
     expect(fetchMock).toHaveBeenCalledWith("/data/parrainages/manifest.json");
 
-    mockFetchOnce({ year: 2022, total: 1, candidats: [], stats: [], byCandidat: {}, byDep: {}, list: [] });
+    mockFetchOnce({ year: 2022, total: 1, candidats: [], stats: [], byCandidat: {} });
     await expect(getParrainagesByYear(2022)).resolves.toMatchObject({ year: 2022, total: 1 });
 
     mockFetchOnce({ "75": [{ candidat: "Candidate", count: 3 }] });

@@ -23,7 +23,7 @@ export default function SiteHeader() {
       <div className="container flex h-16 items-center justify-between px-4 sm:px-8 max-w-7xl mx-auto">
         <Link to="/" className="flex items-center gap-3 group">
           <img
-            src="/logo.png"
+            src="/logo.webp"
             alt=""
             className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-border/60 group-hover:ring-primary/30 transition-shadow"
           />

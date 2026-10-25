@@ -7,7 +7,7 @@ export default function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <img src="/logo.png" alt="" className="h-8 w-8 rounded-full object-cover ring-1 ring-border/60" />
+              <img src="/logo.webp" alt="" className="h-8 w-8 rounded-full object-cover ring-1 ring-border/60" />
               <span className="text-lg font-black tracking-tight">
                 Prési<span className="text-primary">France</span>
               </span>

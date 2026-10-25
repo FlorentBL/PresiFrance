@@ -155,7 +155,9 @@ async function main() {
     const data = buildParrainages(year, content);
     if (data) {
       const outFile = join(OUT_DIR, `${year}.json`);
-      writeFileSync(outFile, JSON.stringify(data, null, 0), "utf-8");
+      // `list` et `byDep` dupliquent `byCandidat` / `${year}-by-dep.json` : non publiés.
+      const { list: _list, byDep: _byDep, ...published } = data;
+      writeFileSync(outFile, JSON.stringify(published, null, 0), "utf-8");
       manifest.years.push(year);
       manifest.sources[year] = { total: data.total, candidats: data.candidats.length };
       console.log(`[parrainages] ${year}: ${data.total} parrainages, ${data.candidats.length} candidats`);

@@ -51,6 +51,14 @@ npm run build:photos
 - `build:parrainages` reconstruit les donnees de parrainages dans `public/data/parrainages`.
 - `build:photos` telecharge les portraits candidats depuis les pages Wikipedia/Wikimedia configurees dans le script.
 
+## Hebergement
+
+Le site est servi par Cloudflare Workers (fichiers statiques uniquement, configuration dans `wrangler.jsonc`, en-tetes de cache dans `public/_headers`). Deploiement :
+
+```bash
+npm run deploy
+```
+
 ## Donnees
 
 Les fichiers de donnees generes sont versionnes dans `public/data` afin que le site fonctionne rapidement sans dependance serveur. Les CSV sources locaux (`parrainages*.csv`) et caches temporaires ne sont pas versionnes.
@@ -138,6 +146,10 @@ npm run build:photos
 - `build:data` rebuilds presidential election data in `public/data/presidential`.
 - `build:parrainages` rebuilds endorsement data in `public/data/parrainages`.
 - `build:photos` downloads candidate portraits from the Wikipedia/Wikimedia pages configured in the script.
+
+## Hosting
+
+The site is served by Cloudflare Workers static assets (`wrangler.jsonc`, cache headers in `public/_headers`). Deploy with `npm run deploy`.
 
 ## Data
 

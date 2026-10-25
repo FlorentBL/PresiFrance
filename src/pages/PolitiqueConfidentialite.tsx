@@ -64,7 +64,7 @@ export default function PolitiqueConfidentialite() {
             </p>
             <ul className="list-disc pl-6 space-y-1 mt-2">
               <li>Outils de mesure d'audience — statistiques anonymes</li>
-              <li>Vercel Inc. — hébergeur du site</li>
+              <li>Cloudflare, Inc. — hébergeur du site et mesure d'audience sans cookie</li>
             </ul>
           </section>
 

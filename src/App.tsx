@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { VercelAnalytics } from "@/components/VercelAnalytics";
 import Index from "./pages/Index";
 import { PRESIDENTIAL_YEAR_SUMMARIES } from "@/lib/presidentialSeo";
 
@@ -26,7 +25,12 @@ const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
 const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-const queryClient = new QueryClient();
+// Données publiées statiques : inutile de les recharger pendant la session.
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { staleTime: Infinity, gcTime: 30 * 60 * 1000, refetchOnWindowFocus: false, retry: 1 },
+  },
+});
 
 function RouteFallback() {
   return (
@@ -42,7 +46,6 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <VercelAnalytics />
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />

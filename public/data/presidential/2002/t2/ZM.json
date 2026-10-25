@@ -1,1 +1,1 @@
-{"ZM001":{"codeDepartement":"ZM","nomDepartement":"MAYOTTE","codeCommune":"ZM001","nomCommune":"Ensemble du département ZM","inscrits":52189,"abstentions":30803,"abstentionsPourcent":59.02,"votants":21386,"votantsPourcent":40.98,"blancs":0,"blancsPourcentInscrits":0,"blancsPourcentVotants":0,"nuls":0,"nulsPourcentInscrits":0,"nulsPourcentVotants":0,"exprimes":20215,"exprimesPourcentInscrits":38.73,"exprimesPourcentVotants":94.52,"candidates":[]}}
+{"v":1,"candidates":[],"rows":{"ZM001":["Ensemble du département ZM",52189,30803,21386,0,0,20215]},"dep":["ZM","MAYOTTE"]}

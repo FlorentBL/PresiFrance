@@ -39,9 +39,9 @@ export default function MentionsLegales() {
           <section>
             <h2 className="text-xl font-bold text-foreground mb-4">Hébergement</h2>
             <ul className="list-disc pl-6 space-y-1">
-              <li>Contact : <a href="mailto:privacy@vercel.com" className="text-primary hover:underline">privacy@vercel.com</a></li>
-              <li>Adresse : 440 N Barranca Ave #4133, Covina, CA 91723, USA</li>
-              <li>Hébergeur : Vercel Inc.</li>
+              <li>Hébergeur : Cloudflare, Inc.</li>
+              <li>Adresse : 101 Townsend St, San Francisco, CA 94107, USA</li>
+              <li>Site : <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">www.cloudflare.com</a></li>
             </ul>
           </section>
 

@@ -27,3 +27,6 @@ parrainages*.csv
 .env.*
 !.env.example
 !.env.*.example
+
+# Wrangler (Cloudflare) local state
+.wrangler/

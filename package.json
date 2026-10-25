@@ -26,6 +26,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "build:data": "node scripts/build-election-data.mjs",
+    "compact:data": "node scripts/compact-election-data.mjs",
     "build:parrainages": "node scripts/build-parrainages.mjs",
     "build:photos": "node scripts/fetch-candidate-photos.mjs",
     "logo:alpha": "node scripts/logo-remove-black-bg.mjs",
@@ -33,6 +34,7 @@
     "audit": "npm audit",
     "typecheck": "tsc -b --noEmit",
     "preview": "vite preview",
+    "deploy": "npm run build && npx wrangler@4 deploy",
     "test": "vitest run",
     "test:watch": "vitest",
     "postbuild": "node scripts/generate-sitemap.js && node scripts/prerender-seo-pages.mjs"
@@ -67,7 +69,6 @@
     "@radix-ui/react-toggle-group": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tanstack/react-query": "^5.83.0",
-    "@vercel/analytics": "^1.6.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

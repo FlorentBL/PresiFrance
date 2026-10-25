@@ -92,7 +92,7 @@ const Index = () => {
       <section className="flex-1 px-4 py-8 sm:py-12 bg-gradient-to-b from-primary/5 to-transparent">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
-            <img src="/logo.png" alt="PrésiFrance" className="h-28 w-28 sm:h-36 sm:w-36 mx-auto mb-6 rounded-full object-cover" />
+            <img src="/logo.webp" alt="PrésiFrance" className="h-28 w-28 sm:h-36 sm:w-36 mx-auto mb-6 rounded-full object-cover" />
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-4">
               <Globe className="h-3 w-3" />
               Données Officielles Open Data
