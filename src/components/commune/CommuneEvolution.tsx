@@ -45,7 +45,7 @@ export function CommuneEvolution({ data }: { data: EvolutionPoint[] }) {
 
       <div>
         <h3 className="mb-4 text-sm font-semibold text-muted-foreground">Vainqueur local par élection</h3>
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {data.map((d, idx) => {
             const c = d.candidates[0];
             if (!c) return null;
