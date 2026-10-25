@@ -10,7 +10,18 @@ import { PageHero, Section, SegmentedControl, GlowCard, AnimatedNumber, Reveal }
 import { BarRow } from "@/components/parrainages/BarRow";
 import { SponsorList } from "@/components/parrainages/SponsorList";
 import { displayName } from "@/components/parrainages/candidatName";
-import { getParrainagesManifest, getParrainagesByYear, getParrainagesByDep } from "@/lib/api/parrainagesApi";
+import { getParrainagesManifest, getParrainagesByYear, getParrainagesByDep, getParrainagesHistory } from "@/lib/api/parrainagesApi";
+import { HistoryTable, PendingNotice, ProgressTable, RuleNote } from "@/components/parrainages/TrackingPanel";
+import {
+  TRACKED_YEAR,
+  computeProgress,
+  formatIsoDate,
+  historyRows,
+  isPendingYear,
+  lastDeltas,
+  lastPublicationOf,
+  resolveDefaultYear,
+} from "@/lib/parrainagesTracking";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const ParrainagesPage = () => {
@@ -20,12 +31,15 @@ const ParrainagesPage = () => {
   const [searchCandidat, setSearchCandidat] = useState("");
   const [selectedCandidat, setSelectedCandidat] = useState<string | null>(null);
 
-  const year = yearParam ? Number(yearParam) : 2022;
-
   const { data: manifest, isLoading: manifestLoading } = useQuery({
     queryKey: ["parrainages-manifest"],
     queryFn: getParrainagesManifest,
   });
+
+  // 2027 par défaut quand des données existent, sinon 2022.
+  const year = yearParam && Number.isFinite(Number(yearParam)) ? Number(yearParam) : resolveDefaultYear(manifest);
+  const pending = isPendingYear(manifest, year);
+  const tracking = year === TRACKED_YEAR && !pending;
 
   const { data: dataByYear, isLoading: dataLoading } = useQuery({
     queryKey: ["parrainages", year],
@@ -39,8 +53,15 @@ const ParrainagesPage = () => {
     enabled: !!manifest?.years?.includes(year),
   });
 
-  const availableYears = manifest?.years ?? [2022];
-  const effectiveYear = availableYears.includes(year) ? year : availableYears[0];
+  const { data: history } = useQuery({
+    queryKey: ["parrainages-history", year],
+    queryFn: () => getParrainagesHistory(year),
+    enabled: tracking && !!manifest?.years?.includes(year),
+  });
+
+  const dataYears = manifest?.years ?? [2022];
+  const availableYears = [...new Set([...dataYears, ...(manifest?.pending ?? [])])].sort((a, b) => a - b);
+  const effectiveYear = availableYears.includes(year) ? year : resolveDefaultYear(manifest);
 
   const depList = byDep ? Object.keys(byDep).sort((a, b) => a.localeCompare(b)) : [];
   const selectedDep = depParam && depList.includes(depParam) ? depParam : null;
@@ -73,7 +94,21 @@ const ParrainagesPage = () => {
     return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
   }, [selectedCandidat, dataByYear]);
 
-  const isLoading = manifestLoading || dataLoading;
+  const progress = useMemo(() => {
+    if (!tracking || !dataByYear) return [];
+    return dataByYear.candidats
+      .map((c) => computeProgress(c, dataByYear.byCandidat[c] ?? []))
+      .sort((a, b) => b.countedTotal - a.countedTotal || b.total - a.total);
+  }, [tracking, dataByYear]);
+  const deltas = useMemo(() => lastDeltas(history ?? []), [history]);
+  const nationalDeps = dataByYear
+    ? dataByYear.departements ?? new Set(Object.values(dataByYear.byCandidat).flat().map((e) => e.dep).filter(Boolean)).size
+    : 0;
+  const lastUpdate = dataByYear
+    ? formatIsoDate(dataByYear.lastPublication ?? lastPublicationOf(Object.values(dataByYear.byCandidat).flat()))
+    : null;
+
+  const isLoading = manifestLoading || (dataLoading && !pending);
 
   if (isLoading && !dataByYear) {
     return (
@@ -155,11 +190,43 @@ const ParrainagesPage = () => {
         <PageHero
           eyebrow="Conseil constitutionnel"
           title="Parrainages présidentiels"
-          description="Les parrainages validés par le Conseil constitutionnel. 500 parrainages d'élus répartis sur au moins 30 départements sont nécessaires pour candidater."
+          description="Les parrainages publiés par le Conseil constitutionnel. 500 parrainages d'élus répartis sur au moins 30 départements sont nécessaires pour candidater."
           actions={filters}
         />
 
-        {dataByYear && (
+        {pending && (
+          <Section className="!pb-4">
+            <PendingNotice year={year} />
+          </Section>
+        )}
+
+        {tracking && dataByYear && (
+          <Section className="!pb-4">
+            <p className="text-sm text-muted-foreground" data-testid="parrainages-last-update">
+              Dernière mise à jour des données : <strong className="text-foreground">{lastUpdate ?? "à confirmer"}</strong>
+              {" — "}
+              {nationalDeps} département{nationalDeps > 1 ? "s" : ""} distinct{nationalDeps > 1 ? "s" : ""} représenté
+              {nationalDeps > 1 ? "s" : ""}.
+            </p>
+          </Section>
+        )}
+
+        {tracking && progress.length > 0 && (
+          <Section className="!py-4">
+            <ProgressTable rows={progress} deltas={deltas} onSelect={setSelectedCandidat} />
+            <div className="mt-4">
+              <RuleNote />
+            </div>
+          </Section>
+        )}
+
+        {tracking && history && (
+          <Section className="!py-4">
+            <HistoryTable rows={historyRows(history)} />
+          </Section>
+        )}
+
+        {dataByYear && !pending && (
           <Section className="!pb-4">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               <Reveal>
@@ -206,6 +273,7 @@ const ParrainagesPage = () => {
           </Section>
         )}
 
+        {!pending && (
         <Section className="!py-8">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <GlowCard glow="blue" interactive={false}>
@@ -273,8 +341,9 @@ const ParrainagesPage = () => {
             </GlowCard>
           </div>
         </Section>
+        )}
 
-        {dataByYear && (
+        {dataByYear && !pending && (
           <Section className="!pt-8">
             <GlowCard glow="white" interactive={false}>
               <div className="flex flex-wrap items-center justify-between gap-4">
@@ -330,8 +399,8 @@ const ParrainagesPage = () => {
 
             <p className="mt-8 max-w-3xl text-xs text-muted-foreground">
               Données : Conseil constitutionnel. Le total des parrainages affiché ne préjuge pas de la validité de la
-              candidature. Une candidature est retenue si au plus 50 parrainages proviennent d'un même département et si
-              les parrainages couvrent au moins 30 départements.
+              candidature. Pour être recevable, une candidature doit réunir 500 parrainages issus d'au moins 30
+              départements ou collectivités d'outre-mer, dont au plus 50 pour un même département.
             </p>
           </Section>
         )}
