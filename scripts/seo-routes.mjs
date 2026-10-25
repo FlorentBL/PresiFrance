@@ -66,6 +66,7 @@ export const staticRoutes = [
   "/comparer",
   "/parrainages",
   "/analyse",
+  "/sondages-presidentielle-2027",
   "/promesses-bilan",
   "/mentions-legales",
   "/politique-de-confidentialite",
@@ -145,8 +146,13 @@ export const seoPrerenderRoutes = [
   },
   {
     path: "/analyse",
-    title: `Sondages présidentielle 2022 — 1er tour — ${defaultSiteName}`,
-    description: "Chronologie des intentions de vote au 1er tour de la présidentielle 2022, avec courbes lissées et méthodologie.",
+    title: `Archive sondages présidentielle 2022 — 1er tour — ${defaultSiteName}`,
+    description: "Archive des sondages de 1er tour de la présidentielle 2022 : courbes lissées et méthodologie. Pour 2027, consultez la page dédiée.",
+  },
+  {
+    path: "/sondages-presidentielle-2027",
+    title: `Sondages présidentielle 2027 — 1er tour — ${defaultSiteName}`,
+    description: "Agrégation des sondages de 1er tour de la présidentielle 2027 : moyennes par candidat, hypothèses testées, courbes de tendance et notices.",
   },
   {
     path: "/promesses-bilan",

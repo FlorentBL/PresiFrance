@@ -74,6 +74,7 @@ Les principaux points d'entree sont :
 - `public/data/presidential/manifest.json`
 - `public/data/parrainages/manifest.json`
 - `public/data/presidential/polls-2022-round1.json`
+- `public/data/presidential/polls-2027-round1.json`
 - `public/data/presidential/macron-promises-bilan.json`
 
 ## Contribution
@@ -164,6 +165,7 @@ Main entry points:
 - `public/data/presidential/manifest.json`
 - `public/data/parrainages/manifest.json`
 - `public/data/presidential/polls-2022-round1.json`
+- `public/data/presidential/polls-2027-round1.json`
 - `public/data/presidential/macron-promises-bilan.json`
 
 ## Contributing

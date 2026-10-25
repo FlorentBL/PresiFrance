@@ -6,6 +6,7 @@ export default defineConfig({
     environment: "jsdom",
     passWithNoTests: true,
     globals: false,
+    env: { NODE_ENV: "test" },
   },
   resolve: {
     alias: {
