@@ -1,49 +1,60 @@
 import { Link } from "react-router-dom";
 
+const NAV_LINKS = [
+  { to: "/", label: "Accueil" },
+  { to: "/resultats-presidentielle", label: "Résultats présidentielles" },
+  { to: "/resultats-presidentielle-par-commune", label: "Résultats par commune" },
+  { to: "/carte-presidentielle", label: "Carte présidentielle" },
+  { to: "/participation-presidentielle", label: "Participation" },
+  { to: "/abstention-presidentielle", label: "Abstention" },
+  { to: "/comparer", label: "Comparer des communes" },
+  { to: "/explorer", label: "Explorer par commune" },
+  { to: "/parrainages", label: "Parrainages" },
+  { to: "/analyse", label: "Sondages 2022 (analyse)" },
+  { to: "/promesses-bilan", label: "Promesses Macron vs bilan" },
+] as const;
+
 export default function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-muted/20 py-12">
-      <div className="container max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <img src="/logo.webp" alt="" className="h-8 w-8 rounded-full object-cover ring-1 ring-border/60" />
-              <span className="text-lg font-black tracking-tight">
+    <footer className="night-bg grain relative isolate overflow-hidden border-t border-border py-14">
+      <div className="tricolor-bar absolute inset-x-0 top-0" aria-hidden="true" />
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
+        <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-4">
+          <div className="md:col-span-2">
+            <div className="mb-4 flex items-center gap-2.5">
+              <img src="/logo.webp" alt="" className="h-9 w-9 rounded-full object-cover ring-1 ring-border" />
+              <span className="font-heading text-2xl font-extrabold tracking-tight">
                 Prési<span className="text-primary">France</span>
               </span>
             </div>
-            <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
+            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
               Une plateforme citoyenne pour explorer les données des élections présidentielles françaises en toute transparence. Développé avec amour pour la démocratie.
             </p>
           </div>
-          
-          <div>
-            <h4 className="font-bold mb-4 uppercase text-[10px] tracking-widest text-muted-foreground">Navigation</h4>
+
+          <nav aria-label="Pied de page">
+            <h4 className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Navigation</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/" className="hover:text-primary transition-colors">Accueil</Link></li>
-              <li><Link to="/resultats-presidentielle" className="hover:text-primary transition-colors">Résultats présidentielles</Link></li>
-              <li><Link to="/resultats-presidentielle-par-commune" className="hover:text-primary transition-colors">Résultats par commune</Link></li>
-              <li><Link to="/carte-presidentielle" className="hover:text-primary transition-colors">Carte présidentielle</Link></li>
-              <li><Link to="/participation-presidentielle" className="hover:text-primary transition-colors">Participation</Link></li>
-              <li><Link to="/abstention-presidentielle" className="hover:text-primary transition-colors">Abstention</Link></li>
-              <li><Link to="/comparer" className="hover:text-primary transition-colors">Comparer des communes</Link></li>
-              <li><Link to="/explorer" className="hover:text-primary font-bold text-blue-600 transition-colors">Explorer par commune</Link></li>
-              <li><Link to="/parrainages" className="hover:text-primary transition-colors">Parrainages</Link></li>
-              <li><Link to="/analyse" className="hover:text-primary transition-colors">Sondages 2022 (analyse)</Link></li>
-              <li><Link to="/promesses-bilan" className="hover:text-primary transition-colors">Promesses Macron vs bilan</Link></li>
+              {NAV_LINKS.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className="text-foreground/85 transition-colors hover:text-primary">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
-          </div>
+          </nav>
 
           <div>
-            <h4 className="font-bold mb-4 uppercase text-[10px] tracking-widest text-muted-foreground">Légal</h4>
+            <h4 className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Légal</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/mentions-legales" className="hover:text-primary transition-colors">Mentions Légales</Link></li>
-              <li><Link to="/politique-de-confidentialite" className="hover:text-primary transition-colors">Confidentialité</Link></li>
+              <li><Link to="/mentions-legales" className="text-foreground/85 transition-colors hover:text-primary">Mentions Légales</Link></li>
+              <li><Link to="/politique-de-confidentialite" className="text-foreground/85 transition-colors hover:text-primary">Confidentialité</Link></li>
             </ul>
           </div>
         </div>
-        
-        <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-xs text-muted-foreground sm:flex-row">
           <p>© {new Date().getFullYear()} PrésiFrance. Données d'intérêt public.</p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             <span>Propulsé par data.gouv.fr</span>
@@ -51,7 +62,7 @@ export default function SiteFooter() {
               href="https://www.fbldigital.fr/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors underline-offset-4 hover:underline"
+              className="underline-offset-4 transition-colors hover:text-primary hover:underline"
             >
               Réalisation · FBL Digital
             </a>

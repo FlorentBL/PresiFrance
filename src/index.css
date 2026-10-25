@@ -1,59 +1,129 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700;8..60,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  /* Thème « Nuit électorale » : sombre par défaut (:root), clair via .light (next-themes, attribute="class"). */
   :root {
-    --background: 216 20% 96%;
-    --foreground: 222 30% 14%;
+    --background: 228 45% 6%;
+    --foreground: 220 25% 94%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 30% 14%;
+    --card: 228 38% 10%;
+    --card-foreground: 220 25% 94%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 30% 14%;
+    --popover: 228 40% 9%;
+    --popover-foreground: 220 25% 94%;
 
-    --primary: 222 55% 28%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 218 100% 68%;
+    --primary-foreground: 228 45% 6%;
 
-    --secondary: 216 25% 93%;
-    --secondary-foreground: 222 30% 14%;
+    --secondary: 228 30% 16%;
+    --secondary-foreground: 220 25% 94%;
 
-    --muted: 216 18% 94%;
-    --muted-foreground: 220 12% 48%;
+    --muted: 228 30% 14%;
+    --muted-foreground: 220 15% 70%;
 
-    --accent: 198 65% 42%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 228 30% 18%;
+    --accent-foreground: 220 25% 94%;
 
-    --destructive: 4 72% 52%;
+    --destructive: 4 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 158 55% 38%;
+    --success: 158 50% 48%;
+    --success-foreground: 228 45% 6%;
+
+    --warning: 38 92% 58%;
+    --warning-foreground: 228 45% 6%;
+
+    --border: 228 28% 20%;
+    --input: 228 28% 20%;
+    --ring: 218 100% 68%;
+
+    --radius: 0.75rem;
+
+    /* Tricolore (halos, accents) */
+    --tri-blue: 218 100% 62%;
+    --tri-white: 0 0% 98%;
+    --tri-red: 354 85% 58%;
+
+    /* Surfaces */
+    --glass: 228 40% 12% / 0.6;
+    --glass-border: 0 0% 100% / 0.1;
+    --grain-opacity: 0.05;
+
+    --chart-education: 218 85% 66%;
+    --chart-voirie: 158 50% 52%;
+    --chart-securite: 4 70% 62%;
+    --chart-culture: 270 55% 68%;
+    --chart-admin: 32 80% 60%;
+    --chart-social: 198 70% 58%;
+
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.3);
+    --shadow-md: 0 4px 14px -2px hsl(0 0% 0% / 0.4), 0 1px 3px hsl(0 0% 0% / 0.25);
+    --shadow-lg: 0 16px 40px -8px hsl(0 0% 0% / 0.55), 0 2px 6px hsl(0 0% 0% / 0.3);
+    --glow-blue: 0 0 40px -6px hsl(var(--tri-blue) / 0.55);
+    --glow-red: 0 0 40px -6px hsl(var(--tri-red) / 0.5);
+
+    --sidebar-background: 228 40% 8%;
+    --sidebar-foreground: 220 25% 94%;
+    --sidebar-primary: 218 100% 68%;
+    --sidebar-primary-foreground: 228 45% 6%;
+    --sidebar-accent: 228 30% 14%;
+    --sidebar-accent-foreground: 220 25% 94%;
+    --sidebar-border: 228 28% 20%;
+    --sidebar-ring: 218 100% 68%;
+
+    --font-heading: 'Fraunces', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+
+    color-scheme: dark;
+  }
+
+  .light {
+    --background: 40 33% 97%;
+    --foreground: 228 40% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 228 40% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 228 40% 10%;
+    --primary: 224 78% 38%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 25% 92%;
+    --secondary-foreground: 228 40% 10%;
+    --muted: 220 20% 94%;
+    --muted-foreground: 224 12% 38%;
+    --accent: 220 25% 92%;
+    --accent-foreground: 228 40% 10%;
+    --destructive: 4 72% 46%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 158 60% 28%;
     --success-foreground: 0 0% 100%;
+    --warning: 36 95% 44%;
+    --warning-foreground: 228 40% 10%;
+    --border: 220 18% 85%;
+    --input: 220 18% 85%;
+    --ring: 224 78% 38%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 222 30% 14%;
+    --tri-blue: 224 78% 42%;
+    --tri-red: 354 75% 48%;
+    --glass: 0 0% 100% / 0.7;
+    --glass-border: 228 40% 10% / 0.1;
+    --grain-opacity: 0.035;
 
-    --border: 216 18% 87%;
-    --input: 216 18% 87%;
-    --ring: 222 55% 28%;
-
-    --radius: 0.5rem;
-
-    /* Chart palette — Refined, less saturated */
     --chart-education: 222 50% 48%;
-    --chart-voirie: 158 42% 42%;
-    --chart-securite: 4 55% 52%;
-    --chart-culture: 270 38% 52%;
-    --chart-admin: 32 60% 50%;
-    --chart-social: 198 55% 48%;
+    --chart-voirie: 158 42% 38%;
+    --chart-securite: 4 55% 48%;
+    --chart-culture: 270 38% 48%;
+    --chart-admin: 32 60% 44%;
+    --chart-social: 198 55% 40%;
 
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 hsl(222 30% 14% / 0.04);
-    --shadow-md: 0 2px 8px -2px hsl(222 30% 14% / 0.08), 0 1px 3px hsl(222 30% 14% / 0.04);
-    --shadow-lg: 0 8px 24px -4px hsl(222 30% 14% / 0.08), 0 2px 6px hsl(222 30% 14% / 0.04);
+    --shadow-sm: 0 1px 2px 0 hsl(228 40% 10% / 0.05);
+    --shadow-md: 0 4px 14px -2px hsl(228 40% 10% / 0.1), 0 1px 3px hsl(228 40% 10% / 0.05);
+    --shadow-lg: 0 16px 40px -8px hsl(228 40% 10% / 0.14), 0 2px 6px hsl(228 40% 10% / 0.05);
+    --glow-blue: 0 0 40px -8px hsl(var(--tri-blue) / 0.3);
+    --glow-red: 0 0 40px -8px hsl(var(--tri-red) / 0.28);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -64,45 +134,7 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    --font-heading: 'Source Serif 4', Georgia, serif;
-    --font-body: 'Source Sans 3', system-ui, sans-serif;
-  }
-
-  .dark {
-    --background: 222 28% 8%;
-    --foreground: 216 15% 92%;
-    --card: 222 26% 11%;
-    --card-foreground: 216 15% 92%;
-    --popover: 222 26% 11%;
-    --popover-foreground: 216 15% 92%;
-    --primary: 210 48% 58%;
-    --primary-foreground: 222 28% 8%;
-    --secondary: 222 20% 18%;
-    --secondary-foreground: 216 15% 92%;
-    --muted: 222 20% 16%;
-    --muted-foreground: 216 12% 58%;
-    --accent: 198 50% 52%;
-    --accent-foreground: 222 28% 8%;
-    --destructive: 4 60% 42%;
-    --destructive-foreground: 210 40% 98%;
-    --success: 158 45% 42%;
-    --success-foreground: 222 28% 8%;
-    --warning: 38 80% 55%;
-    --warning-foreground: 222 28% 8%;
-    --border: 222 20% 20%;
-    --input: 222 20% 20%;
-    --ring: 210 48% 58%;
-    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.15);
-    --shadow-md: 0 2px 8px -2px hsl(0 0% 0% / 0.25), 0 1px 3px hsl(0 0% 0% / 0.12);
-    --shadow-lg: 0 8px 24px -4px hsl(0 0% 0% / 0.3), 0 2px 6px hsl(0 0% 0% / 0.15);
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    color-scheme: light;
   }
 }
 
@@ -115,10 +147,12 @@
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
+    font-optical-sizing: auto;
   }
 
   /* Global focus-visible ring for keyboard accessibility */
@@ -179,5 +213,60 @@
   }
   .tabs-scroll::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@layer components {
+  /* Texture grain légère (SVG feTurbulence inline, aucun fichier) */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  /* Fond « nuit électorale » : halos bleu / rouge sur fond profond */
+  .night-bg {
+    position: relative;
+    background:
+      radial-gradient(60rem 32rem at 12% -8%, hsl(var(--tri-blue) / 0.22), transparent 60%),
+      radial-gradient(48rem 28rem at 92% 0%, hsl(var(--tri-red) / 0.16), transparent 60%),
+      hsl(var(--background));
+  }
+
+  .glass {
+    background: hsl(var(--glass));
+    border: 1px solid hsl(var(--glass-border));
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+  }
+
+  /* Bande tricolore décorative */
+  .tricolor-bar {
+    height: 3px;
+    background: linear-gradient(90deg, hsl(var(--tri-blue)) 0 33.3%, hsl(var(--tri-white)) 33.3% 66.6%, hsl(var(--tri-red)) 66.6% 100%);
+  }
+
+  .text-gradient-tricolor {
+    background: linear-gradient(100deg, hsl(var(--tri-blue)), hsl(var(--foreground)) 50%, hsl(var(--tri-red)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .display-xxl { font-family: var(--font-heading); font-weight: 800; line-height: 0.95; letter-spacing: -0.035em; font-size: clamp(2.75rem, 8vw, 6.5rem); }
+  .display-xl { font-family: var(--font-heading); font-weight: 800; line-height: 1; letter-spacing: -0.03em; font-size: clamp(2.25rem, 5.5vw, 4.5rem); }
+  .display-lg { font-family: var(--font-heading); font-weight: 600; line-height: 1.05; letter-spacing: -0.025em; font-size: clamp(1.75rem, 3.5vw, 3rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
