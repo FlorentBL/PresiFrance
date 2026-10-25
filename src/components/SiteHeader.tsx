@@ -63,6 +63,12 @@ export default function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 h-[4.75rem] px-3 pt-3 sm:px-6">
+      <a
+        href="#contenu"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground"
+      >
+        Aller au contenu
+      </a>
       <div
         className={cn(
           "glass mx-auto flex h-14 max-w-7xl items-center justify-between rounded-full pl-3 pr-2 transition-shadow duration-300 sm:pl-4",

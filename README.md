@@ -59,6 +59,10 @@ Le site est servi par Cloudflare Workers (fichiers statiques uniquement, configu
 npm run deploy
 ```
 
+## Design et recette
+
+Le contrat visuel (« Nuit électorale ») est décrit dans `md/design-system.md` ; le rapport de recette finale et les captures sont dans `md/refonte-captures/`.
+
 ## Donnees
 
 Les fichiers de donnees generes sont versionnes dans `public/data` afin que le site fonctionne rapidement sans dependance serveur. Les CSV sources locaux (`parrainages*.csv`) et caches temporaires ne sont pas versionnes.

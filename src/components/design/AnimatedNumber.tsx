@@ -47,8 +47,11 @@ export function AnimatedNumber({
     maximumFractionDigits: decimals,
   });
 
+  const finalText = `${prefix}${value.toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${suffix}`;
+
   return (
-    <span ref={ref} className={className} aria-label={`${prefix}${value.toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${suffix}`}>
+    <span ref={ref} className={className}>
+      <span className="sr-only">{finalText}</span>
       <span aria-hidden="true" className="tabular-nums">
         {prefix}
         {text}

@@ -52,7 +52,7 @@ export default function SeoConnectorPage({
       />
       <SiteHeader />
 
-      <main className="flex-1">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero eyebrow={eyebrow} title={title} description={intro} />
 
         <Section width="narrow" className="pb-0 sm:pb-0">

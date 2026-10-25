@@ -90,7 +90,7 @@ export default function PromessesBilanPage() {
       />
       <SiteHeader />
 
-      <main className="flex-1">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Analyse · mandat 2017-2022"
           title="Promesses de campagne et bilan"
@@ -317,7 +317,7 @@ export default function PromessesBilanPage() {
                           />
                         )}
                         {s === "all" ? "Tous les statuts" : STATUS_LABEL[s]}
-                        <span className="tabular-nums opacity-80">
+                        <span className="tabular-nums">
                           {s === "all" ? data.items.length : counts[s]}
                         </span>
                       </button>

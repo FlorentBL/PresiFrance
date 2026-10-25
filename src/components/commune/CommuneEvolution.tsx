@@ -58,7 +58,7 @@ export function CommuneEvolution({ data }: { data: EvolutionPoint[] }) {
                     <CandidateAvatar prenom={c.prenom} nom={c.nom} color={color} size="sm" />
                     <p className="text-sm font-bold leading-tight">{c.prenom} {c.nom}</p>
                   </div>
-                  <p className="mt-2 font-heading text-xl font-extrabold tabular-nums" style={{ color }}>{fmtPct(c.pourcentExprimes)}</p>
+                  <p className="mt-2 font-heading text-xl font-extrabold tabular-nums">{fmtPct(c.pourcentExprimes)}</p>
                   <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted" aria-hidden="true">
                     <div className="h-full rounded-full" style={{ width: `${c.pourcentExprimes}%`, backgroundColor: color }} />
                   </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Loader2, Users, Vote, Share2 } from "lucide-react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowLeft, Loader2, Users, Vote, Share2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import SEOHead from "@/components/SEOHead";
 import JsonLd from "@/components/JsonLd";
@@ -77,6 +77,19 @@ const ComparerPage = () => {
     </button>
   ) : undefined;
 
+  const heroActions = (
+    <>
+      <Link
+        to="/"
+        className="inline-flex h-11 items-center gap-2 rounded-full border border-border bg-card/60 px-5 text-sm font-medium hover:border-primary/50"
+      >
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Retour à l'accueil
+      </Link>
+      {shareButton}
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead
@@ -87,12 +100,12 @@ const ComparerPage = () => {
       <JsonLd path="/comparer" breadcrumbs={[{ name: "Comparer des communes", path: "/comparer" }]} />
       <SiteHeader />
 
-      <main className="flex-1">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Face-à-face"
           title="Comparer des communes"
           description="Comparez les résultats électoraux de deux communes côte à côte : participation, scores des candidats, etc."
-          actions={shareButton}
+          actions={heroActions}
         />
 
         <Section className="!pb-6">

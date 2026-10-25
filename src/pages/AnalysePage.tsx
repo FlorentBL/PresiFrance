@@ -97,7 +97,7 @@ export default function AnalysePage() {
       />
       <SiteHeader />
 
-      <main className="flex-1">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Sondages · 2022"
           title="Chronologie des sondages — 1er tour"

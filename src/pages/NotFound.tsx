@@ -102,7 +102,7 @@ export default function NotFound() {
         path={pathname}
       />
       <SiteHeader />
-      <main className="flex-1">
+      <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Erreur 404 · bulletin nul"
           title={

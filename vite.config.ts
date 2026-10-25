@@ -75,8 +75,8 @@ export default defineConfig(({ mode }) => ({
         name: 'PrésiFrance',
         short_name: 'PrésiFrance',
         description: 'Résultats des élections présidentielles françaises par commune. Open Data.',
-        theme_color: '#0f172a',
-        background_color: '#ffffff',
+        theme_color: '#080b16',
+        background_color: '#080b16',
         display: 'standalone',
         orientation: 'portrait',
         icons: [
