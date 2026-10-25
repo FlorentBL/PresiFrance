@@ -16,6 +16,7 @@ Les donnees et assets tiers ne sont pas couverts par la licence MIT du code sour
 
 - `public/data/presidential/manifest.json`
 - `public/data/presidential/national-results.json`
+- `public/data/presidential/home-map.json` (candidat en tête par département et par année, 1er tour ; carte de l'accueil, généré par `node scripts/build-home-map.mjs` après `build:data`)
 - `public/data/presidential/polls-2022-round1.json`
 - `public/data/presidential/macron-promises-bilan.json`
 - `public/data/parrainages/manifest.json`
