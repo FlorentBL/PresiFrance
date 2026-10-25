@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
 import { BarChart3, GitCompare, LucideIcon, MapPin, Search } from "lucide-react";
 
+import { GlowCard, PageHero, Reveal, Section } from "@/components/design";
 import JsonLd from "@/components/JsonLd";
+import LinkCard from "@/components/seo/LinkCard";
 import SEOHead from "@/components/SEOHead";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ConnectorCard {
   title: string;
@@ -52,103 +52,72 @@ export default function SeoConnectorPage({
       />
       <SiteHeader />
 
-      <main className="flex-1 container max-w-6xl mx-auto px-4 py-10">
-        <header className="max-w-3xl mb-10">
-          <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3">{eyebrow}</p>
-          <h1 className="text-3xl sm:text-5xl font-black font-heading tracking-tight mb-4">{title}</h1>
-          <p className="text-muted-foreground text-lg leading-relaxed">{intro}</p>
-        </header>
+      <main className="flex-1">
+        <PageHero eyebrow={eyebrow} title={title} description={intro} />
 
-        <section className="rounded-xl border border-border bg-card p-6 mb-12">
-          <h2 className="text-2xl font-black tracking-tight mb-3">{answerTitle}</h2>
-          <p className="text-muted-foreground leading-relaxed">{answer}</p>
-        </section>
+        <Section width="narrow" className="pb-0 sm:pb-0">
+          <Reveal>
+            <GlowCard glow="red" interactive={false}>
+              <h2 className="mb-3 font-heading text-2xl font-semibold sm:text-3xl">{answerTitle}</h2>
+              <p className="leading-relaxed text-muted-foreground">{answer}</p>
+            </GlowCard>
+          </Reveal>
+        </Section>
 
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
-          {cards.map(({ title: cardTitle, text, Icon }) => (
-            <Card key={cardTitle}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-lg">
-                  <Icon className="h-5 w-5 text-primary" />
-                  {cardTitle}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">{text}</CardContent>
-            </Card>
-          ))}
-        </section>
-
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-12">
-          <div className="rounded-xl border border-border bg-card p-6">
-            <h2 className="text-2xl font-black tracking-tight mb-4">{stepsTitle}</h2>
-            <ol className="space-y-3 text-sm text-muted-foreground">
-              {steps.map((step, index) => (
-                <li key={step}>
-                  <strong className="text-foreground">{index + 1}.</strong> {step}
-                </li>
-              ))}
-            </ol>
+        <Section>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {cards.map(({ title: cardTitle, text, Icon }, i) => (
+              <Reveal key={cardTitle} delay={i * 0.08}>
+                <GlowCard className="h-full">
+                  <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <h3 className="mb-1.5 text-lg font-semibold">{cardTitle}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{text}</p>
+                </GlowCard>
+              </Reveal>
+            ))}
           </div>
-          <div className="rounded-xl border border-border bg-card p-6">
-            <h2 className="text-2xl font-black tracking-tight mb-4">Questions fréquentes</h2>
-            <div className="space-y-4 text-sm text-muted-foreground">
-              {faq.map((item) => (
-                <p key={item.question}>
-                  <strong className="text-foreground">{item.question}</strong>
-                  <br />
-                  {item.answer}
-                </p>
-              ))}
-            </div>
-          </div>
-        </section>
+        </Section>
 
-        <section className="grid grid-cols-1 md:grid-cols-4 gap-5">
-          <Link to="/resultats-presidentielle" className="block">
-            <Card className="h-full hover:border-primary/50 transition-colors">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-lg">
-                  <BarChart3 className="h-5 w-5 text-primary" />
-                  Hub résultats
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">Revenir à l'architecture principale par année, commune et département.</CardContent>
-            </Card>
-          </Link>
-          <Link to="/resultats-presidentielle-par-commune" className="block">
-            <Card className="h-full hover:border-primary/50 transition-colors">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-lg">
-                  <Search className="h-5 w-5 text-primary" />
-                  Par commune
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">Trouver directement une ville ou un village.</CardContent>
-            </Card>
-          </Link>
-          <Link to="/explorer" className="block">
-            <Card className="h-full hover:border-primary/50 transition-colors">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-lg">
-                  <MapPin className="h-5 w-5 text-primary" />
-                  Par département
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">Parcourir les communes depuis une entrée géographique.</CardContent>
-            </Card>
-          </Link>
-          <Link to="/comparer" className="block">
-            <Card className="h-full hover:border-primary/50 transition-colors">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-lg">
-                  <GitCompare className="h-5 w-5 text-primary" />
-                  Comparer
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">Comparer deux communes côte à côte.</CardContent>
-            </Card>
-          </Link>
-        </section>
+        <Section className="pt-0 sm:pt-0">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            <GlowCard interactive={false}>
+              <h2 className="mb-5 font-heading text-2xl font-semibold">{stepsTitle}</h2>
+              <ol className="space-y-4 text-sm text-muted-foreground">
+                {steps.map((step, index) => (
+                  <li key={step} className="flex gap-3">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-bold tabular-nums text-primary">
+                      {index + 1}
+                    </span>
+                    <span className="pt-0.5">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </GlowCard>
+            <GlowCard glow="red" interactive={false}>
+              <h2 className="mb-5 font-heading text-2xl font-semibold">Questions fréquentes</h2>
+              <div className="space-y-4 text-sm text-muted-foreground">
+                {faq.map((item) => (
+                  <p key={item.question}>
+                    <strong className="text-foreground">{item.question}</strong>
+                    <br />
+                    {item.answer}
+                  </p>
+                ))}
+              </div>
+            </GlowCard>
+          </div>
+        </Section>
+
+        <Section className="pt-0 sm:pt-0">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <LinkCard to="/resultats-presidentielle" Icon={BarChart3} title="Hub résultats" text="Revenir à l'architecture principale par année, commune et département." />
+            <LinkCard to="/resultats-presidentielle-par-commune" Icon={Search} glow="red" title="Par commune" text="Trouver directement une ville ou un village." />
+            <LinkCard to="/explorer" Icon={MapPin} glow="white" title="Par département" text="Parcourir les communes depuis une entrée géographique." />
+            <LinkCard to="/comparer" Icon={GitCompare} title="Comparer" text="Comparer deux communes côte à côte." />
+          </div>
+        </Section>
       </main>
 
       <SiteFooter />
