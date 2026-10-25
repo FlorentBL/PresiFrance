@@ -14,8 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ['Source Serif 4', 'Georgia', 'serif'],
-        body: ['Source Sans 3', 'system-ui', 'sans-serif'],
+        heading: ['Fraunces', 'Georgia', 'serif'],
+        display: ['Fraunces', 'Georgia', 'serif'],
+        body: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -59,6 +61,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        tri: {
+          blue: "hsl(var(--tri-blue))",
+          white: "hsl(var(--tri-white))",
+          red: "hsl(var(--tri-red))",
+        },
         chart: {
           education: "hsl(var(--chart-education))",
           voirie: "hsl(var(--chart-voirie))",
@@ -87,8 +94,23 @@ export default {
         sm: "var(--shadow-sm)",
         md: "var(--shadow-md)",
         lg: "var(--shadow-lg)",
+        "glow-blue": "var(--glow-blue)",
+        "glow-red": "var(--glow-red)",
+      },
+      fontSize: {
+        "display-lg": ["clamp(1.75rem, 3.5vw, 3rem)", { lineHeight: "1.05", letterSpacing: "-0.025em" }],
+        "display-xl": ["clamp(2.25rem, 5.5vw, 4.5rem)", { lineHeight: "1", letterSpacing: "-0.03em" }],
+        "display-xxl": ["clamp(2.75rem, 8vw, 6.5rem)", { lineHeight: "0.95", letterSpacing: "-0.035em" }],
       },
       keyframes: {
+        "float-slow": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "sheen": {
+          from: { backgroundPosition: "200% 0" },
+          to: { backgroundPosition: "-200% 0" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -101,6 +123,8 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float-slow": "float-slow 8s ease-in-out infinite",
+        sheen: "sheen 6s linear infinite",
       },
     },
   },
