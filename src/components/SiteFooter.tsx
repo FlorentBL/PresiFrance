@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 
 const NAV_LINKS = [
   { to: "/", label: "Accueil" },
+  { to: "/presidentielle-2027", label: "Présidentielle 2027" },
+  { to: "/parrainages?year=2027", label: "Parrainages 2027" },
+  { to: "/sondages-presidentielle-2027", label: "Sondages 2027" },
   { to: "/resultats-presidentielle", label: "Résultats présidentielles" },
   { to: "/resultats-presidentielle-par-commune", label: "Résultats par commune" },
   { to: "/carte-presidentielle", label: "Carte présidentielle" },
@@ -9,9 +12,11 @@ const NAV_LINKS = [
   { to: "/abstention-presidentielle", label: "Abstention" },
   { to: "/comparer", label: "Comparer des communes" },
   { to: "/explorer", label: "Explorer par commune" },
-  { to: "/parrainages", label: "Parrainages" },
-  { to: "/analyse", label: "Sondages 2022 (analyse)" },
-  { to: "/promesses-bilan", label: "Promesses Macron vs bilan" },
+] as const;
+
+const ARCHIVE_LINKS = [
+  { to: "/promesses-bilan", label: "Promesses vs bilan (2017-2022)" },
+  { to: "/analyse", label: "Sondages 2022" },
 ] as const;
 
 export default function SiteFooter() {
@@ -28,7 +33,7 @@ export default function SiteFooter() {
               </span>
             </div>
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Une plateforme citoyenne pour explorer les données des élections présidentielles françaises en toute transparence. Développé avec amour pour la démocratie.
+              Une plateforme citoyenne pour explorer les données des élections présidentielles françaises, de l'archive 1965-2022 à la campagne 2027 en toute transparence. Développé avec amour pour la démocratie.
             </p>
           </div>
 
@@ -36,6 +41,16 @@ export default function SiteFooter() {
             <h4 className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Navigation</h4>
             <ul className="space-y-2 text-sm">
               {NAV_LINKS.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className="text-foreground/85 transition-colors hover:text-primary">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <h4 className="mb-4 mt-8 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Archives</h4>
+            <ul className="space-y-2 text-sm">
+              {ARCHIVE_LINKS.map((l) => (
                 <li key={l.to}>
                   <Link to={l.to} className="text-foreground/85 transition-colors hover:text-primary">
                     {l.label}

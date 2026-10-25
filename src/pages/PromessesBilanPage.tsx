@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { Archive, Loader2 } from "lucide-react";
 
 import SEOHead from "@/components/SEOHead";
 import JsonLd from "@/components/JsonLd";
@@ -128,6 +128,23 @@ export default function PromessesBilanPage() {
             </>
           }
         />
+
+        <div role="note" className="border-b border-border bg-muted/60">
+          <p className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3 text-sm sm:px-8">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+              <Archive className="h-3.5 w-3.5" aria-hidden="true" />
+              Archive
+            </span>
+            <span className="font-medium text-foreground">Archive — premier mandat 2017-2022</span>
+            <span className="text-muted-foreground">
+              Cette analyse porte sur le quinquennat écoulé ;{" "}
+              <Link to="/presidentielle-2027" className="font-medium text-primary underline underline-offset-4">
+                la campagne 2027
+              </Link>{" "}
+              est suivie dans sa propre rubrique.
+            </span>
+          </p>
+        </div>
 
         {isLoading && (
           <div className="flex items-center justify-center gap-2 py-20 text-muted-foreground">

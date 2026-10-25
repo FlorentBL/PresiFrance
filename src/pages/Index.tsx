@@ -4,7 +4,9 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEOHead from "@/components/SEOHead";
 import JsonLd from "@/components/JsonLd";
+import { Section } from "@/components/design";
 import HomeHero from "@/components/home/HomeHero";
+import Home2027 from "@/components/home/Home2027";
 import StatsStrip from "@/components/home/StatsStrip";
 import type { GeoCommune } from "@/lib/api/geoApi";
 import { getSearchHistory, clearSearchHistory, HistoryEntry } from "@/lib/searchHistory";
@@ -12,6 +14,7 @@ import { DEFAULT_YEAR, PRESIDENTIAL_YEARS_DESC, PresidentialYear, Round } from "
 
 // Blocs sous la ligne de flottaison : chargés dans des chunks séparés.
 const ElectionTimeline = lazy(() => import("@/components/home/ElectionTimeline"));
+const FranceMap = lazy(() => import("@/components/home/FranceMap"));
 const RunoffDuel = lazy(() => import("@/components/home/RunoffDuel"));
 const FeatureBento = lazy(() => import("@/components/home/FeatureBento"));
 
@@ -44,14 +47,22 @@ const Index = () => {
 
       <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <HomeHero
-          year={year}
           history={history}
           onSelect={(c: GeoCommune) => goCommune(c.code)}
           onOpenHistory={(e) => goCommune(e.code)}
           onClearHistory={handleClearHistory}
         />
+        <Home2027 />
         <StatsStrip />
         <Suspense fallback={null}>
+          <Section
+            width="default"
+            eyebrow={`Résultats ${year}`}
+            title="La carte du vote, département par département"
+            id="carte"
+          >
+            <FranceMap year={year} className="mx-auto w-full max-w-lg" />
+          </Section>
           <RunoffDuel year={year} round={round} onYearChange={setYear} onRoundChange={setRound} />
           <ElectionTimeline />
           <FeatureBento />

@@ -1,43 +1,33 @@
-import { lazy, Suspense } from "react";
 import { Clock, MapPin } from "lucide-react";
 import { PageHero } from "@/components/design";
 import CommuneSearch from "@/components/CommuneSearch";
 import type { GeoCommune } from "@/lib/api/geoApi";
 import type { HistoryEntry } from "@/lib/searchHistory";
-
-const FranceMap = lazy(() => import("./FranceMap"));
+import { ElectionCountdown } from "./Home2027";
 
 interface HomeHeroProps {
-  year: number;
   history: HistoryEntry[];
   onSelect: (commune: GeoCommune) => void;
   onOpenHistory: (entry: HistoryEntry) => void;
   onClearHistory: () => void;
 }
 
-function MapSlot({ year, className }: { year: number; className?: string }) {
-  return (
-    <Suspense fallback={<div className={className} style={{ aspectRatio: "1 / 1.1" }} aria-hidden="true" />}>
-      <FranceMap year={year} className={className} />
-    </Suspense>
-  );
-}
-
-/** Hero plein écran : titre XXL, recherche de commune centrale, historique et carte des départements animée. */
-export default function HomeHero({ year, history, onSelect, onOpenHistory, onClearHistory }: HomeHeroProps) {
+/** Hero plein écran « Présidentielle 2027 » : recherche de commune « Comment a voté ma commune ? », historique et échéance. */
+export default function HomeHero({ history, onSelect, onOpenHistory, onClearHistory }: HomeHeroProps) {
   return (
     <>
       <PageHero
         size="xxl"
-        eyebrow="Données officielles · Open Data · 1965 → 2022"
+        eyebrow="Élection présidentielle · printemps 2027"
         title={
           <>
-            Le vote de <span className="text-gradient-tricolor">chaque commune</span>, en pleine lumière
+            Présidentielle <span className="text-gradient-tricolor">2027</span>
           </>
         }
-        description="Résultats détaillés, participation et parrainages des élections présidentielles françaises, de 1965 à 2022."
+        description="Candidats, parrainages et sondages de la campagne, et les résultats officiels de toutes les présidentielles depuis 1965, commune par commune."
         actions={
           <div className="w-full max-w-xl space-y-4">
+            <p id="recherche-commune" className="text-sm font-semibold text-foreground">Comment a voté ma commune ?</p>
             <CommuneSearch onSelect={onSelect} />
             {history.length > 0 && (
               <div className="flex flex-wrap items-center gap-2" aria-label="Recherches récentes">
@@ -64,11 +54,9 @@ export default function HomeHero({ year, history, onSelect, onOpenHistory, onCle
                 </button>
               </div>
             )}
-            {/* Sur mobile, la carte reste dans le hero, sous la recherche. */}
-            <MapSlot year={year} className="mx-auto w-full max-w-md pt-6 lg:hidden" />
           </div>
         }
-        aside={<MapSlot year={year} className="w-[28rem] xl:w-[32rem]" />}
+        aside={<ElectionCountdown />}
       />
     </>
   );

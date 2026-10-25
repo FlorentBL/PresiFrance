@@ -2,21 +2,31 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ThemeToggle from "@/components/ThemeToggle";
 import { DEFAULT_YEAR, PRESIDENTIAL_YEARS_DESC, PresidentialYear } from "@/lib/elections";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
+type NavItem = { to: string; label: string };
+
+/** Section 2027 en premier, puis les résultats historiques. */
+const MAIN_ITEMS: NavItem[] = [
   { to: "/", label: "Accueil" },
+  { to: "/presidentielle-2027", label: "Présidentielle 2027" },
+  { to: "/parrainages", label: "Parrainages" },
+  { to: "/sondages-presidentielle-2027", label: "Sondages 2027" },
   { to: "/resultats-presidentielle", label: "Résultats" },
   { to: "/comparer", label: "Comparer" },
-  { to: "/parrainages", label: "Parrainages" },
+];
+
+/** Rubrique « Archives » : contenus du premier mandat 2017-2022. */
+const ARCHIVE_ITEMS: NavItem[] = [
+  { to: "/promesses-bilan", label: "Promesses vs bilan (2017-2022)" },
   { to: "/analyse", label: "Sondages 2022" },
-  { to: "/promesses-bilan", label: "Promesses / bilan" },
-] as const;
+];
 
 function isActive(pathname: string, to: string): boolean {
   return to === "/" ? pathname === "/" : pathname === to || pathname.startsWith(`${to}/`);
@@ -28,6 +38,7 @@ export default function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const reduce = useReducedMotion();
+  const archiveActive = ARCHIVE_ITEMS.some((i) => isActive(pathname, i.to));
   const yearParam = searchParams.get("year");
   const year = (yearParam ? Number(yearParam) : DEFAULT_YEAR) as PresidentialYear;
 
@@ -87,7 +98,7 @@ export default function SiteHeader() {
         </Link>
 
         <nav aria-label="Navigation principale" className="hidden items-center gap-1 lg:flex">
-          {NAV_ITEMS.map((item) => {
+          {MAIN_ITEMS.map((item) => {
             const active = isActive(pathname, item.to);
             return (
               <Link
@@ -111,6 +122,25 @@ export default function SiteHeader() {
               </Link>
             );
           })}
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              className={cn(
+                "inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                archiveActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              Archives <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {ARCHIVE_ITEMS.map((item) => (
+                <DropdownMenuItem key={item.to} asChild>
+                  <Link to={item.to} aria-current={isActive(pathname, item.to) ? "page" : undefined}>
+                    {item.label}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
 
         <div className="flex items-center gap-1.5">
@@ -153,7 +183,7 @@ export default function SiteHeader() {
                         </DialogPrimitive.Close>
                       </div>
                       <nav aria-label="Navigation mobile" className="mt-6 flex flex-col">
-                        {NAV_ITEMS.map((item, i) => {
+                        {MAIN_ITEMS.map((item, i) => {
                           const active = isActive(pathname, item.to);
                           return (
                             <motion.div
@@ -174,6 +204,24 @@ export default function SiteHeader() {
                                 {item.label}
                               </Link>
                             </motion.div>
+                          );
+                        })}
+                      <p className="mb-1 mt-8 text-xs font-bold uppercase tracking-wider text-muted-foreground">Archives</p>
+                        {ARCHIVE_ITEMS.map((item) => {
+                          const active = isActive(pathname, item.to);
+                          return (
+                            <Link
+                              key={item.to}
+                              to={item.to}
+                              aria-current={active ? "page" : undefined}
+                              onClick={() => setMobileOpen(false)}
+                              className={cn(
+                                "block border-b border-border/60 py-3 font-heading text-xl font-semibold tracking-tight transition-colors",
+                                active ? "text-primary" : "text-foreground/80 hover:text-primary",
+                              )}
+                            >
+                              {item.label}
+                            </Link>
                           );
                         })}
                       </nav>
