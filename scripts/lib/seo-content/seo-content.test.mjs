@@ -1,10 +1,13 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
 
-import { eligibleCommunes } from "./data.mjs";
+import { readFileSync } from "node:fs";
+
+import { eligibleCommunes, loadNational } from "./data.mjs";
+import { computeYearFacts } from "./year-facts.mjs";
 import { formatSurname, wordCount } from "./html.mjs";
 import { buildBody, buildJsonLd, generatedRoutes } from "./index.mjs";
-import { seoPrerenderRoutes } from "../../seo-routes.mjs";
+import { presidentialYearSummaries, seoPrerenderRoutes } from "../../seo-routes.mjs";
 
 describe("seo content", () => {
   it("formats candidate surnames", () => {
@@ -94,5 +97,35 @@ describe("seo content", () => {
     const route = seoPrerenderRoutes.find((r) => /candidats\//.test(r.path) && buildBody(r).includes("Aucun des sondages"));
     expect(route).toBeDefined();
     expect(buildBody(route)).not.toContain("<svg");
+  });
+
+  it("builds rich historic result pages (500+ words, H1, FAQPage) from public/data only", () => {
+    const national = loadNational();
+    const routes = seoPrerenderRoutes.filter((r) => /^\/presidentielle-\d{4}$/.test(r.path) && r.path !== "/presidentielle-2027");
+    expect(routes).toHaveLength(11);
+    for (const route of [...routes, seoPrerenderRoutes.find((r) => r.path === "/resultats-presidentielle")]) {
+      const html = buildBody(route);
+      expect(wordCount(html), route.path).toBeGreaterThanOrEqual(500);
+      expect(html.match(/<h1>/g), route.path).toHaveLength(1);
+      expect(html).toContain('href="/explorer/75"');
+      expect(html).toContain('href="/commune/75056"');
+      const [faq] = buildJsonLd(route);
+      expect(faq["@type"]).toBe("FAQPage");
+      expect(faq.mainEntity.length).toBeGreaterThanOrEqual(3);
+    }
+    const y2022 = buildBody(routes.find((r) => r.path === "/presidentielle-2022"));
+    expect(y2022).toContain("<h1>Résultats de l'élection présidentielle 2022</h1>");
+    expect(y2022).toContain("Qui a gagné");
+    // l'élu et le finaliste codés dans seo-routes concordent avec les résultats nationaux
+    for (const s of presidentialYearSummaries) {
+      const [w, r] = national[s.year].t2.candidates;
+      expect(`${w.prenom} ${formatSurname(w.nom)}`, String(s.year)).toBe(s.winner);
+      expect(`${r.prenom} ${formatSurname(r.nom)}`, String(s.year)).toBe(s.runnerUp);
+    }
+  });
+
+  it("garde src/content/years-facts.json à jour (npm run build:year-facts)", () => {
+    const file = JSON.parse(readFileSync(new URL("../../../src/content/years-facts.json", import.meta.url), "utf8"));
+    expect(file).toEqual(JSON.parse(JSON.stringify(computeYearFacts())));
   });
 });

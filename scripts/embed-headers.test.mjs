@@ -13,4 +13,9 @@ describe("public/_headers", () => {
     expect(embed).toContain("X-Robots-Tag: noindex");
     expect(headers.indexOf("frame-ancestors 'self'")).toBeLessThan(headers.indexOf("\n/embed/*\n"));
   });
+
+  it("exclut /data/* de l'index par X-Robots-Tag", () => {
+    const data = headers.split(/^\/data\/\*\n/m)[1]?.split(/\n\s*\n/)[0] ?? "";
+    expect(data).toMatch(/X-Robots-Tag: noindex/);
+  });
 });

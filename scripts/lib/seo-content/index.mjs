@@ -4,6 +4,7 @@ import { buildCandidate2027JsonLd, findCandidate } from "./candidate-2027.mjs";
 import { buildCommuneBody, communeRoutes } from "./communes.mjs";
 import { buildDepartmentBody, matchDepartment } from "./departments.mjs";
 import { buildStaticBody } from "./static-pages.mjs";
+import { yearsJsonLd } from "./years-content.mjs";
 import { buildYearBody, matchYear } from "./years.mjs";
 
 const builders = [
@@ -23,8 +24,17 @@ export function generatedRoutes() {
   return communeRoutes();
 }
 
+function buildHomeJsonLd() {
+  const siteUrl = String(process.env.SITE_URL || "https://presifrance.fr").replace(/\/+$/, "");
+  return [
+    { "@context": "https://schema.org", "@type": "WebSite", "@id": `${siteUrl}/#website`, name: "PrésiFrance", url: `${siteUrl}/`, inLanguage: "fr-FR" },
+    { "@context": "https://schema.org", "@type": "Organization", "@id": `${siteUrl}/#organization`, name: "PrésiFrance", url: `${siteUrl}/`, logo: `${siteUrl}/logo.png` },
+  ];
+}
+
 /** Objets JSON-LD (FAQPage…) à placer dans <head> pour la route ; [] si aucun. */
 export function buildJsonLd(route) {
+  if (route.path === "/") return buildHomeJsonLd();
   if (route.path.startsWith("/presidentielle-2027/candidats/") && findCandidate(route.path)) return buildCandidate2027JsonLd(route);
-  return [];
+  return yearsJsonLd(route);
 }

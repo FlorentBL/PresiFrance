@@ -9,6 +9,7 @@ import { eligibleCommunes } from "./data.mjs";
 import { buildSondagesBody } from "./sondages.mjs";
 import { buildCandidate2027Body } from "./candidate-2027.mjs";
 import { esc, fmtInt, link, linkList, page, table } from "./html.mjs";
+import { buildHubBody } from "./years-content.mjs";
 import { homeBody, presidentielle2027Body } from "./page-2027.mjs";
 
 const SOURCE_DATA =
@@ -36,15 +37,6 @@ function exploreLinks(selfPath) {
 const ABOUT =
   "PrésiFrance réunit en données ouvertes les résultats de toutes les élections présidentielles françaises, de 1965 à 2022, avec le détail par département et par commune lorsqu'il est publié, ainsi que le suivi de la présidentielle de 2027 : candidats, sondages et parrainages.";
 
-function resultsHubBody(route) {
-  return page({
-    h1: "Résultats des élections présidentielles françaises",
-    intro: `${esc(route.description)} Choisissez une élection pour afficher les scores nationaux, puis descendez au département et à la commune.`,
-    sections: [`<section><h2>Toutes les élections présidentielles</h2>${electionsList()}</section>`, exploreLinks(route.path)],
-    source: SOURCE_DATA,
-  });
-}
-
 function exploreBody(route) {
   const items = departmentCodes.map((c) => [`/explorer/${c}`, `${departmentNames[c]} (${c})`]);
   return page({
@@ -67,7 +59,7 @@ function genericBody(route) {
 
 const specific = new Map([
   ["/", homeBody],
-  ["/resultats-presidentielle", resultsHubBody],
+  ["/resultats-presidentielle", buildHubBody],
   ["/explorer", exploreBody],
   ["/presidentielle-2027", presidentielle2027Body],
   ["/sondages-presidentielle-2027", buildSondagesBody],

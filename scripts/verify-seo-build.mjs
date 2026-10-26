@@ -9,6 +9,9 @@ import { seoPrerenderRoutes } from "./seo-routes.mjs";
 const distDir = path.resolve(process.cwd(), "dist");
 const siteUrl = String(process.env.SITE_URL || "https://presifrance.fr").replace(/\/+$/, "");
 const MIN_WORDS = 80;
+// Pages de résultats historiques (/presidentielle-AAAA 1965-2022 et hub) : contenu riche exigé (vague SEO 5).
+const MIN_WORDS_HISTORIC = 500;
+const isHistoricResultsPage = (p) => p === "/resultats-presidentielle" || /^\/presidentielle-(19\d\d|20[0-2][0-2])$/.test(p);
 // Workers Static Assets : 20 000 fichiers par version sur l'offre gratuite, 100 000 sur l'offre payante
 // (developers.cloudflare.com/workers/platform/limits, consulté le 26/10/2026). Marge sous la limite gratuite.
 const MAX_FILES = Number(process.env.SEO_MAX_DIST_FILES || 19000);
@@ -48,16 +51,24 @@ for (const route of routes) {
   }
 
   const canon = [...html.matchAll(/<link\s+rel="canonical"\s+href="([^"]*)"/gi)];
-  if (route.path === "/") {
-    // dist/index.html est aussi le fallback SPA : un canonical figé y pointerait toutes les routes non prérendues vers l'accueil.
-    if (canon.length) fail("/ : dist/index.html (fallback SPA) ne doit pas porter de canonical");
-  } else if (canon.length !== 1) {
+  if (canon.length !== 1) {
     fail(`${route.path} : ${canon.length} balises canonical (1 attendue)`);
   } else {
     const expected = `${siteUrl}${route.path}`;
     if (canon[0][1] !== expected) fail(`${route.path} : canonical ${canon[0][1]} (attendu ${expected})`);
     if (canonicals.has(canon[0][1])) fail(`${route.path} : canonical déjà utilisé par ${canonicals.get(canon[0][1])}`);
     canonicals.set(canon[0][1], route.path);
+  }
+
+  if (route.path === "/") {
+    const types = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => {
+      try {
+        return JSON.parse(m[1])["@type"];
+      } catch {
+        return null;
+      }
+    });
+    for (const t of ["WebSite", "Organization"]) if (!types.includes(t)) fail(`/ : JSON-LD ${t} absent ou invalide`);
   }
 
   const title = /<title>(.*?)<\/title>/is.exec(html)?.[1]?.trim();
@@ -77,6 +88,17 @@ for (const route of routes) {
     if (!/ : candidature présidentielle 2027, sondages et parcours<\/title>/.test(html)) fail(`${route.path} : titre de fiche candidat inattendu`);
   }
 
+  if (isHistoricResultsPage(route.path)) {
+    const ld = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => {
+      try {
+        return JSON.parse(m[1]);
+      } catch {
+        return null;
+      }
+    });
+    if (!ld.some((d) => d?.["@type"] === "FAQPage" && d.mainEntity?.length >= 3)) fail(`${route.path} : JSON-LD FAQPage absent ou invalide`);
+  }
+
   const root = /<div id="root">([\s\S]*?)<\/main>/i.exec(html)?.[1] ?? "";
   const h1 = root.match(/<h1[\s>]/gi) ?? [];
   if (h1.length !== 1) fail(`${route.path} : ${h1.length} balises H1 (1 attendue)`);
@@ -85,15 +107,23 @@ for (const route of routes) {
     return t ? t.split(" ").length : 0;
   })();
   if (words < MIN_WORDS) fail(`${route.path} : ${words} mots visibles (minimum ${MIN_WORDS})`);
+  else if (isHistoricResultsPage(route.path) && words < MIN_WORDS_HISTORIC) fail(`${route.path} : ${words} mots visibles (minimum ${MIN_WORDS_HISTORIC} pour les pages de résultats historiques)`);
 }
 
-// robots.txt : robots des IA admis (décision du 26/10/2026), /data/ et /assets/ fermés.
+// robots.txt : robots des IA admis (décision du 26/10/2026) ; /data/ et /assets/ ouverts (Google doit charger le JS et les données).
 const robots = await readFile(path.join(distDir, "robots.txt"), "utf8");
 for (const bot of ["GPTBot", "CCBot", "ClaudeBot", "PerplexityBot", "Amazonbot"]) {
   if (robots.includes(bot)) fail(`robots.txt : ${bot} ne doit plus être traité à part`);
 }
 for (const rule of ["Disallow: /data/", "Disallow: /assets/"]) {
-  if (!robots.includes(rule)) fail(`robots.txt : « ${rule} » manquant`);
+  if (robots.includes(rule)) fail(`robots.txt : « ${rule} » ne doit plus figurer (bloque le rendu JS de Google)`);
+}
+
+// _headers : /data/* exclu de l'index par en-tête, /embed/* aussi (le noindex JS d'EmbedFrame ne suffit pas).
+const headers = await readFile(path.join(distDir, "_headers"), "utf8");
+for (const prefix of ["/data/*", "/embed/*"]) {
+  const block = headers.split(new RegExp(`^${prefix.replace("*", "\\*")}\\n`, "m"))[1]?.split(/\n\s*\n|\n(?=\S)/)[0] ?? "";
+  if (!/X-Robots-Tag:\s*noindex/i.test(block)) fail(`_headers : X-Robots-Tag noindex manquant pour ${prefix}`);
 }
 
 // sitemap : les fiches commune prérendues y figurent toutes.

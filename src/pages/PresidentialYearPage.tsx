@@ -3,6 +3,7 @@ import { BarChart3, MapPin, Trophy, Users } from "lucide-react";
 
 import { GlowCard, PageHero, Reveal, SegmentedControl, Section } from "@/components/design";
 import JsonLd from "@/components/JsonLd";
+import { YearResults } from "@/components/seo/HistoricResults";
 import LinkCard from "@/components/seo/LinkCard";
 import NationalYearChart from "@/components/seo/NationalYearChart";
 import SeoConnectorLinks from "@/components/SeoConnectorLinks";
@@ -10,6 +11,8 @@ import SEOHead from "@/components/SEOHead";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { PRESIDENTIAL_YEARS_DESC } from "@/lib/elections";
+import { yearDescription, yearTitle } from "@/lib/yearContent";
+import { useYearFaq } from "@/lib/yearQueries";
 import { getPresidentialYearSummary, isPresidentialYear } from "@/lib/presidentialSeo";
 
 const YEAR_OPTIONS = [...PRESIDENTIAL_YEARS_DESC].reverse().map((y) => ({ value: y, label: String(y) }));
@@ -20,6 +23,7 @@ export default function PresidentialYearPage() {
   const navigate = useNavigate();
   const year = Number(yearParam || pathname.match(/^\/presidentielle-(\d{4})$/)?.[1]);
   const summary = getPresidentialYearSummary(year);
+  const faq = useYearFaq(year);
 
   if (!summary || !isPresidentialYear(year)) {
     return (
@@ -41,8 +45,8 @@ export default function PresidentialYearPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead
-        title={`Résultats présidentielle ${year}`}
-        description={`Résultats de l'élection présidentielle ${year} : ${summary.winner} face à ${summary.runnerUp}, scores, participation et accès aux données par commune.`}
+        title={yearTitle(year, summary.winner)}
+        description={yearDescription(year, summary.winner, summary.runnerUp)}
         path={`/presidentielle-${year}`}
       />
       <JsonLd
@@ -51,13 +55,14 @@ export default function PresidentialYearPage() {
           { name: "Résultats présidentielle", path: "/resultats-presidentielle" },
           { name: `Présidentielle ${year}`, path: `/presidentielle-${year}` },
         ]}
+        faq={faq}
       />
       <SiteHeader />
 
       <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Élection présidentielle"
-          title={<>Résultats présidentielle <span className="text-gradient-tricolor">{year}</span></>}
+          title={<>Résultats de l'élection présidentielle <span className="text-gradient-tricolor">{year}</span></>}
           description={`${summary.winner} remporte l'élection face à ${summary.runnerUp}. Cette page sert de point d'entrée vers les résultats par commune, par département et les outils de comparaison de PrésiFrance.`}
           actions={
             <>
@@ -104,6 +109,8 @@ export default function PresidentialYearPage() {
         <Section eyebrow="Vue nationale" title={`Le scrutin ${year} en chiffres`} className="pt-0 sm:pt-0">
           <NationalYearChart year={year} />
         </Section>
+
+        <YearResults year={year} />
 
         <Section className="pt-0 sm:pt-0">
           <SeoConnectorLinks context="year" year={year} />
