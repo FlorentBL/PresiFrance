@@ -53,11 +53,25 @@ npm run build:photos
 
 ## Hebergement
 
-Le site est servi par Cloudflare Workers (fichiers statiques uniquement, configuration dans `wrangler.jsonc`, en-tetes de cache dans `public/_headers`). Deploiement :
+Le site est servi par le Worker Cloudflare `presifrance` : fichiers statiques (Workers Static Assets, dossier `dist`) et un petit script (`worker/index.js`). Configuration dans `wrangler.jsonc`, en-tetes dans `public/_headers`. Deploiement :
 
 ```bash
 npm run deploy
 ```
+
+### Worker (`worker/`)
+
+Sans lui, `not_found_handling: single-page-application` renvoyait l'accueil en 200 pour toute adresse inconnue (soft 404) et les ~25 000 communes non prerendues recevaient le titre de l'accueil. Le Worker (binding `ASSETS`, **sans** `run_worker_first`) :
+
+- sert d'abord le fichier statique s'il existe (pages prerendues, assets, `/data`) ;
+- sinon repond un **vrai 404** avec le gabarit de l'application (`dist/app-shell.html`, qui affiche la page 404 du site), `X-Robots-Tag: noindex`, pour toute route inconnue, tout code commune ou departement inexistant ;
+- pour une **commune existante mais non prerendue** (`/commune/<code>`), habille le gabarit : titre « Resultats des elections a <Ville> », description, canonique, `og:*`, et un resume chiffre de la presidentielle 2022 (1er tour), d'apres l'index `dist/data/communes/<dep>.json` ; sans resultats 2022 la page est en `noindex` ;
+- sert `/embed/carte` et `/embed/commune/<code>` avec les en-tetes des embeds (`frame-ancestors *`, `noindex`), repris dans le Worker car le gabarit est servi sous un autre chemin ;
+- redirige les adresses a slash final (308) et repond 404 a `/app-shell`. Les collectivites d'outre-mer (codes 98xxx) n'ont pas d'index fiable : page 200 en `noindex`.
+
+L'index est genere au build (`postbuild` : `scripts/build-commune-index.mjs`, `scripts/lib/commune-index.mjs`) a partir de `public/data/presidential` ; le sitemap (`sitemap-communes*.xml`) liste les communes prerendues et celles qui ont des resultats 2022. **Pas de `run_worker_first`** : avec `main` et `not_found_handling: "none"`, Workers Assets sert directement et gratuitement tout fichier existant (pages prerendues, assets, `/data`) et n'invoque le Worker que pour une adresse sans fichier (communes non prerendues, 404, `/embed/*`). Le quota de l'offre gratuite (100 000 requetes Worker par jour) ne porte donc que sur ces adresses, pas sur le trafic des pages prerendues (les requetes de fichiers statiques sont gratuites et illimitees). `/mentions-legales` et `/politique-de-confidentialite` sont prerendues pour cette raison. Le Worker garde sa propre lecture des fichiers (`ASSETS.fetch`) par securite, sans effet sur le comptage ; les fichiers de `dist` restent sous la limite de Workers Assets (20 000 fichiers en gratuit, controle par `verify-seo-build.mjs`).
+
+Tests : `npx vitest run worker`. Essai local : construire (`npm run build`) puis `npx wrangler@4 dev --port 8799`, interroger avec `curl -i`, puis arreter le processus (l'observateur de fichiers de wrangler peut se desactiver sur un `dist` de plus de 10 000 dossiers, sans gravite).
 
 ## Design et recette
 
@@ -154,7 +168,7 @@ npm run build:photos
 
 ## Hosting
 
-The site is served by Cloudflare Workers static assets (`wrangler.jsonc`, cache headers in `public/_headers`). Deploy with `npm run deploy`.
+The site is served by the Cloudflare Worker `presifrance`: static assets plus a small script (`worker/index.js`) that returns real 404s for unknown routes and commune codes and fills in title, description and canonical for communes that are not prerendered (see the French section above). Config in `wrangler.jsonc`, headers in `public/_headers`. Deploy with `npm run deploy`.
 
 ## Data
 

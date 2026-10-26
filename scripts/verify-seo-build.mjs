@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { generatedRoutes } from "./lib/seo-content/index.mjs";
 import { visibleText } from "./lib/seo-content/html.mjs";
-import { seoPrerenderRoutes } from "./seo-routes.mjs";
+import { seoPrerenderRoutes, staticRoutes } from "./seo-routes.mjs";
 
 const distDir = path.resolve(process.cwd(), "dist");
 const siteUrl = String(process.env.SITE_URL || "https://presifrance.fr").replace(/\/+$/, "");
@@ -136,6 +136,53 @@ for (const name of sitemapFiles) {
 }
 const missing = routes.filter((r) => r.commune && !sitemapLocs.has(`${siteUrl}${r.path}`));
 if (missing.length) fail(`sitemap : ${missing.length} fiches commune absentes (ex. ${missing[0].path})`);
+
+// Routes applicatives : chaque chemin statique de src/App.tsx est prérendu (ou connu du Worker) et chaque route du sitemap existe dans dist.
+const WORKER_ROUTES = new Set(["/embed/carte"]);
+const distHtmlOf = (route) => (route === "/" ? path.join(distDir, "index.html") : path.join(distDir, route.replace(/^\/+/, ""), "index.html"));
+const appSource = await readFile(path.resolve(process.cwd(), "src/App.tsx"), "utf8");
+for (const m of appSource.matchAll(/<Route\s+path="([^"]+)"/g)) {
+  const route = m[1];
+  if (route === "*" || route.includes(":") || route.includes("*") || WORKER_ROUTES.has(route)) continue;
+  try {
+    await stat(distHtmlOf(route));
+  } catch {
+    fail(`App.tsx : ${route} n'est ni prérendue (dist${route}/index.html) ni connue du Worker (répondrait 404)`);
+  }
+}
+for (const route of staticRoutes) {
+  try {
+    await stat(distHtmlOf(route));
+  } catch {
+    fail(`sitemap : ${route} (staticRoutes) absente de dist`);
+  }
+}
+
+// Worker : gabarit vierge et index départementaux des communes (404 et fiches non prérendues).
+try {
+  const shell = await readFile(path.join(distDir, "app-shell.html"), "utf8");
+  if (!shell.includes('<div id="root"></div>')) fail("app-shell.html : #root vide introuvable");
+  if (/<link\s+rel="canonical"/i.test(shell)) fail("app-shell.html ne doit pas porter de canonical");
+} catch {
+  fail("app-shell.html absent (gabarit du Worker)");
+}
+let indexed = 0;
+for (const name of await readdir(path.join(distDir, "data/communes")).catch(() => [])) {
+  const shard = JSON.parse(await readFile(path.join(distDir, "data/communes", name), "utf8"));
+  for (const [code, row] of Object.entries(shard.r)) {
+    if (row.length > 1 && !sitemapLocs.has(`${siteUrl}/commune/${code}`)) fail(`sitemap : commune ${code} avec résultats absente`);
+    indexed += 1;
+  }
+}
+if (indexed < 30000) fail(`index des communes : ${indexed} communes (au moins 30 000 attendues)`);
+for (const r of routes.filter((r) => r.commune)) {
+  const dep = r.commune.dep;
+  const shard = JSON.parse(await readFile(path.join(distDir, "data/communes", `${dep}.json`), "utf8").catch(() => "{\"r\":{}}"));
+  if (!shard.r[r.commune.code]) {
+    fail(`index des communes : ${r.commune.code} (prérendue) absente`);
+    break;
+  }
+}
 
 const { files, bytes } = await walk(distDir);
 if (files > MAX_FILES) {

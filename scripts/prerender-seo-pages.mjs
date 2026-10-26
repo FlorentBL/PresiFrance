@@ -60,6 +60,9 @@ const started = Date.now();
 const baseHtml = await readFile(path.join(distDir, "index.html"), "utf8");
 if (!baseHtml.includes('<div id="root"></div>')) throw new Error("[prerender] #root introuvable dans dist/index.html");
 
+// Gabarit vierge pour le Worker (404, fiches commune non prérendues) : écrit avant que "/" ne réécrive dist/index.html.
+await writeFile(path.join(distDir, "app-shell.html"), baseHtml, "utf8");
+
 const routes = [...seoPrerenderRoutes, ...generatedRoutes()];
 const paths = new Set();
 for (const route of routes) {
