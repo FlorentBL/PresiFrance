@@ -10,6 +10,7 @@ export default tseslint.config(
       "dist",
       "node_modules",
       "coverage",
+      ".wrangler/**",
       "scripts/**",
       "public/**",
       "*.config.js",
