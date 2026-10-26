@@ -9,9 +9,11 @@ interface JsonLdProps {
   path: string;
   commune?: { nom: string; code: string; codeDepartement: string } | null;
   breadcrumbs?: BreadcrumbItem[];
+  /** Questions/réponses en texte brut : émet un FAQPage (le texte doit figurer sur la page). */
+  faq?: { q: string; a: string }[];
 }
 
-export default function JsonLd({ path, commune, breadcrumbs }: JsonLdProps) {
+export default function JsonLd({ path, commune, breadcrumbs, faq }: JsonLdProps) {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   const url = `${SITE_URL}${normalizedPath}`;
 
@@ -50,9 +52,23 @@ export default function JsonLd({ path, commune, breadcrumbs }: JsonLdProps) {
         }
       : null;
 
+  const faqSchema =
+    faq && faq.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }
+      : null;
+
   if (!commune) {
     return (
       <>
+        {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
         {breadcrumbSchema && (
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />

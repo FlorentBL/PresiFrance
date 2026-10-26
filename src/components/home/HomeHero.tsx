@@ -24,7 +24,7 @@ export default function HomeHero({ history, onSelect, onOpenHistory, onClearHist
             Présidentielle <span className="text-gradient-tricolor">2027</span>
           </>
         }
-        description="Candidats, parrainages et sondages de la campagne, et les résultats officiels de toutes les présidentielles depuis 1965, commune par commune."
+        description="Élection présidentielle en France : candidats, parrainages et sondages de la campagne 2027, et résultats officiels de toutes les présidentielles depuis 1965, commune par commune."
         actions={
           <div className="w-full max-w-xl space-y-4">
             <p id="recherche-commune" className="text-sm font-semibold text-foreground">Comment a voté ma commune ?</p>
