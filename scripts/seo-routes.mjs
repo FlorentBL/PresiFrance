@@ -1,5 +1,7 @@
 import { readFileSync } from "node:fs";
 
+import { HUB_DESCRIPTION, HUB_TITLE, yearDescription, yearTitle } from "./lib/seo-content/year-meta.mjs";
+
 export const presidentialYears = [2022, 2017, 2012, 2007, 2002, 1995, 1988, 1981, 1974, 1969, 1965];
 
 export const presidentialYearSummaries = [
@@ -104,8 +106,8 @@ export const seoPrerenderRoutes = [
   },
   {
     path: "/resultats-presidentielle",
-    title: `Résultats des élections présidentielles françaises — ${defaultSiteName}`,
-    description: "Tous les résultats des élections présidentielles françaises par année, commune et département : scores, participation, candidats et données officielles.",
+    title: `${HUB_TITLE} — ${defaultSiteName}`,
+    description: HUB_DESCRIPTION,
   },
   {
     path: "/resultats-presidentielle-par-commune",
@@ -129,8 +131,8 @@ export const seoPrerenderRoutes = [
   },
   ...presidentialYearSummaries.map((summary) => ({
     path: `/presidentielle-${summary.year}`,
-    title: `Résultats présidentielle ${summary.year} — ${defaultSiteName}`,
-    description: `Résultats de l'élection présidentielle ${summary.year} : ${summary.winner} face à ${summary.runnerUp}, scores, participation et accès aux données par commune.`,
+    title: `${yearTitle(summary.year, summary.winner)} — ${defaultSiteName}`,
+    description: yearDescription(summary.year, summary.winner, summary.runnerUp),
   })),
   {
     path: "/explorer",

@@ -2,29 +2,35 @@ import { BarChart3, CalendarDays, GitCompare, Map, MapPin, Search, UsersRound } 
 
 import { BentoGrid, BentoItem, PageHero, Reveal, Section } from "@/components/design";
 import JsonLd from "@/components/JsonLd";
+import { HubResults } from "@/components/seo/HistoricResults";
 import LinkCard from "@/components/seo/LinkCard";
 import SEOHead from "@/components/SEOHead";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import { HUB_DESCRIPTION, HUB_TITLE } from "@/lib/yearContent";
+import { useHubFaq } from "@/lib/yearQueries";
 import { PRESIDENTIAL_YEAR_SUMMARIES } from "@/lib/presidentialSeo";
 
 export default function ResultatsPresidentiellePage() {
+  const faq = useHubFaq();
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead
-        title="Résultats des élections présidentielles françaises"
-        description="Tous les résultats des élections présidentielles françaises par année, commune et département : scores, participation, candidats et données officielles."
+        title={HUB_TITLE}
+        description={HUB_DESCRIPTION}
         path="/resultats-presidentielle"
       />
-      <JsonLd path="/resultats-presidentielle" breadcrumbs={[{ name: "Résultats présidentielle", path: "/resultats-presidentielle" }]} />
+      <JsonLd path="/resultats-presidentielle" breadcrumbs={[{ name: "Résultats présidentielle", path: "/resultats-presidentielle" }]} faq={faq} />
       <SiteHeader />
 
       <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Hub résultats"
-          title="Résultats des élections présidentielles françaises"
+          title="Résultats de l'élection présidentielle en France, de 1965 à 2022"
           description="Retrouvez les résultats officiels des présidentielles par année, puis descendez vers les départements et les communes pour comparer les scores, la participation et l'évolution du vote."
         />
+
+        <HubResults />
 
         <Section>
           <BentoGrid>
