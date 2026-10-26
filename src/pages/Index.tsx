@@ -1,9 +1,10 @@
 import { lazy, Suspense, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEOHead from "@/components/SEOHead";
 import JsonLd from "@/components/JsonLd";
+
 import { Section } from "@/components/design";
 import HomeHero from "@/components/home/HomeHero";
 import Home2027 from "@/components/home/Home2027";
@@ -54,6 +55,18 @@ const Index = () => {
         />
         <Home2027 />
         <StatsStrip />
+        <Section width="narrow" eyebrow="Repères" title="L'élection présidentielle en France">
+          <p className="text-muted-foreground">
+            PrésiFrance réunit en données ouvertes les résultats des {PRESIDENTIAL_YEARS_DESC.length} élections présidentielles françaises, de 1965 à 2022, avec le détail par département et par commune, ainsi que le suivi de la présidentielle de 2027. Le 1er tour aura lieu le dimanche 18 avril 2027 et le 2nd tour le dimanche 2 mai 2027 (source : Service-public.fr).
+          </p>
+          <ul className="mt-6 space-y-2">
+            <li><Link to="/presidentielle-2027" className="font-medium text-primary hover:underline">Présidentielle 2027 : date, candidats et calendrier</Link></li>
+            <li><Link to="/sondages-presidentielle-2027" className="font-medium text-primary hover:underline">Sondages de la présidentielle 2027</Link></li>
+            <li><Link to="/parrainages?year=2027" className="font-medium text-primary hover:underline">Parrainages de la présidentielle 2027</Link></li>
+            <li><Link to="/resultats-presidentielle" className="font-medium text-primary hover:underline">Résultats de toutes les présidentielles depuis 1965</Link></li>
+            <li><Link to="/resultats-presidentielle-par-commune" className="font-medium text-primary hover:underline">Résultats de la présidentielle par commune</Link></li>
+          </ul>
+        </Section>
         <Suspense fallback={null}>
           <Section
             width="default"

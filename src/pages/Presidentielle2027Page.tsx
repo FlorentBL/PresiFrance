@@ -9,6 +9,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { CandidateAvatar, GlowCard, PageHero, Section } from "@/components/design";
 import { StatusBadge } from "@/components/presidentielle2027/StatusBadge";
+import { buildFaq2027, frDate } from "@/lib/faq2027";
 import {
   STATUS_GROUP_TITLE,
   formatPartialDate,
@@ -28,23 +29,31 @@ export default function Presidentielle2027Page() {
   const candidates = useQuery({ queryKey: ["p2027-candidats"], queryFn: getCandidates2027, staleTime: 60 * 60 * 1000 });
   const calendar = useQuery({ queryKey: ["p2027-calendrier"], queryFn: getCalendar2027, staleTime: 60 * 60 * 1000 });
 
+  const faq = candidates.data && calendar.data ? buildFaq2027(candidates.data, calendar.data) : [];
+  const firstRound = calendar.data?.evenements.find((e) => e.id === "t1");
+  const secondRound = calendar.data?.evenements.find((e) => e.id === "t2");
+
   const handleSelect = (commune: GeoCommune) => navigate(`/commune/${commune.code}?year=${DEFAULT_YEAR}`);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead
-        title="Présidentielle 2027 : candidats et calendrier"
-        description="Élection présidentielle 2027 : candidats déclarés, pressentis et retirés, classés par ordre alphabétique avec leurs sources, calendrier officiel du scrutin et accès aux données."
+        title="Présidentielle 2027 : date, candidats, calendrier"
+        description="Présidentielle 2027 : 1er tour le 18 avril, 2nd tour le 2 mai 2027. Candidats déclarés et pressentis, calendrier du scrutin, parrainages, sondages et FAQ."
         path={PATH}
       />
-      <JsonLd path={PATH} breadcrumbs={[{ name: "Présidentielle 2027", path: PATH }]} />
+      <JsonLd path={PATH} breadcrumbs={[{ name: "Présidentielle 2027", path: PATH }]} faq={faq} />
       <SiteHeader />
 
       <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Élection 2027"
-          title="Présidentielle 2027"
-          description="Candidats déclarés et pressentis, calendrier du scrutin et accès aux données. Les candidats sont classés par ordre alphabétique et présentés selon un gabarit identique ; chaque information est sourcée et datée."
+          title="Présidentielle 2027 : date, candidats et calendrier"
+          description={
+            firstRound?.date && secondRound?.date
+              ? `L'élection présidentielle 2027 aura lieu le dimanche ${frDate(firstRound.date)} (1er tour) et le dimanche ${frDate(secondRound.date)} (2nd tour) — source : ${firstRound.sourceLabel}. Candidats déclarés et pressentis classés par ordre alphabétique et présentés selon un gabarit identique ; chaque information est sourcée et datée.`
+              : "Candidats déclarés et pressentis, calendrier du scrutin et accès aux données. Les candidats sont classés par ordre alphabétique et présentés selon un gabarit identique ; chaque information est sourcée et datée."
+          }
           actions={
             <>
               <Link to="/parrainages?year=2027" className={linkClass}>Parrainages 2027</Link>
@@ -137,10 +146,22 @@ export default function Presidentielle2027Page() {
           )}
         </Section>
 
+        {faq.length > 0 && (
+          <Section eyebrow="FAQ" title="Questions fréquentes" width="narrow">
+            {faq.map((f) => (
+              <div key={f.q} className="mb-6 last:mb-0">
+                <h3 className="font-heading text-lg font-semibold">{f.q}</h3>
+                <p className="mt-2 text-muted-foreground">{f.a}</p>
+              </div>
+            ))}
+          </Section>
+        )}
+
         <Section eyebrow="Données" title="Aller plus loin" width="narrow">
           <ul className="mb-8 space-y-2">
             <li><Link to="/parrainages?year=2027" className={linkClass}>Parrainages de la présidentielle 2027</Link></li>
             <li><Link to="/sondages-presidentielle-2027" className={linkClass}>Sondages de la présidentielle 2027</Link></li>
+            <li><Link to="/resultats-presidentielle-par-commune" className={linkClass}>Résultats de la présidentielle par commune</Link></li>
             <li><Link to="/presidentielle-2022" className={linkClass}>Résultats de la présidentielle 2022</Link></li>
             <li><Link to="/presidentielle-2017" className={linkClass}>Résultats de la présidentielle 2017</Link></li>
             <li>

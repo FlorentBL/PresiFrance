@@ -98,8 +98,8 @@ const defaultSiteName = "PrésiFrance";
 export const seoPrerenderRoutes = [
   {
     path: "/",
-    title: `${defaultSiteName} — Présidentielle 2027 et résultats de 1965 à 2022`,
-    description: "Présidentielle 2027 : candidats, sondages, parrainages et calendrier. Résultats de toutes les présidentielles depuis 1965, commune par commune. Données ouvertes.",
+    title: `Élection présidentielle France : 2027 et résultats — ${defaultSiteName}`,
+    description: "Élection présidentielle en France : suivi de 2027 (candidats, sondages, parrainages) et résultats de toutes les présidentielles depuis 1965, commune par commune.",
   },
   {
     path: "/resultats-presidentielle",
@@ -172,8 +172,8 @@ export const seoPrerenderRoutes = [
   },
   {
     path: "/presidentielle-2027",
-    title: `Présidentielle 2027 : candidats et calendrier — ${defaultSiteName}`,
-    description: "Élection présidentielle 2027 : liste alphabétique des candidats déclarés et pressentis avec sources, calendrier du scrutin et accès aux données.",
+    title: `Présidentielle 2027 : date, candidats, calendrier — ${defaultSiteName}`,
+    description: "Présidentielle 2027 : 1er tour le 18 avril, 2nd tour le 2 mai 2027. Candidats déclarés et pressentis, calendrier du scrutin, parrainages, sondages et FAQ.",
   },
   ...candidates2027.map((c) => ({
     path: `/presidentielle-2027/candidats/${c.slug}`,

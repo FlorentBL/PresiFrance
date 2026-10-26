@@ -54,4 +54,23 @@ describe("seo content", () => {
     expect(data.mainEntity.length).toBeGreaterThanOrEqual(4);
     expect(wordCount(html)).toBeGreaterThan(300);
   });
+
+  it("builds the 2027 page with dates, candidate links and a FAQPage JSON-LD", () => {
+    const route = seoPrerenderRoutes.find((r) => r.path === "/presidentielle-2027");
+    const html = buildBody(route);
+    expect(html).toContain("18 avril 2027");
+    expect(html).toContain("2 mai 2027");
+    expect(html).toContain('href="/presidentielle-2027/candidats/');
+    const ld = JSON.parse(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(html)[1]);
+    expect(ld["@type"]).toBe("FAQPage");
+    expect(ld.mainEntity).toHaveLength(4);
+    expect(html.match(/<h1>/g)).toHaveLength(1);
+  });
+
+  it("builds the home page with 2027 links and a commune search entry", () => {
+    const html = buildBody(seoPrerenderRoutes.find((r) => r.path === "/"));
+    for (const href of ["/presidentielle-2027", "/sondages-presidentielle-2027", "/resultats-presidentielle-par-commune", "/presidentielle-2022"]) {
+      expect(html).toContain(`href="${href}"`);
+    }
+  });
 });
