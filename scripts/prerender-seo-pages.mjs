@@ -40,8 +40,8 @@ function renderRouteHtml(baseHtml, route) {
   html = upsertMeta(html, 'property="og:url"', `<meta property="og:url" content="${escapeHtml(url)}" />`);
   html = upsertMeta(html, 'name="twitter:title"', `<meta name="twitter:title" content="${escapeHtml(route.title)}" />`);
   html = upsertMeta(html, 'name="twitter:description"', `<meta name="twitter:description" content="${escapeHtml(route.description)}" />`);
-  // dist/index.html sert aussi de fallback SPA (routes non prérendues) : pas de canonical, SEOHead le pose côté client.
-  if (route.path !== "/") html = upsertCanonical(html, url);
+  // dist/index.html sert aussi de fallback SPA (routes non prérendues) : SEOHead réécrit ce canonical côté client.
+  html = upsertCanonical(html, url);
   for (const data of buildJsonLd(route)) {
     // « < » échappé : un texte de réponse ne peut pas fermer la balise <script>.
     const json = JSON.stringify(data).replaceAll("<", "\\u003c");
