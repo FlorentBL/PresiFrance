@@ -7,7 +7,7 @@
 #   - part de main propre et à jour ; seuls des changements sous public/data/ ou dans
 #     scripts/data-sources-2027.json peuvent être présents (édition des candidats/calendrier) ;
 #   - la mise en ligne n'a lieu que si TOUT ce qui diffère de la version en production
-#     (tag git `prod`) est sous public/data/ ou dans scripts/data-sources-2027.json :
+#     (tag git `prod`) est sous public/data/, docs/ (non servi) ou dans scripts/data-sources-2027.json :
 #     du code non publié bloque la mise en ligne automatique (feu vert de Florent requis) ;
 #   - sondages : refus si le nombre de sondages baisse (probable échec d'analyse de Wikipédia) ;
 #   - typecheck, tests et build doivent passer avant le déploiement.
@@ -20,7 +20,7 @@ cd "$(dirname "$0")/.."
 DEPLOY=1
 [ "${1:-}" = "--no-deploy" ] && DEPLOY=0
 TODAY=$(date +%Y-%m-%d)
-ALLOWED='^(public/data/|scripts/data-sources-2027\.json$)'
+ALLOWED='^(public/data/|docs/|scripts/data-sources-2027\.json$)'
 POLLS=public/data/presidential/polls-2027-round1.json
 
 log() { echo "[data-2027] $*"; }
