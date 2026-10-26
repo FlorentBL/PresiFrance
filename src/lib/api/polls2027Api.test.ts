@@ -1,3 +1,4 @@
+// @vitest-environment node
 // @ts-expect-error module .mjs du prérendu sans déclaration de types
 import { averages as prerenderAverages } from "../../../scripts/lib/seo-content/sondages.mjs";
 import realDataset from "../../../public/data/presidential/polls-2027-round1.json";
