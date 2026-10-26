@@ -5,15 +5,17 @@ interface Props {
   title?: string;
   description?: string;
   path?: string;
+  /** Titre complet de la page, sans suffixe « — PrésiFrance ». */
+  fullTitle?: boolean;
 }
 
 const DEFAULT_TITLE = `${SITE_NAME} — Présidentielle 2027 et résultats de 1965 à 2022`;
 const DEFAULT_DESC =
   "Présidentielle 2027 : candidats, sondages, parrainages et calendrier. Résultats de toutes les présidentielles depuis 1965, commune par commune. Données ouvertes.";
 
-const SEOHead = ({ title, description, path }: Props): null => {
+const SEOHead = ({ title, description, path, fullTitle: isFullTitle }: Props): null => {
   useEffect(() => {
-    const fullTitle = title ? `${title} — ${SITE_NAME}` : DEFAULT_TITLE;
+    const fullTitle = title ? (isFullTitle ? title : `${title} — ${SITE_NAME}`) : DEFAULT_TITLE;
     const desc = description || DEFAULT_DESC;
     const url = path ? `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}` : SITE_URL;
     const image = ogImageUrl();
@@ -53,7 +55,7 @@ const SEOHead = ({ title, description, path }: Props): null => {
       document.head.appendChild(canonical);
     }
     canonical.setAttribute("href", url);
-  }, [title, description, path]);
+  }, [title, description, path, isFullTitle]);
 
   return null;
 };

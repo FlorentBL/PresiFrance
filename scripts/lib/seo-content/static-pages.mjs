@@ -6,6 +6,7 @@ import {
   presidentialYearSummaries,
 } from "../../seo-routes.mjs";
 import { eligibleCommunes, load2027 } from "./data.mjs";
+import { buildCandidate2027Body, frDate } from "./candidate-2027.mjs";
 import { esc, fmtInt, link, linkList, page, table } from "./html.mjs";
 
 const SOURCE_DATA =
@@ -21,12 +22,6 @@ const MAIN_LINKS = [
 ];
 
 const STATUT = { declare: "Candidature déclarée", pressenti: "Candidature pressentie", retire: "Candidature retirée" };
-
-const frDate = (iso) => {
-  const [y, m, d] = iso.split("-").map(Number);
-  const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-  return `${d === 1 ? "1er" : d} ${months[m - 1]} ${y}`;
-};
 
 function electionsList() {
   return `<ul>${presidentialYearSummaries
@@ -95,23 +90,6 @@ function presidentielle2027Body(route) {
   });
 }
 
-function candidate2027Body(route) {
-  const c = load2027().candidats.candidats.find((x) => `/presidentielle-2027/candidats/${x.slug}` === route.path);
-  const lines = [
-    `Parti ou mouvement : ${esc(c.parti || "non renseigné")}.`,
-    `Statut : ${esc((STATUT[c.statut] ?? c.statut).toLowerCase())}${c.dateDeclaration ? ` (date de déclaration : ${esc(frDate(c.dateDeclaration))})` : ""}.`,
-  ];
-  return page({
-    h1: `${c.prenom} ${c.nom} : fiche candidat à la présidentielle 2027`,
-    intro: `${esc(c.prenom)} ${esc(c.nom)} figure dans la liste des candidats déclarés et pressentis à l'élection présidentielle de 2027. Cette liste est établie à partir de sources de presse et n'a aucune valeur officielle : la liste officielle sera publiée par le Conseil constitutionnel après validation des parrainages.`,
-    sections: [
-      `<section><h2>Informations</h2><ul>${lines.map((l) => `<li>${l}</li>`).join("")}</ul></section>`,
-      `<section><h2>Pour aller plus loin</h2><ul><li>${link("/presidentielle-2027", "Tous les candidats et le calendrier de la présidentielle 2027")}</li><li>${link("/sondages-presidentielle-2027", "Sondages de la présidentielle 2027")}</li><li>${link("/parrainages", "Parrainages présidentiels")}</li></ul></section>`,
-    ],
-    source: `Source : ${esc(c.sourceLabel)}. Vérifié le ${esc(frDate(c.dateVerification))}.`,
-  });
-}
-
 function genericBody(route) {
   const h1 = route.title.replace(/\s+[—:-]\s+PrésiFrance$/, "");
   return page({
@@ -130,6 +108,6 @@ const specific = new Map([
 ]);
 
 export function buildStaticBody(route) {
-  if (route.path.startsWith("/presidentielle-2027/candidats/")) return candidate2027Body(route);
+  if (route.path.startsWith("/presidentielle-2027/candidats/")) return buildCandidate2027Body(route);
   return (specific.get(route.path) ?? genericBody)(route);
 }

@@ -65,6 +65,18 @@ for (const route of routes) {
   else if (titles.has(title)) fail(`${route.path} : title identique à ${titles.get(title)} (« ${title} »)`);
   else titles.set(title, route.path);
 
+  if (route.path.startsWith("/presidentielle-2027/candidats/")) {
+    const ld = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => {
+      try {
+        return JSON.parse(m[1]);
+      } catch {
+        return null;
+      }
+    });
+    if (!ld.some((d) => d?.["@type"] === "FAQPage" && d.mainEntity?.length >= 2)) fail(`${route.path} : JSON-LD FAQPage absent ou invalide`);
+    if (!/ : candidature présidentielle 2027, sondages et parcours<\/title>/.test(html)) fail(`${route.path} : titre de fiche candidat inattendu`);
+  }
+
   const root = /<div id="root">([\s\S]*?)<\/main>/i.exec(html)?.[1] ?? "";
   const h1 = root.match(/<h1[\s>]/gi) ?? [];
   if (h1.length !== 1) fail(`${route.path} : ${h1.length} balises H1 (1 attendue)`);

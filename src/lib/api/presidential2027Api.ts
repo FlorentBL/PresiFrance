@@ -13,6 +13,15 @@ export interface Candidate2027 {
   sourceLabel: string;
   dateVerification: string;
   note?: string;
+  /** Fonction actuelle ou passée, facultative : renseignée seulement avec sa source, jamais supposée. */
+  fonction?: CandidateFonction;
+}
+
+export interface CandidateFonction {
+  libelle: string;
+  sourceUrl: string;
+  sourceLabel: string;
+  dateVerification: string;
 }
 
 export interface Candidates2027Dataset {
