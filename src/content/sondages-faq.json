@@ -1,0 +1,22 @@
+[
+  {
+    "q": "Comment est calculée la moyenne des sondages de la présidentielle 2027 ?",
+    "a": "Pour chaque candidat, PrésiFrance fait la moyenne de ses scores d'intentions de vote au 1er tour dans tous les sondages dont le terrain s'est terminé au cours des 30 derniers jours avant la date du dernier sondage pris en compte. Chaque sondage est pondéré par la taille de son échantillon. Lorsqu'un sondage teste plusieurs hypothèses (plusieurs listes de candidats), le score du candidat est d'abord moyenné sur ces hypothèses. Une moyenne ne porte que sur les sondages qui testent le candidat : elle n'est pas comparable d'un candidat à l'autre comme le serait un score issu d'un même sondage. Cette agrégation est un outil pédagogique, pas une prévision ni un sondage publié par un institut."
+  },
+  {
+    "q": "Quelle est la marge d'erreur d'un sondage ?",
+    "a": "Un sondage est une photographie à un instant donné et comporte une marge d'erreur. Pour un échantillon de 1 000 personnes, elle atteint environ ± 3 points pour un score de 50 % et environ ± 2,5 points pour un score de 20 % (intervalle de confiance à 95 %, calcul théorique d'un échantillon aléatoire ; les instituts utilisent des échantillons par quotas et des redressements). La colonne « Marge d'erreur » du tableau applique ce calcul théorique à la moyenne de chaque candidat."
+  },
+  {
+    "q": "Qu'est-ce que la Commission des sondages ?",
+    "a": "La Commission des sondages est l'autorité administrative chargée de veiller à la qualité et à l'objectivité des sondages d'opinion publiés en période électorale. Chaque sondage publié doit être accompagné d'une notice méthodologique (institut, commanditaire, dates de terrain, taille et méthode de constitution de l'échantillon, marge d'erreur). La Commission publie ces notices sur son site, commission-des-sondages.fr, et peut formuler des observations."
+  },
+  {
+    "q": "À quelle fréquence cette page est-elle mise à jour ?",
+    "a": "Les données sont vérifiées chaque jour et la page est régénérée dès qu'un nouveau sondage est ajouté. La date de mise à jour des données figure en haut de la page. Les sondages sont repris depuis les sources citées en bas de page (notamment l'article de Wikipédia consacré aux sondages de la présidentielle 2027) ; les notices des instituts restent la référence."
+  },
+  {
+    "q": "Pourquoi tous les candidats ne figurent-ils pas dans chaque sondage ?",
+    "a": "Chaque institut choisit les candidats et les hypothèses qu'il teste : la liste officielle des candidats ne sera arrêtée par le Conseil constitutionnel qu'après la validation des parrainages. PrésiFrance retient tous les candidats testés, sans préférence politique."
+  }
+]

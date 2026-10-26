@@ -6,6 +6,7 @@ import {
   presidentialYearSummaries,
 } from "../../seo-routes.mjs";
 import { eligibleCommunes, load2027 } from "./data.mjs";
+import { buildSondagesBody } from "./sondages.mjs";
 import { esc, fmtInt, link, linkList, page, table } from "./html.mjs";
 
 const SOURCE_DATA =
@@ -127,6 +128,7 @@ const specific = new Map([
   ["/resultats-presidentielle", resultsHubBody],
   ["/explorer", exploreBody],
   ["/presidentielle-2027", presidentielle2027Body],
+  ["/sondages-presidentielle-2027", buildSondagesBody],
 ]);
 
 export function buildStaticBody(route) {
