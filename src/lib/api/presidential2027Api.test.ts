@@ -8,6 +8,7 @@ import {
   formatPartialDate,
   getCalendar2027,
   getCandidates2027,
+  groupCandidatesByStatus,
   sortCandidatesAlphabetically,
 } from "./presidential2027Api";
 
@@ -83,5 +84,18 @@ describe("données présidentielle 2027", () => {
     const input = [{ nom: "Zed", prenom: "A" }, { nom: "Abe", prenom: "B" }];
     expect(sortCandidatesAlphabetically(input)[0].nom).toBe("Abe");
     expect(input[0].nom).toBe("Zed");
+  });
+});
+
+describe("groupCandidatesByStatus", () => {
+  it("ordonne les groupes déclarés, pressentis, retirés et omet les groupes vides", () => {
+    const list = [
+      { slug: "a", statut: "retire" as const },
+      { slug: "b", statut: "declare" as const },
+      { slug: "c", statut: "declare" as const },
+    ];
+    const groups = groupCandidatesByStatus(list);
+    expect(groups.map((g) => g.statut)).toEqual(["declare", "retire"]);
+    expect(groups[0].candidats.map((c) => c.slug)).toEqual(["b", "c"]);
   });
 });

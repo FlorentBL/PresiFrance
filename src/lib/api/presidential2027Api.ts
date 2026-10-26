@@ -44,6 +44,23 @@ export const STATUS_LABEL: Record<CandidateStatus, string> = {
   retire: "Retiré",
 };
 
+const STATUS_ORDER: readonly CandidateStatus[] = ["declare", "pressenti", "retire"];
+
+export const STATUS_GROUP_TITLE: Record<CandidateStatus, string> = {
+  declare: "Candidats déclarés",
+  pressenti: "Personnalités pressenties",
+  retire: "Candidatures retirées",
+};
+
+/** Regroupe par statut (déclarés, pressentis, retirés) en conservant l'ordre reçu ; groupes vides omis. */
+export function groupCandidatesByStatus<T extends { statut: CandidateStatus }>(
+  list: readonly T[],
+): { statut: CandidateStatus; candidats: T[] }[] {
+  return STATUS_ORDER.map((statut) => ({ statut, candidats: list.filter((c) => c.statut === statut) })).filter(
+    (g) => g.candidats.length > 0,
+  );
+}
+
 /** Ordre alphabétique strict (nom puis prénom), identique pour tous les candidats. */
 export function sortCandidatesAlphabetically<T extends { nom: string; prenom: string }>(list: readonly T[]): T[] {
   return [...list].sort(

@@ -2,7 +2,7 @@
   "meta": {
     "election": 2027,
     "avertissement": "Liste établie à partir de sources de presse ; elle n'a aucune valeur officielle. La liste officielle est publiée par le Conseil constitutionnel après validation des parrainages. Les noms sont classés par ordre alphabétique.",
-    "dateVerification": "2026-10-25"
+    "dateVerification": "2026-10-26"
   },
   "candidats": [
     {
@@ -66,10 +66,11 @@
       "nom": "Bertrand",
       "parti": "Nous France",
       "statut": "declare",
-      "dateDeclaration": "2026-08-26",
-      "sourceUrl": "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
-      "sourceLabel": "LCP-Assemblée nationale, « Présidentielle 2027 : la liste des candidats déjà en lice et des prétendants » (mis à jour le 14/10/2026)",
-      "dateVerification": "2026-10-25"
+      "dateDeclaration": "2026-08-27",
+      "sourceUrl": "https://lcp.fr/actualites/2027-figure-de-la-droite-xavier-bertrand-confirme-qu-il-sera-candidat-a-l-election",
+      "sourceLabel": "LCP-Assemblée nationale, « 2027 : figure de la droite, Xavier Bertrand confirme qu'il sera candidat à l'élection présidentielle »",
+      "dateVerification": "2026-10-26",
+      "note": "A annoncé le 27 août 2026 qu'il serait candidat, hors primaire ; déclaration officielle annoncée pour la fin de l'année selon la presse."
     },
     {
       "slug": "karim-bouamrane",
@@ -102,8 +103,8 @@
       "dateDeclaration": null,
       "sourceUrl": "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
       "sourceLabel": "LCP-Assemblée nationale, « Présidentielle 2027 : la liste des candidats déjà en lice et des prétendants » (mis à jour le 14/10/2026)",
-      "dateVerification": "2026-10-25",
-      "note": "A présenté son projet dans la presse ; aucune déclaration de candidature selon la source."
+      "dateVerification": "2026-10-26",
+      "note": "A présenté son projet dans la presse ; classé parmi les prétendants par LCP, présenté comme candidat par d'autres médias."
     },
     {
       "slug": "dominique-de-villepin",
@@ -146,10 +147,10 @@
       "parti": "Place publique",
       "statut": "declare",
       "dateDeclaration": null,
-      "sourceUrl": "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
-      "sourceLabel": "LCP-Assemblée nationale, « Présidentielle 2027 : la liste des candidats déjà en lice et des prétendants » (mis à jour le 14/10/2026)",
-      "dateVerification": "2026-10-25",
-      "note": "Vainqueur de la primaire de la gauche sociale-démocrate (octobre 2026)."
+      "sourceUrl": "https://www.franceinfo.fr/politique/raphael-glucksmann/raphael-glucksmann-remporte-des-le-premier-tour-la-primaire-a-gauche_8232967.html",
+      "sourceLabel": "franceinfo, « Raphaël Glucksmann remporte dès le premier tour la primaire à gauche » (11/10/2026)",
+      "dateVerification": "2026-10-26",
+      "note": "Désigné le 11 octobre 2026 par la primaire de la gauche sociale-démocrate, dès le premier tour (66,13 %)."
     },
     {
       "slug": "francois-hollande",
@@ -344,6 +345,188 @@
       "sourceUrl": "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
       "sourceLabel": "LCP-Assemblée nationale, « Présidentielle 2027 : la liste des candidats déjà en lice et des prétendants » (mis à jour le 14/10/2026)",
       "dateVerification": "2026-10-25"
+    },
+    {
+      "slug": "olivier-faure",
+      "prenom": "Olivier",
+      "nom": "Faure",
+      "parti": "Parti socialiste",
+      "statut": "retire",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/politique/raphael-glucksmann/raphael-glucksmann-remporte-des-le-premier-tour-la-primaire-a-gauche_8232967.html",
+      "sourceLabel": "franceinfo, « Raphaël Glucksmann remporte dès le premier tour la primaire à gauche » (11/10/2026)",
+      "dateVerification": "2026-10-26",
+      "note": "Candidat à la primaire de la gauche sociale-démocrate, remportée le 11 octobre 2026 par Raphaël Glucksmann ; a obtenu 14,48 %."
+    },
+    {
+      "slug": "segolene-royal",
+      "prenom": "Ségolène",
+      "nom": "Royal",
+      "parti": "Parti socialiste",
+      "statut": "retire",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/politique/raphael-glucksmann/raphael-glucksmann-remporte-des-le-premier-tour-la-primaire-a-gauche_8232967.html",
+      "sourceLabel": "franceinfo, « Raphaël Glucksmann remporte dès le premier tour la primaire à gauche » (11/10/2026)",
+      "dateVerification": "2026-10-26",
+      "note": "Candidate à la primaire de la gauche sociale-démocrate, remportée le 11 octobre 2026 par Raphaël Glucksmann ; a obtenu 7,62 %."
+    },
+    {
+      "slug": "emmanuel-maurel",
+      "prenom": "Emmanuel",
+      "nom": "Maurel",
+      "parti": "Gauche républicaine et socialiste",
+      "statut": "retire",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/politique/raphael-glucksmann/raphael-glucksmann-remporte-des-le-premier-tour-la-primaire-a-gauche_8232967.html",
+      "sourceLabel": "franceinfo, « Raphaël Glucksmann remporte dès le premier tour la primaire à gauche » (11/10/2026)",
+      "dateVerification": "2026-10-26",
+      "note": "Candidat à la primaire de la gauche sociale-démocrate, remportée le 11 octobre 2026 par Raphaël Glucksmann ; a obtenu 5,92 %."
+    },
+    {
+      "slug": "jerome-guedj",
+      "prenom": "Jérôme",
+      "nom": "Guedj",
+      "parti": "Parti socialiste",
+      "statut": "retire",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/politique/raphael-glucksmann/raphael-glucksmann-remporte-des-le-premier-tour-la-primaire-a-gauche_8232967.html",
+      "sourceLabel": "franceinfo, « Raphaël Glucksmann remporte dès le premier tour la primaire à gauche » (11/10/2026)",
+      "dateVerification": "2026-10-26",
+      "note": "Candidat à la primaire de la gauche sociale-démocrate, remportée le 11 octobre 2026 par Raphaël Glucksmann ; a obtenu 5,83 %."
+    },
+    {
+      "slug": "clementine-autain",
+      "prenom": "Clémentine",
+      "nom": "Autain",
+      "parti": "L'Après",
+      "statut": "retire",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26",
+      "note": "A annoncé sa candidature, puis y a renoncé en juillet 2026, après l'échec du projet de primaire unitaire à gauche."
+    },
+    {
+      "slug": "lydie-massard",
+      "prenom": "Lydie",
+      "nom": "Massard",
+      "parti": "Union démocratique bretonne",
+      "statut": "retire",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26",
+      "note": "Candidate déclarée à la primaire de la gauche ; a renoncé début septembre 2026."
+    },
+    {
+      "slug": "jean-lassalle",
+      "prenom": "Jean",
+      "nom": "Lassalle",
+      "parti": "Résistons",
+      "statut": "declare",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26"
+    },
+    {
+      "slug": "gilles-platret",
+      "prenom": "Gilles",
+      "nom": "Platret",
+      "parti": "Sans étiquette",
+      "statut": "declare",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26"
+    },
+    {
+      "slug": "mira-markovic",
+      "prenom": "Mira",
+      "nom": "Markovic",
+      "parti": "Parti animaliste",
+      "statut": "declare",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26"
+    },
+    {
+      "slug": "erwan-rohou",
+      "prenom": "Erwan",
+      "nom": "Rohou",
+      "parti": "Mouvement écologiste indépendant",
+      "statut": "declare",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26"
+    },
+    {
+      "slug": "jean-francois-legendre",
+      "prenom": "Jean-François",
+      "nom": "Legendre",
+      "parti": "À nous maintenant",
+      "statut": "declare",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26"
+    },
+    {
+      "slug": "manolo-mlekuz",
+      "prenom": "Manolo",
+      "nom": "Mlekuz",
+      "parti": "Trajectoire",
+      "statut": "declare",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26"
+    },
+    {
+      "slug": "benoit-mathieu",
+      "prenom": "Benoît",
+      "nom": "Mathieu",
+      "parti": "à confirmer",
+      "statut": "declare",
+      "dateDeclaration": "2026-03",
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26"
+    },
+    {
+      "slug": "augustin-billetdoux",
+      "prenom": "Augustin",
+      "nom": "Billetdoux",
+      "parti": "à confirmer",
+      "statut": "declare",
+      "dateDeclaration": "2025-09",
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26"
+    },
+    {
+      "slug": "christian-collovati",
+      "prenom": "Christian",
+      "nom": "Collovati",
+      "parti": "à confirmer",
+      "statut": "declare",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26"
+    },
+    {
+      "slug": "sylvain-pierre-durif",
+      "prenom": "Sylvain Pierre",
+      "nom": "Durif",
+      "parti": "à confirmer",
+      "statut": "declare",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
+      "dateVerification": "2026-10-26"
     }
   ]
 }

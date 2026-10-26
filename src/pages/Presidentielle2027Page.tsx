@@ -9,7 +9,13 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { CandidateAvatar, GlowCard, PageHero, Section } from "@/components/design";
 import { StatusBadge } from "@/components/presidentielle2027/StatusBadge";
-import { getCalendar2027, getCandidates2027, formatPartialDate } from "@/lib/api/presidential2027Api";
+import {
+  STATUS_GROUP_TITLE,
+  formatPartialDate,
+  getCalendar2027,
+  getCandidates2027,
+  groupCandidatesByStatus,
+} from "@/lib/api/presidential2027Api";
 import type { GeoCommune } from "@/lib/api/geoApi";
 import { DEFAULT_YEAR } from "@/lib/elections";
 
@@ -27,7 +33,7 @@ export default function Presidentielle2027Page() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead
         title="Présidentielle 2027 : candidats et calendrier"
-        description="Élection présidentielle 2027 : liste alphabétique des candidats déclarés et pressentis avec sources, calendrier officiel du scrutin et accès aux données."
+        description="Élection présidentielle 2027 : candidats déclarés, pressentis et retirés, classés par ordre alphabétique avec leurs sources, calendrier officiel du scrutin et accès aux données."
         path={PATH}
       />
       <JsonLd path={PATH} breadcrumbs={[{ name: "Présidentielle 2027", path: PATH }]} />
@@ -48,7 +54,7 @@ export default function Presidentielle2027Page() {
 
         <Section
           eyebrow="Candidats"
-          title="Candidats (ordre alphabétique)"
+          title="Candidats"
           description={candidates.data?.meta.avertissement}
         >
           {candidates.isLoading && (
@@ -57,32 +63,43 @@ export default function Presidentielle2027Page() {
             </p>
           )}
           {candidates.isError && <p className="text-destructive">Impossible de charger la liste des candidats.</p>}
-          {candidates.data && (
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {candidates.data.candidats.map((c) => (
-                <li key={c.slug}>
-                  <GlowCard interactive className="h-full p-5">
-                    <Link
-                      to={`${PATH}/candidats/${c.slug}`}
-                      className="flex items-center gap-4 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-                    >
-                      <CandidateAvatar prenom={c.prenom} nom={c.nom} size="md" />
-                      <span className="min-w-0">
-                        <span className="block font-heading text-lg font-semibold">
-                          {c.prenom} {c.nom}
-                        </span>
-                        <span className="block text-sm text-muted-foreground">{c.parti}</span>
-                        <span className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                          <StatusBadge statut={c.statut} />
-                          <span>Déclaration : {formatPartialDate(c.dateDeclaration)}</span>
-                        </span>
-                      </span>
-                    </Link>
-                  </GlowCard>
-                </li>
-              ))}
-            </ul>
-          )}
+          {candidates.data &&
+            groupCandidatesByStatus(candidates.data.candidats).map((group) => (
+              <div key={group.statut} className="mb-10 last:mb-0">
+                <h3 className="mb-4 font-heading text-xl font-semibold">
+                  {STATUS_GROUP_TITLE[group.statut]}{" "}
+                  <span className="text-base font-normal text-muted-foreground">({group.candidats.length})</span>
+                </h3>
+                <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.candidats.map((c) => (
+                    <li key={c.slug}>
+                      <GlowCard interactive className={group.statut === "retire" ? "h-full p-5 opacity-80" : "h-full p-5"}>
+                        <Link
+                          to={`${PATH}/candidats/${c.slug}`}
+                          className="flex items-center gap-4 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                        >
+                          <CandidateAvatar prenom={c.prenom} nom={c.nom} size="md" />
+                          <span className="min-w-0">
+                            <span className="block font-heading text-lg font-semibold">
+                              {c.prenom} {c.nom}
+                            </span>
+                            <span className="block text-sm text-muted-foreground">{c.parti}</span>
+                            <span className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                              <StatusBadge statut={c.statut} />
+                              {c.statut === "retire" ? (
+                                c.note && <span>{c.note}</span>
+                              ) : (
+                                <span>Déclaration : {formatPartialDate(c.dateDeclaration)}</span>
+                              )}
+                            </span>
+                          </span>
+                        </Link>
+                      </GlowCard>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
         </Section>
 
         <Section eyebrow="Calendrier" title="Calendrier du scrutin" width="narrow">
