@@ -10,6 +10,8 @@ import SiteFooter from "@/components/SiteFooter";
 import { getDepartmentCommunes, GeoCommuneWithCoords } from "@/lib/api/geoApi";
 import { getDepartmentIntro } from "@/lib/departmentSeo";
 import { getDepartmentName } from "@/lib/departments";
+import { depensesDepartementUrl } from "@/lib/partnerSites";
+import DepensesPubliquesCard from "@/components/partner/DepensesPubliquesCard";
 
 const DepartmentExplorationPage = () => {
   const { depCode } = useParams<{ depCode: string }>();
@@ -119,6 +121,17 @@ const DepartmentExplorationPage = () => {
                   Aucune commune ne correspond à votre recherche.
                 </div>
               )}
+            </div>
+          )}
+
+          {depCode && (
+            <div className="mt-12">
+              <DepensesPubliquesCard
+                title={`Les finances des communes : ${departmentName}`}
+                text="Dette, dépenses et fiscalité de chaque commune du département, avec leurs classements."
+                href={depensesDepartementUrl(depCode)}
+                cta="Voir les finances du département"
+              />
             </div>
           )}
 

@@ -32,6 +32,8 @@ import { getCommuneWithCoords, getDepartmentCommunes } from "@/lib/api/geoApi";
 import { getCommuneResults, getDepartmentAggregate, ElectionResult } from "@/lib/api/resultsApi";
 import { getNationalResults } from "@/lib/api/nationalResultsApi";
 import { addToSearchHistory } from "@/lib/searchHistory";
+import { depensesCommuneUrl } from "@/lib/partnerSites";
+import DepensesPubliquesCard from "@/components/partner/DepensesPubliquesCard";
 import { DEFAULT_YEAR, PresidentialYear } from "@/lib/elections";
 
 const EVOLUTION_YEARS = [1995, 2002, 2007, 2012, 2017, 2022] as const;
@@ -254,6 +256,15 @@ const CommunePage = () => {
             />
           </Section>
         )}
+
+        <div className="mx-auto max-w-6xl px-4 pb-4 sm:px-8">
+          <DepensesPubliquesCard
+            title={`Les finances de ${geo.nom}`}
+            text={`Budget, dette par habitant et fiscalité locale de ${geo.nom}, comparés aux communes de même taille.`}
+            href={depensesCommuneUrl(geo.nom, geo.code)}
+            cta={`Voir les finances de ${geo.nom}`}
+          />
+        </div>
 
         <div className="mx-auto max-w-6xl px-4 sm:px-8">
           <SeoConnectorLinks context="commune" communeName={geo.nom} />

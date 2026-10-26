@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { DEPENSES_PUBLIQUES_NAME, DEPENSES_PUBLIQUES_URL } from "@/lib/partnerSites";
 
 const NAV_LINKS = [
   { to: "/", label: "Accueil" },
@@ -66,6 +67,14 @@ export default function SiteFooter() {
               <li><Link to="/mentions-legales" className="text-foreground/85 transition-colors hover:text-primary">Mentions Légales</Link></li>
               <li><Link to="/politique-de-confidentialite" className="text-foreground/85 transition-colors hover:text-primary">Confidentialité</Link></li>
             </ul>
+            <h2 className="mb-4 mt-8 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Site partenaire</h2>
+            <p className="text-sm">
+              <a href={DEPENSES_PUBLIQUES_URL} target="_blank" rel="noopener" className="text-foreground/85 transition-colors hover:text-primary">
+                {DEPENSES_PUBLIQUES_NAME}
+                <span className="sr-only"> (nouvel onglet)</span>
+              </a>
+              <span className="mt-1 block text-xs text-muted-foreground">Budget, dette et fiscalité de votre commune.</span>
+            </p>
           </div>
         </div>
 

@@ -18,6 +18,7 @@ import {
 } from "@/lib/api/presidential2027Api";
 import type { GeoCommune } from "@/lib/api/geoApi";
 import { DEFAULT_YEAR } from "@/lib/elections";
+import { DEPENSES_DETTE_FRANCE_URL, DEPENSES_PUBLIQUES_NAME } from "@/lib/partnerSites";
 
 const PATH = "/presidentielle-2027";
 const linkClass = "font-medium text-primary hover:underline";
@@ -142,6 +143,12 @@ export default function Presidentielle2027Page() {
             <li><Link to="/sondages-presidentielle-2027" className={linkClass}>Sondages de la présidentielle 2027</Link></li>
             <li><Link to="/presidentielle-2022" className={linkClass}>Résultats de la présidentielle 2022</Link></li>
             <li><Link to="/presidentielle-2017" className={linkClass}>Résultats de la présidentielle 2017</Link></li>
+            <li>
+              <a href={DEPENSES_DETTE_FRANCE_URL} target="_blank" rel="noopener" className={linkClass}>
+                Dette et dépenses publiques de la France, un enjeu de la campagne ({DEPENSES_PUBLIQUES_NAME})
+                <span className="sr-only"> (nouvel onglet)</span>
+              </a>
+            </li>
           </ul>
           <h3 className="mb-3 font-heading text-xl font-semibold">Trouver une commune</h3>
           <CommuneSearch onSelect={handleSelect} />
