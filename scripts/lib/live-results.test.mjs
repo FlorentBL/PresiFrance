@@ -1,6 +1,6 @@
-import assert from "node:assert/strict";
+// @vitest-environment node
 import { readFileSync } from "node:fs";
-import { test } from "node:test";
+import { expect, it } from "vitest";
 
 import { buildRoundFiles, decodeText, mergeStatus, parseMinistryCsv } from "./live-results.mjs";
 
@@ -12,76 +12,76 @@ const load = (t, mod = (s) => s) => ({
 });
 const opts = (round, extra = {}) => ({ round, fetchedAt: "2022-04-10T22:00:00Z", source: { label: "test", url: null }, ...extra });
 
-test("décode le Windows-1252 et lit les trois niveaux (1er tour 2022)", () => {
+it("décode le Windows-1252 et lit les trois niveaux (1er tour 2022)", () => {
   const p = load("t1");
-  assert.equal(p.national.level, "national");
-  assert.equal(p.departements.level, "departement");
-  assert.equal(p.communes.level, "commune");
-  assert.equal(p.national.rows[0].inscrits, 48747826);
-  assert.equal(p.national.rows[0].candidates.length, 12);
+  expect(p.national.level).toBe("national");
+  expect(p.departements.level).toBe("departement");
+  expect(p.communes.level).toBe("commune");
+  expect(p.national.rows[0].inscrits).toBe(48747826);
+  expect(p.national.rows[0].candidates.length).toBe(12);
   const clem = p.communes.rows.find((r) => r.communeName === "L'Abergement-Clémenciat");
-  assert.equal(clem.inscrits, 645);
-  assert.equal(clem.candidates.find((c) => c.nom === "MACRON").voix, 150);
-  assert.ok(p.departements.rows.some((r) => r.depName === "Saint-Martin/Saint-Barthélemy"));
+  expect(clem.inscrits).toBe(645);
+  expect(clem.candidates.find((c) => c.nom === "MACRON").voix).toBe(150);
+  expect(p.departements.rows.some((r) => r.depName === "Saint-Martin/Saint-Barthélemy")).toBeTruthy();
 });
 
-test("normalise un tour complet vers des fichiers compacts", () => {
+it("normalise un tour complet vers des fichiers compacts", () => {
   const { summary, files } = buildRoundFiles(load("t1"), opts(1));
-  assert.equal(summary.state, "complet-provisoire");
-  assert.equal(summary.couvertureInscrits, 100);
-  assert.deepEqual(Object.keys(files).sort(), [
+  expect(summary.state).toBe("complet-provisoire");
+  expect(summary.couvertureInscrits).toBe(100);
+  expect(Object.keys(files).sort()).toEqual([
     "t1/communes/01.json", "t1/communes/2A.json", "t1/communes/75.json", "t1/communes/ZA.json",
     "t1/departements.json", "t1/national.json",
   ]);
   const nat = files["t1/national.json"];
-  assert.equal(nat.rows.FE[1], 48747826);
-  assert.equal(nat.candidates.length, 12);
-  assert.ok(files["t1/communes/75.json"].rows["75056"]);
-  assert.ok(files["t1/communes/ZA.json"].rows["ZA101"]);
-  assert.equal(files["t1/departements.json"].etat["01"], "Complet");
+  expect(nat.rows.FE[1]).toBe(48747826);
+  expect(nat.candidates.length).toBe(12);
+  expect(files["t1/communes/75.json"].rows["75056"]).toBeTruthy();
+  expect(files["t1/communes/ZA.json"].rows["ZA101"]).toBeTruthy();
+  expect(files["t1/departements.json"].etat["01"]).toBe("Complet");
 });
 
-test("2nd tour : deux candidats", () => {
+it("2nd tour : deux candidats", () => {
   const { files } = buildRoundFiles(load("t2"), opts(2));
-  assert.equal(files["t2/national.json"].candidates.length, 2);
+  expect(files["t2/national.json"].candidates.length).toBe(2);
 });
 
-test("résultats partiels : seules les communes complètes sont publiées", () => {
+it("résultats partiels : seules les communes complètes sont publiées", () => {
   const partial = (s) => s.replace(/^(01;Ain;002;[^;]*;)Complet/m, "$1Partiel").replace(/^(75;Paris;056;[^;]*;)Complet/m, "$1Non saisi");
   const { summary, files } = buildRoundFiles(load("t1", partial), opts(1));
-  assert.equal(summary.state, "partiel");
-  assert.equal(summary.communesCompletes, summary.communesTotal - 2);
-  assert.ok(summary.couvertureInscrits > 0 && summary.couvertureInscrits < 100);
-  assert.equal(files["t1/communes/75.json"], undefined);
-  assert.equal(files["t1/communes/01.json"].rows["01002"], undefined);
-  assert.ok(files["t1/communes/01.json"].rows["01001"]);
+  expect(summary.state).toBe("partiel");
+  expect(summary.communesCompletes).toBe(summary.communesTotal - 2);
+  expect(summary.couvertureInscrits > 0 && summary.couvertureInscrits < 100).toBeTruthy();
+  expect(files["t1/communes/75.json"]).toBe(undefined);
+  expect(files["t1/communes/01.json"].rows["01002"]).toBe(undefined);
+  expect(files["t1/communes/01.json"].rows["01001"]).toBeTruthy();
 });
 
-test("aucune commune complète : état « avenir »", () => {
+it("aucune commune complète : état « avenir »", () => {
   const none = (s) => s.replace(/;Complet;/g, ";Non saisi;");
-  assert.equal(buildRoundFiles(load("t1", none), opts(1)).summary.state, "avenir");
+  expect(buildRoundFiles(load("t1", none), opts(1)).summary.state).toBe("avenir");
 });
 
-test("l'indicateur « définitif » ne vient que de l'opérateur", () => {
-  assert.equal(buildRoundFiles(load("t1"), opts(1, { final: true })).summary.state, "definitif");
+it("l'indicateur « définitif » ne vient que de l'opérateur", () => {
+  expect(buildRoundFiles(load("t1"), opts(1, { final: true })).summary.state).toBe("definitif");
 });
 
-test("refuse un fichier incohérent ou un format inattendu", () => {
+it("refuse un fichier incohérent ou un format inattendu", () => {
   const bad = (s) => s.replace("MACRON;Emmanuel;150;", "MACRON;Emmanuel;151;");
-  assert.throws(() => buildRoundFiles({ ...load("t1"), communes: parseMinistryCsv(bad(fx("t1-communes"))) }, opts(1)), /somme des voix/);
-  assert.throws(() => parseMinistryCsv("a;b\n1;2"), /Colonne/);
-  assert.throws(() => buildRoundFiles({ ...load("t1"), national: load("t1").communes }, opts(1)), /dans l'ordre/);
+  expect(() => buildRoundFiles({ ...load("t1"), communes: parseMinistryCsv(bad(fx("t1-communes"))) }, opts(1))).toThrow(/somme des voix/);
+  expect(() => parseMinistryCsv("a;b\n1;2")).toThrow(/Colonne/);
+  expect(() => buildRoundFiles({ ...load("t1"), national: load("t1").communes }, opts(1))).toThrow(/dans l'ordre/);
 });
 
-test("statut : tour courant, couverture jamais en baisse, définitif verrouillé", () => {
+it("statut : tour courant, couverture jamais en baisse, définitif verrouillé", () => {
   const sum = (state, c) => ({ state, couvertureInscrits: c, fetchedAt: "x", source: { label: "t", url: null } });
   let st = mergeStatus(null, 1, sum("partiel", 40));
-  assert.equal(st.current, 1);
+  expect(st.current).toBe(1);
   st = mergeStatus(st, 1, sum("partiel", 55));
-  assert.throws(() => mergeStatus(st, 1, sum("partiel", 50)), /baisse/);
+  expect(() => mergeStatus(st, 1, sum("partiel", 50))).toThrow(/baisse/);
   st = mergeStatus(st, 1, sum("definitif", 100));
-  assert.throws(() => mergeStatus(st, 1, sum("partiel", 100)), /définitif/);
+  expect(() => mergeStatus(st, 1, sum("partiel", 100))).toThrow(/définitif/);
   st = mergeStatus(st, 2, sum("partiel", 10));
-  assert.equal(st.current, 2);
-  assert.equal(st.rounds.t1.state, "definitif");
+  expect(st.current).toBe(2);
+  expect(st.rounds.t1.state).toBe("definitif");
 });
