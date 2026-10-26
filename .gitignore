@@ -31,3 +31,4 @@ parrainages*.csv
 
 # Wrangler (Cloudflare) local state
 .wrangler/
+outputs/
