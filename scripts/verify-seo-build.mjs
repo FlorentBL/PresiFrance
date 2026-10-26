@@ -9,6 +9,9 @@ import { seoPrerenderRoutes } from "./seo-routes.mjs";
 const distDir = path.resolve(process.cwd(), "dist");
 const siteUrl = String(process.env.SITE_URL || "https://presifrance.fr").replace(/\/+$/, "");
 const MIN_WORDS = 80;
+// Pages de résultats historiques (/presidentielle-AAAA 1965-2022 et hub) : contenu riche exigé (vague SEO 5).
+const MIN_WORDS_HISTORIC = 500;
+const isHistoricResultsPage = (p) => p === "/resultats-presidentielle" || /^\/presidentielle-(19\d\d|20[0-2][0-2])$/.test(p);
 // Workers Static Assets : 20 000 fichiers par version sur l'offre gratuite, 100 000 sur l'offre payante
 // (developers.cloudflare.com/workers/platform/limits, consulté le 26/10/2026). Marge sous la limite gratuite.
 const MAX_FILES = Number(process.env.SEO_MAX_DIST_FILES || 19000);
@@ -77,6 +80,17 @@ for (const route of routes) {
     if (!/ : candidature présidentielle 2027, sondages et parcours<\/title>/.test(html)) fail(`${route.path} : titre de fiche candidat inattendu`);
   }
 
+  if (isHistoricResultsPage(route.path)) {
+    const ld = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => {
+      try {
+        return JSON.parse(m[1]);
+      } catch {
+        return null;
+      }
+    });
+    if (!ld.some((d) => d?.["@type"] === "FAQPage" && d.mainEntity?.length >= 3)) fail(`${route.path} : JSON-LD FAQPage absent ou invalide`);
+  }
+
   const root = /<div id="root">([\s\S]*?)<\/main>/i.exec(html)?.[1] ?? "";
   const h1 = root.match(/<h1[\s>]/gi) ?? [];
   if (h1.length !== 1) fail(`${route.path} : ${h1.length} balises H1 (1 attendue)`);
@@ -85,6 +99,7 @@ for (const route of routes) {
     return t ? t.split(" ").length : 0;
   })();
   if (words < MIN_WORDS) fail(`${route.path} : ${words} mots visibles (minimum ${MIN_WORDS})`);
+  else if (isHistoricResultsPage(route.path) && words < MIN_WORDS_HISTORIC) fail(`${route.path} : ${words} mots visibles (minimum ${MIN_WORDS_HISTORIC} pour les pages de résultats historiques)`);
 }
 
 // robots.txt : robots des IA admis (décision du 26/10/2026), /data/ et /assets/ fermés.

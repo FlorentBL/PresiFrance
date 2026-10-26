@@ -4,6 +4,7 @@ import { buildCandidate2027JsonLd, findCandidate } from "./candidate-2027.mjs";
 import { buildCommuneBody, communeRoutes } from "./communes.mjs";
 import { buildDepartmentBody, matchDepartment } from "./departments.mjs";
 import { buildStaticBody } from "./static-pages.mjs";
+import { yearsJsonLd } from "./years-content.mjs";
 import { buildYearBody, matchYear } from "./years.mjs";
 
 const builders = [
@@ -26,5 +27,5 @@ export function generatedRoutes() {
 /** Objets JSON-LD (FAQPage…) à placer dans <head> pour la route ; [] si aucun. */
 export function buildJsonLd(route) {
   if (route.path.startsWith("/presidentielle-2027/candidats/") && findCandidate(route.path)) return buildCandidate2027JsonLd(route);
-  return [];
+  return yearsJsonLd(route);
 }
