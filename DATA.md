@@ -67,6 +67,10 @@ Decision de Florent du 25 octobre 2026 : les mises a jour **de donnees** (sondag
 - Routines Timon (agent `presifrance.coder`, taches `chore`) : chaque jour a 7 h le script ; chaque lundi a 7 h 30 la verification editoriale de `candidats.json`, `calendrier.json` et de l'URL des parrainages 2027, suivie du script.
 - Les routines tournent sur le poste de Florent (daemon Timon) : machine eteinte = pas de mise a jour ce jour-la.
 
+### Resultats en direct de la soiree electorale 2027
+
+`public/data/live-2027/` (statut + fichiers compacts par tour) est ecrit par `scripts/fetch-live-2027.mjs`, **desactive par defaut** (`scripts/live-2027.config.json`). Format, procedure du soir et retour arriere : [docs/soiree-electorale-2027.md](docs/soiree-electorale-2027.md). `scripts/update-data-2027.sh` ne l'alimente pas.
+
 ## Regles de contribution
 
 - Documenter toute nouvelle source dans [ATTRIBUTIONS.md](ATTRIBUTIONS.md).

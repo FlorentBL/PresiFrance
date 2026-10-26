@@ -27,6 +27,7 @@ const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
 const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite"));
 const Presidentielle2027Page = lazy(() => import("./pages/Presidentielle2027Page"));
 const Candidat2027Page = lazy(() => import("./pages/Candidat2027Page"));
+const Resultats2027Page = lazy(() => import("./pages/Resultats2027Page"));
 const EmbedCartePage = lazy(() => import("./pages/EmbedCartePage"));
 const EmbedCommunePage = lazy(() => import("./pages/EmbedCommunePage"));
 const IntegrerPage = lazy(() => import("./pages/IntegrerPage"));
@@ -87,6 +88,7 @@ const App = () => (
             <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
             <Route path="/presidentielle-2027" element={<Presidentielle2027Page />} />
+            <Route path="/presidentielle-2027/resultats" element={<Resultats2027Page />} />
             <Route path="/presidentielle-2027/candidats/:slug" element={<Candidat2027Page />} />
             <Route path="/embed/carte" element={<EmbedCartePage />} />
             <Route path="/embed/commune/:code" element={<EmbedCommunePage />} />

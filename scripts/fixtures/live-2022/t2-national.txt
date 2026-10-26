@@ -1,0 +1,2 @@
+Code du niveau;Libellé du niveau;Etat saisie;Inscrits;Abstentions;% Abs/Ins;Votants;% Vot/Ins;Blancs;% Blancs/Ins;% Blancs/Vot;Nuls;% Nuls/Ins;% Nuls/Vot;Exprimés;% Exp/Ins;% Exp/Vot;N°Panneau;Sexe;Nom;Prénom;Voix;% Voix/Ins;% Voix/Exp
+FE;France entière;Complet;48752339;13655861;28,01;35096478;71,99;2233904;4,58;6,37;805249;1,65;2,29;32057325;65,76;91,34;1;M;MACRON;Emmanuel;18768639;38,50;58,55;2;F;LE PEN;Marine;13288686;27,26;41,45

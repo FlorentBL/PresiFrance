@@ -22,6 +22,11 @@ describe("seo routes", () => {
     expect(staticRoutes).toContain("/explorer");
   });
 
+  it("declares the live results route for sitemap and prerender", () => {
+    expect(staticRoutes).toContain("/presidentielle-2027/resultats");
+    expect(seoPrerenderRoutes.some((route) => route.path === "/presidentielle-2027/resultats")).toBe(true);
+  });
+
   it("lists department hub routes for sitemap discovery", () => {
     expect(departmentRoutes).toContain("/explorer/75");
     expect(departmentRoutes).toContain("/explorer/971");

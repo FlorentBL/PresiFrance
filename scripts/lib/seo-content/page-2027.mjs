@@ -2,7 +2,20 @@
 import { presidentialYearSummaries } from "../../seo-routes.mjs";
 import { eligibleCommunes, load2027 } from "./data.mjs";
 import { buildFaq2027, frDate } from "./faq2027.mjs";
+import { readFileSync } from "node:fs";
 import { esc, fmtInt, link, page, table } from "./html.mjs";
+
+/** Vrai si un tour a déjà des résultats publiés (public/data/live-2027/status.json) : le lien n'apparaît qu'alors. */
+export function liveResultsVisible() {
+  try {
+    const status = JSON.parse(readFileSync(new URL("../../../public/data/live-2027/status.json", import.meta.url), "utf8"));
+    return Object.values(status.rounds ?? {}).some((r) => r.state !== "avenir");
+  } catch {
+    return false;
+  }
+}
+
+const LIVE_LINK = ["/presidentielle-2027/resultats", "Résultats en direct de la présidentielle 2027"];
 
 const GROUPS = [
   ["declare", "Candidats déclarés"],
@@ -56,7 +69,7 @@ export function presidentielle2027Body() {
   }).join("");
 
   const more = `<section><h2>Suivre la campagne</h2><ul>
-<li>${link("/sondages-presidentielle-2027", "Sondages de la présidentielle 2027")}</li>
+${liveResultsVisible() ? `<li>${link(...LIVE_LINK)}</li>\n` : ""}<li>${link("/sondages-presidentielle-2027", "Sondages de la présidentielle 2027")}</li>
 <li>${link("/parrainages?year=2027", "Parrainages de la présidentielle 2027")}</li>
 <li>${link("/resultats-presidentielle-par-commune", "Résultats de la présidentielle par commune")}</li>
 <li>${link("/presidentielle-2022", "Résultats de la présidentielle 2022")}</li>
@@ -96,7 +109,7 @@ export function homeBody() {
     intro: `PrésiFrance réunit en données ouvertes l'élection présidentielle en France : le suivi de la présidentielle 2027 (candidats, sondages, parrainages) et les résultats de ${presidentialYearSummaries.length} élections présidentielles, de 1965 à 2022, par département et par commune.${dates}`,
     sections: [
       `<section><h2>Comment a voté ma commune ?</h2><p>Recherchez une commune pour afficher ses résultats à chaque présidentielle : scores des candidats, participation et abstention. ${esc(fmtInt(communes))} communes de 1 000 habitants et plus ont une fiche détaillée.</p><ul><li>${link("/resultats-presidentielle-par-commune", "Rechercher les résultats d'une commune")}</li><li>${link("/explorer", "Parcourir les résultats par département")}</li><li>${link("/comparer", "Comparer deux communes")}</li></ul></section>`,
-      `<section><h2>Présidentielle 2027</h2><p>La liste compte ${declared} candidat${declared > 1 ? "s" : ""} déclaré${declared > 1 ? "s" : ""} au ${esc(frDate(candidats.meta.dateVerification))}. Elle n'a aucune valeur officielle.</p><ul><li>${link("/presidentielle-2027", "Présidentielle 2027 : date, candidats et calendrier")}</li><li>${link("/sondages-presidentielle-2027", "Sondages de la présidentielle 2027")}</li><li>${link("/parrainages?year=2027", "Parrainages de la présidentielle 2027")}</li></ul></section>`,
+      `<section><h2>Présidentielle 2027</h2><p>La liste compte ${declared} candidat${declared > 1 ? "s" : ""} déclaré${declared > 1 ? "s" : ""} au ${esc(frDate(candidats.meta.dateVerification))}. Elle n'a aucune valeur officielle.</p><ul><li>${link("/presidentielle-2027", "Présidentielle 2027 : date, candidats et calendrier")}</li><li>${link("/sondages-presidentielle-2027", "Sondages de la présidentielle 2027")}</li><li>${link("/parrainages?year=2027", "Parrainages de la présidentielle 2027")}</li>${liveResultsVisible() ? `<li>${link(...LIVE_LINK)}</li>` : ""}</ul></section>`,
       `<section><h2>Résultats des élections présidentielles depuis 1965</h2>${elections}<p>${link("/resultats-presidentielle", "Tous les résultats des présidentielles")} · ${link("/carte-presidentielle", "Carte du vote")} · ${link("/participation-presidentielle", "Participation")} · ${link("/abstention-presidentielle", "Abstention")}</p></section>`,
     ],
     source: "Sources : résultats officiels des élections présidentielles (ministère de l'Intérieur, Conseil constitutionnel, données ouvertes data.gouv.fr) ; communes : geo.api.gouv.fr ; calendrier : Service-public.fr.",

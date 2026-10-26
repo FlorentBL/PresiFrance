@@ -82,6 +82,7 @@ export const staticRoutes = [
   "/politique-de-confidentialite",
   "/explorer",
   "/presidentielle-2027",
+  "/presidentielle-2027/resultats",
   ...candidate2027Routes,
   "/integrer",
 ];
@@ -176,6 +177,11 @@ export const seoPrerenderRoutes = [
     path: "/presidentielle-2027",
     title: `Présidentielle 2027 : date, candidats, calendrier — ${defaultSiteName}`,
     description: "Présidentielle 2027 : 1er tour le 18 avril, 2nd tour le 2 mai 2027. Candidats déclarés et pressentis, calendrier du scrutin, parrainages, sondages et FAQ.",
+  },
+  {
+    path: "/presidentielle-2027/resultats",
+    title: `Résultats en direct de la présidentielle 2027 — ${defaultSiteName}`,
+    description: "Résultats de la présidentielle 2027 le soir du scrutin : national, département et commune, avec le taux de décompte, l'horodatage et la source officielle.",
   },
   ...candidates2027.map((c) => ({
     path: `/presidentielle-2027/candidats/${c.slug}`,

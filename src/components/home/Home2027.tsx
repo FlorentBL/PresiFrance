@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { CalendarClock, ArrowRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Reveal } from "@/components/design";
+import { getLiveStatus, isLiveVisible } from "@/lib/api/live2027Api";
 import { ELECTION_2027, daysUntilFirstRound } from "@/lib/election2027";
 
 /** Encart du hero : compte à rebours si la date du 1er tour est officielle, sinon « printemps 2027 ». */
@@ -35,6 +37,12 @@ export function ElectionCountdown() {
   );
 }
 
+const LIVE_ENTRY = {
+  to: "/presidentielle-2027/resultats",
+  title: "Résultats en direct",
+  text: "Les résultats provisoires de la soirée électorale, du national à la commune.",
+} as const;
+
 const ENTRIES = [
   { to: "/presidentielle-2027", title: "Présidentielle 2027", text: "Le hub de la campagne : candidats, calendrier et repères." },
   { to: "/parrainages?year=2027", title: "Parrainages 2027", text: "Qui parraine qui, par département, au fil de la collecte." },
@@ -43,12 +51,14 @@ const ENTRIES = [
 
 /** Entrées vers les contenus 2027. */
 export default function Home2027() {
+  const live = useQuery({ queryKey: ["live2027-status"], queryFn: getLiveStatus, staleTime: 60 * 1000 });
+  const entries = isLiveVisible(live.data) ? [LIVE_ENTRY, ...ENTRIES] : ENTRIES;
   return (
     <section aria-labelledby="entrees-2027" className="relative py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-8">
         <h2 id="entrees-2027" className="sr-only">Suivre la présidentielle 2027</h2>
         <ul className="grid gap-4 md:grid-cols-3">
-          {ENTRIES.map((e, i) => (
+          {entries.map((e, i) => (
             <li key={e.to}>
               <Reveal delay={i * 0.08} className="h-full">
                 <Link
