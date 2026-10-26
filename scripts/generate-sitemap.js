@@ -61,8 +61,9 @@ export async function generateSitemaps() {
   await writeFile(path.join(distDir, "sitemap.xml"), sitemapIndexXml, "utf8");
   for (const f of files) await writeFile(path.join(distDir, f.name), urlsetXml(f.routes), "utf8");
 
-  // Tous les robots sont admis (décision du 26/10/2026, y compris les robots des IA) ; seuls /data/ et /assets/ restent fermés.
-  const robotsTxt = `User-agent: *\nAllow: /\nDisallow: /data/\nDisallow: /assets/\n\nSitemap: ${siteUrl}/sitemap.xml\n`;
+  // Tous les robots sont admis (décision du 26/10/2026, y compris les robots des IA). /assets/ et /data/ restent ouverts : Google doit
+  // exécuter le JS et charger les données ; /data/ est exclu de l'index par X-Robots-Tag (public/_headers).
+  const robotsTxt = `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`;
   await writeFile(path.join(distDir, "robots.txt"), robotsTxt, "utf8");
 
   const total = files.reduce((n, f) => n + f.routes.length, 0);
