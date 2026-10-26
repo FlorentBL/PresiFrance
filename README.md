@@ -61,7 +61,7 @@ npm run deploy
 
 ### Worker (`worker/`)
 
-Sans lui, `not_found_handling: single-page-application` renvoyait l'accueil en 200 pour toute adresse inconnue (soft 404) et les ~25 000 communes non prerendues recevaient le titre de l'accueil. Le Worker (binding `ASSETS`, `run_worker_first` sauf `/assets/*`, `/data/*`, `/images/*`) :
+Sans lui, `not_found_handling: single-page-application` renvoyait l'accueil en 200 pour toute adresse inconnue (soft 404) et les ~25 000 communes non prerendues recevaient le titre de l'accueil. Le Worker (binding `ASSETS`, **sans** `run_worker_first`) :
 
 - sert d'abord le fichier statique s'il existe (pages prerendues, assets, `/data`) ;
 - sinon repond un **vrai 404** avec le gabarit de l'application (`dist/app-shell.html`, qui affiche la page 404 du site), `X-Robots-Tag: noindex`, pour toute route inconnue, tout code commune ou departement inexistant ;
@@ -69,7 +69,7 @@ Sans lui, `not_found_handling: single-page-application` renvoyait l'accueil en 2
 - sert `/embed/carte` et `/embed/commune/<code>` avec les en-tetes des embeds (`frame-ancestors *`, `noindex`), repris dans le Worker car le gabarit est servi sous un autre chemin ;
 - redirige les adresses a slash final (308) et repond 404 a `/app-shell`. Les collectivites d'outre-mer (codes 98xxx) n'ont pas d'index fiable : page 200 en `noindex`.
 
-L'index est genere au build (`postbuild` : `scripts/build-commune-index.mjs`, `scripts/lib/commune-index.mjs`) a partir de `public/data/presidential` ; le sitemap (`sitemap-communes*.xml`) liste les communes prerendues et celles qui ont des resultats 2022. Le Worker consomme une invocation par page demandee (quota de l'offre gratuite : 100 000 requetes par jour) ; les fichiers de `dist` restent sous la limite de Workers Assets (20 000 fichiers en gratuit, controle par `verify-seo-build.mjs`).
+L'index est genere au build (`postbuild` : `scripts/build-commune-index.mjs`, `scripts/lib/commune-index.mjs`) a partir de `public/data/presidential` ; le sitemap (`sitemap-communes*.xml`) liste les communes prerendues et celles qui ont des resultats 2022. **Pas de `run_worker_first`** : avec `main` et `not_found_handling: "none"`, Workers Assets sert directement et gratuitement tout fichier existant (pages prerendues, assets, `/data`) et n'invoque le Worker que pour une adresse sans fichier (communes non prerendues, 404, `/embed/*`). Le quota de l'offre gratuite (100 000 requetes Worker par jour) ne porte donc que sur ces adresses, pas sur le trafic des pages prerendues (les requetes de fichiers statiques sont gratuites et illimitees). `/mentions-legales` et `/politique-de-confidentialite` sont prerendues pour cette raison. Le Worker garde sa propre lecture des fichiers (`ASSETS.fetch`) par securite, sans effet sur le comptage ; les fichiers de `dist` restent sous la limite de Workers Assets (20 000 fichiers en gratuit, controle par `verify-seo-build.mjs`).
 
 Tests : `npx vitest run worker`. Essai local : construire (`npm run build`) puis `npx wrangler@4 dev --port 8799`, interroger avec `curl -i`, puis arreter le processus (l'observateur de fichiers de wrangler peut se desactiver sur un `dist` de plus de 10 000 dossiers, sans gravite).
 

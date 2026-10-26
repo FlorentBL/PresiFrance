@@ -11,10 +11,7 @@
     // Pas de repli SPA automatique (il renvoyait l'accueil en 200 pour toute adresse) : le Worker décide.
     "not_found_handling": "none",
     // Les pages SEO pré-générées sont dans <route>/index.html et leurs canonical n'ont pas de slash final.
-    "html_handling": "drop-trailing-slash",
-    // Le Worker voit toutes les pages ; les fichiers volumineux ou sans logique (assets, data, images) restent servis
-    // directement et gratuitement par Workers Assets, sans invocation du Worker.
-    "run_worker_first": ["/*", "!/assets/*", "!/data/*", "!/images/*"]
+    "html_handling": "drop-trailing-slash"
   },
   // www.presifrance.fr -> presifrance.fr : règle de redirection de la zone Cloudflare.
   "routes": [

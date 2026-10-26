@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { generatedRoutes } from "./lib/seo-content/index.mjs";
 import { visibleText } from "./lib/seo-content/html.mjs";
-import { seoPrerenderRoutes } from "./seo-routes.mjs";
+import { seoPrerenderRoutes, staticRoutes } from "./seo-routes.mjs";
 
 const distDir = path.resolve(process.cwd(), "dist");
 const siteUrl = String(process.env.SITE_URL || "https://presifrance.fr").replace(/\/+$/, "");
@@ -136,6 +136,27 @@ for (const name of sitemapFiles) {
 }
 const missing = routes.filter((r) => r.commune && !sitemapLocs.has(`${siteUrl}${r.path}`));
 if (missing.length) fail(`sitemap : ${missing.length} fiches commune absentes (ex. ${missing[0].path})`);
+
+// Routes applicatives : chaque chemin statique de src/App.tsx est prérendu (ou connu du Worker) et chaque route du sitemap existe dans dist.
+const WORKER_ROUTES = new Set(["/embed/carte"]);
+const distHtmlOf = (route) => (route === "/" ? path.join(distDir, "index.html") : path.join(distDir, route.replace(/^\/+/, ""), "index.html"));
+const appSource = await readFile(path.resolve(process.cwd(), "src/App.tsx"), "utf8");
+for (const m of appSource.matchAll(/<Route\s+path="([^"]+)"/g)) {
+  const route = m[1];
+  if (route === "*" || route.includes(":") || route.includes("*") || WORKER_ROUTES.has(route)) continue;
+  try {
+    await stat(distHtmlOf(route));
+  } catch {
+    fail(`App.tsx : ${route} n'est ni prérendue (dist${route}/index.html) ni connue du Worker (répondrait 404)`);
+  }
+}
+for (const route of staticRoutes) {
+  try {
+    await stat(distHtmlOf(route));
+  } catch {
+    fail(`sitemap : ${route} (staticRoutes) absente de dist`);
+  }
+}
 
 // Worker : gabarit vierge et index départementaux des communes (404 et fiches non prérendues).
 try {

@@ -29,6 +29,8 @@ function makeEnv(extra = {}) {
   const files = {
     "/": { body: "<html>accueil prérendu</html>", type: "text/html" },
     "/commune/01004": { body: "<html>commune prérendue</html>", type: "text/html" },
+    "/mentions-legales": { body: "<html>mentions prérendues</html>", type: "text/html" },
+    "/politique-de-confidentialite": { body: "<html>confidentialité prérendue</html>", type: "text/html" },
     "/assets/app.js": { body: "console.log(1)", type: "text/javascript" },
     "/data/presidential/manifest.json": { body: "{}", type: "application/json" },
     "/data/communes/01.json": { body: JSON.stringify(SHARD_01), type: "application/json" },
@@ -59,6 +61,8 @@ describe("Worker presifrance", () => {
     for (const [path, expected] of [
       ["/", "accueil prérendu"],
       ["/commune/01004", "commune prérendue"],
+      ["/mentions-legales", "mentions prérendues"],
+      ["/politique-de-confidentialite", "confidentialité prérendue"],
       ["/assets/app.js", "console.log(1)"],
       ["/data/presidential/manifest.json", "{}"],
     ]) {

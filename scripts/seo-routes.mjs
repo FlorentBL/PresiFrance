@@ -173,6 +173,16 @@ export const seoPrerenderRoutes = [
     description: "Synthèse pédagogique des engagements de campagne 2017 et de leur mise en œuvre sur le premier quinquennat d'Emmanuel Macron.",
   },
   {
+    path: "/mentions-legales",
+    title: `Mentions légales — ${defaultSiteName}`,
+    description: "Mentions légales de PrésiFrance : éditeur, hébergement, propriété intellectuelle et sources des données électorales.",
+  },
+  {
+    path: "/politique-de-confidentialite",
+    title: `Politique de confidentialité — ${defaultSiteName}`,
+    description: "Politique de confidentialité de PrésiFrance : données collectées, mesure d'audience, cookies et droits des utilisateurs.",
+  },
+  {
     path: "/presidentielle-2027",
     title: `Présidentielle 2027 : date, candidats, calendrier — ${defaultSiteName}`,
     description: "Présidentielle 2027 : 1er tour le 18 avril, 2nd tour le 2 mai 2027. Candidats déclarés et pressentis, calendrier du scrutin, parrainages, sondages et FAQ.",
