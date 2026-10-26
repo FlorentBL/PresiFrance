@@ -9,7 +9,8 @@ import { formatSurname, wordCount } from "./html.mjs";
 import { buildBody, buildJsonLd, generatedRoutes } from "./index.mjs";
 import { presidentialYearSummaries, seoPrerenderRoutes } from "../../seo-routes.mjs";
 
-describe("seo content", () => {
+// Le premier appel charge les données de toutes les communes et de tous les scrutins : plus de 5 s sur les machines CI.
+describe("seo content", { timeout: 30_000 }, () => {
   it("formats candidate surnames", () => {
     expect(formatSurname("DE GAULLE")).toBe("de Gaulle");
     expect(formatSurname("LE PEN")).toBe("Le Pen");
