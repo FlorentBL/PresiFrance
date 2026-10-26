@@ -90,3 +90,13 @@ Le depot est volontairement autonome, mais `public/data` represente la grande ma
 - `public/data/presidential/2027/calendrier.json` : seules les dates officielles sourcées (service-public.fr) sont renseignées ; les autres événements restent `date: null`, `statut: "a_confirmer"`.
 - Ajouter un candidat ajoute automatiquement sa fiche `/presidentielle-2027/candidats/<slug>` au prérendu et au sitemap (`scripts/seo-routes.mjs` lit le JSON). L'historique électoral est déduit de `national-results.json` par nom.
 - Les sources de presse ne valent pas liste officielle : la liste officielle viendra du Conseil constitutionnel après validation des parrainages. Dernière vérification : 2026-10-26 (primaire de la gauche du 11/10/2026 et retraits intégrés, recoupement avec le trombinoscope franceinfo au 22/10/2026).
+
+## HTML prérendu et fiches commune (SEO)
+
+Mis en place le 26/10/2026 (volet SEO 1).
+
+- `npm run build` enchaîne, en `postbuild` : `generate-sitemap.js` (sitemap.xml = index vers `sitemap-pages.xml` et `sitemap-communes.xml`, robots.txt), `prerender-seo-pages.mjs`, puis `verify-seo-build.mjs`.
+- Le prérendu écrit dans `#root` un `<main>` (H1, introduction, tableaux de chiffres, liens internes) généré depuis `public/data` ; React le remplace au montage. Un constructeur de contenu par type de route : `scripts/lib/seo-content/` (`index.mjs` enregistre `communes`, `years`, `departments` ; `static-pages.mjs` couvre l'accueil, les hubs, la page 2027 et les fiches candidats, à enrichir dans les volets suivants).
+- Les fiches `/commune/<code>` ne sont prérendues que pour les communes de 1 000 habitants et plus ayant des résultats 2022 au 1er tour (10 026 sur 10 099). Les populations viennent de l'instantané `scripts/data/communes-1000.json` (geo.api.gouv.fr), à rafraîchir avec `npm run build:communes` (réseau requis) puis à committer ; le build ne fait aucun appel réseau.
+- `dist/index.html` sert aussi de fallback SPA (`not_found_handling`) : il ne porte volontairement aucun canonical, SEOHead le pose côté client.
+- `verify-seo-build.mjs` fait échouer le build si une route prérendue n'a pas un canonical unique et exact, un title unique, un seul H1 et au moins 80 mots visibles, si robots.txt bloque de nouveau un robot d'IA, si une fiche commune manque au sitemap, ou si `dist` dépasse 19 000 fichiers (`SEO_MAX_DIST_FILES`). Limite Cloudflare Workers Static Assets consultée le 26/10/2026 : 20 000 fichiers par version (offre gratuite), 100 000 (offre payante), 25 MiB par fichier ; au 26/10/2026 `dist` compte 12 522 fichiers.

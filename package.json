@@ -25,6 +25,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
+    "build:communes": "node scripts/build-communes-snapshot.mjs",
     "build:data": "node scripts/build-election-data.mjs",
     "compact:data": "node scripts/compact-election-data.mjs",
     "build:parrainages": "node scripts/build-parrainages.mjs",
@@ -39,7 +40,7 @@
     "update:data": "bash scripts/update-data-2027.sh",
     "test": "vitest run",
     "test:watch": "vitest",
-    "postbuild": "node scripts/generate-sitemap.js && node scripts/prerender-seo-pages.mjs"
+    "postbuild": "node scripts/generate-sitemap.js && node scripts/prerender-seo-pages.mjs && node scripts/verify-seo-build.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

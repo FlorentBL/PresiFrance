@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import { buildBody, generatedRoutes } from "./lib/seo-content/index.mjs";
 import { seoPrerenderRoutes } from "./seo-routes.mjs";
 
 const distDir = path.resolve(process.cwd(), "dist");
@@ -39,7 +40,9 @@ function renderRouteHtml(baseHtml, route) {
   html = upsertMeta(html, 'property="og:url"', `<meta property="og:url" content="${escapeHtml(url)}" />`);
   html = upsertMeta(html, 'name="twitter:title"', `<meta name="twitter:title" content="${escapeHtml(route.title)}" />`);
   html = upsertMeta(html, 'name="twitter:description"', `<meta name="twitter:description" content="${escapeHtml(route.description)}" />`);
-  html = upsertCanonical(html, url);
+  // dist/index.html sert aussi de fallback SPA (routes non prérendues) : pas de canonical, SEOHead le pose côté client.
+  if (route.path !== "/") html = upsertCanonical(html, url);
+  html = html.replace('<div id="root"></div>', () => `<div id="root">${buildBody(route)}</div>`);
   return html;
 }
 
@@ -48,12 +51,23 @@ function routeOutputPath(routePath) {
   return path.join(distDir, routePath.replace(/^\/+/, ""), "index.html");
 }
 
+const started = Date.now();
 const baseHtml = await readFile(path.join(distDir, "index.html"), "utf8");
+if (!baseHtml.includes('<div id="root"></div>')) throw new Error("[prerender] #root introuvable dans dist/index.html");
 
-for (const route of seoPrerenderRoutes) {
+const routes = [...seoPrerenderRoutes, ...generatedRoutes()];
+const paths = new Set();
+for (const route of routes) {
+  if (paths.has(route.path)) throw new Error(`[prerender] route en double : ${route.path}`);
+  paths.add(route.path);
+}
+
+// Le HTML de base est lu une fois : "/" réécrit dist/index.html en dernier pour ne pas contaminer les autres routes.
+const ordered = [...routes.filter((r) => r.path !== "/"), ...routes.filter((r) => r.path === "/")];
+for (const route of ordered) {
   const filePath = routeOutputPath(route.path);
   await mkdir(path.dirname(filePath), { recursive: true });
   await writeFile(filePath, renderRouteHtml(baseHtml, route), "utf8");
 }
 
-console.log(`[prerender] wrote ${seoPrerenderRoutes.length} SEO HTML routes`);
+console.log(`[prerender] wrote ${routes.length} SEO HTML routes in ${((Date.now() - started) / 1000).toFixed(1)}s`);
