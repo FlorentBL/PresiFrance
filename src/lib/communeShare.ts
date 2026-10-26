@@ -1,6 +1,7 @@
 import type { CandidateResult, ElectionResult } from "@/lib/api/resultsApi";
 import type { NationalResult } from "@/lib/api/nationalResultsApi";
 import { SITE_URL } from "@/lib/site";
+import { communeDescription, communeTitle } from "@/lib/scrutinsCore.mjs";
 
 const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
 const fr = (n: number, d = 1) => n.toFixed(d).replace(".", ",");
@@ -65,12 +66,13 @@ export function buildCommuneSummary(opts: {
 }
 
 export function communeSeoTitle(nom: string): string {
-  return `Résultats de la présidentielle à ${nom} depuis 1995`;
+  return communeTitle(nom);
 }
 
-export function communeSeoDescription(nom: string, summary?: string): string {
-  const base = `Comment a voté ${nom} à la présidentielle depuis 1995 : vainqueur de chaque élection, participation, comparaison avec le département et la France.`;
-  return summary && summary.length + 1 + base.length < 300 ? `${summary} ${base}` : base;
+/** `summary` : phrase de synthèse facultative placée en tête ; `scrutinIds` : scrutins (hors présidentielle) disponibles. */
+export function communeSeoDescription(nom: string, summary?: string, scrutinIds: string[] = []): string {
+  const base = communeDescription(nom, scrutinIds);
+  return summary && summary.length + 1 + base.length < 320 ? `${summary} ${base}` : base;
 }
 
 export function communeShareUrl(code: string, year: number, round: number, origin: string = SITE_URL): string {

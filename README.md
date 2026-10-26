@@ -41,6 +41,7 @@ npm run lint
 npm test
 npm audit
 npm run build:data
+npm run build:scrutins
 npm run build:parrainages
 npm run build:photos
 ```
@@ -48,6 +49,7 @@ npm run build:photos
 - `build` compile le site et genere les pages SEO prerenderisees.
 - `audit` verifie les vulnerabilites connues des dependances npm via `npm audit`.
 - `build:data` reconstruit les donnees presidentielles dans `public/data/presidential`.
+- `build:scrutins` reconstruit les resultats par commune des legislatives, europeennes et municipales dans `public/data/scrutins` (voir DATA.md).
 - `build:parrainages` reconstruit les donnees de parrainages dans `public/data/parrainages`.
 - `build:photos` telecharge les portraits candidats depuis les pages Wikipedia/Wikimedia configurees dans le script.
 

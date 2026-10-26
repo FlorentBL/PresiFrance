@@ -1,6 +1,7 @@
 // Pages /explorer/<code> : tableau des résultats du département dans le HTML servi.
 import { departmentNames, getDepartmentIntro } from "../../seo-routes.mjs";
-import { COMMUNE_YEARS, LATEST_YEAR, eligibleCommunes, loadResults } from "./data.mjs";
+import { coverageLabel, coveredIds, summaryRows } from "../../../src/lib/scrutinsCore.mjs";
+import { COMMUNE_YEARS, LATEST_YEAR, eligibleCommunes, loadResults, loadScrutins } from "./data.mjs";
 import { candidateName, esc, fmtInt, fmtPct, link, page, table } from "./html.mjs";
 
 const TOP_COMMUNES = 30;
@@ -58,6 +59,17 @@ export function buildDepartmentBody(code) {
         ["Année", "1er tour", "2ᵉ tour"],
         leaderRows,
       )}</section>`,
+    );
+  }
+
+  const scrutins = loadScrutins().byDepartment.get(code);
+  const ids = coveredIds(scrutins);
+  if (ids.length) {
+    const rows = summaryRows(scrutins).map((r) => [esc(r.label), esc(r.lead), fmtPct(r.pct), fmtPct(r.participation)]);
+    sections.push(
+      `<section><h2>Législatives, européennes et municipales : ${esc(name)}</h2><p>${esc(
+        `Résultats du département ${name} aux ${coverageLabel(ids)}, additionnés commune par commune. Pour les municipales, seules les communes de 1 000 habitants et plus sont comptées et les listes sont regroupées par nuance.`,
+      )}</p>${table(`Liste ou nuance arrivée en tête dans le département ${name}, par scrutin`, ["Scrutin", "En tête", "Part des exprimés", "Participation"], rows)}</section>`,
     );
   }
 

@@ -18,6 +18,7 @@ import { CommuneComparison } from "@/components/commune/CommuneComparison";
 import { CommuneNeighbours } from "@/components/commune/CommuneNeighbours";
 import { CommuneShare } from "@/components/commune/CommuneShare";
 import { Presidentielle2027Teaser } from "@/components/commune/Presidentielle2027Teaser";
+import { ScrutinsSection } from "@/components/commune/ScrutinsSection";
 import {
   buildCommuneSummary,
   buildShareCardData,
@@ -31,6 +32,8 @@ import { SITE_URL } from "@/lib/site";
 import { getCommuneWithCoords, getDepartmentCommunes } from "@/lib/api/geoApi";
 import { getCommuneResults, getDepartmentAggregate, ElectionResult } from "@/lib/api/resultsApi";
 import { getNationalResults } from "@/lib/api/nationalResultsApi";
+import { getAllScrutins } from "@/lib/api/scrutinsApi";
+import { communeScrutinsFaq, coveredIds } from "@/lib/scrutinsCore.mjs";
 import { addToSearchHistory } from "@/lib/searchHistory";
 import { depensesCommuneUrl } from "@/lib/partnerSites";
 import DepensesPubliquesCard from "@/components/partner/DepensesPubliquesCard";
@@ -72,6 +75,13 @@ const CommunePage = () => {
   const { data: national } = useQuery({
     queryKey: ["national", year, round],
     queryFn: () => getNationalResults(year, round),
+    enabled: !!code,
+    staleTime: Infinity,
+  });
+
+  const { data: scrutins, isLoading: scrutinsLoading } = useQuery({
+    queryKey: ["scrutins", code],
+    queryFn: () => getAllScrutins({ commune: code! }),
     enabled: !!code,
     staleTime: Infinity,
   });
@@ -155,18 +165,21 @@ const CommunePage = () => {
     colorOf: (c, i) => getCandidateColor(c.prenom, c.nom, i),
     url: `${SITE_URL}/commune/${geo.code}`,
   });
+  const scrutinIds = coveredIds(scrutins);
+  const scrutinsFaq = communeScrutinsFaq(geo.nom, scrutins);
   const neighbours = depCommunes ? nearestCommunes(geo, depCommunes, 6) : [];
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead
         title={communeSeoTitle(geo.nom)}
-        description={communeSeoDescription(geo.nom, summary.sentence)}
+        description={communeSeoDescription(geo.nom, summary.sentence, scrutinIds)}
         path={`/commune/${code}`}
       />
       <JsonLd
         path={`/commune/${code}`}
         commune={{ nom: geo.nom, code: geo.code, codeDepartement: geo.codeDepartement }}
+        faq={scrutinsFaq}
         breadcrumbs={[
           { name: "Explorer par commune", path: "/explorer" },
           { name: `Département ${geo.codeDepartement}`, path: `/explorer/${geo.codeDepartement}` },
@@ -275,6 +288,8 @@ const CommunePage = () => {
             <CommuneEvolution data={evolutionData} />
           </Section>
         )}
+
+        <ScrutinsSection name={geo.nom} results={scrutins} loading={scrutinsLoading} faq={scrutinsFaq} />
 
         {geo?.centre?.coordinates && (
           <Section eyebrow="Territoire" title="Localisation" width="default">

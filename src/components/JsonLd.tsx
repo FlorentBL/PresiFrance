@@ -80,8 +80,8 @@ export default function JsonLd({ path, commune, breadcrumbs, faq }: JsonLdProps)
   const datasetSchema = {
     "@context": "https://schema.org",
     "@type": "Dataset",
-    name: `Élection présidentielle — ${commune.nom}`,
-    description: `Résultats électoraux au niveau de la commune de ${commune.nom} (département ${commune.codeDepartement}).`,
+    name: `Résultats des élections — ${commune.nom}`,
+    description: `Résultats électoraux de la commune de ${commune.nom} (département ${commune.codeDepartement}) : présidentielles, législatives, européennes et municipales.`,
     url,
     license: "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
     creator: {
@@ -102,6 +102,7 @@ export default function JsonLd({ path, commune, breadcrumbs, faq }: JsonLdProps)
 
   return (
     <>
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }} />
       {breadcrumbSchema && (
