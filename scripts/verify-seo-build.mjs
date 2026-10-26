@@ -76,6 +76,22 @@ for (const route of routes) {
   else if (titles.has(title)) fail(`${route.path} : title identique à ${titles.get(title)} (« ${title} »)`);
   else titles.set(title, route.path);
 
+  if (route.commune) {
+    // Fiche commune : titre « Résultats des élections à <Ville> », scrutins cités et FAQPage dès qu'une section « autres scrutins » existe.
+    if (!title?.startsWith("Résultats des élections à ")) fail(`${route.path} : titre de fiche commune inattendu (« ${title} »)`);
+    if (html.includes("Législatives, européennes et municipales à ")) {
+      const ld = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => {
+        try {
+          return JSON.parse(m[1]);
+        } catch {
+          return null;
+        }
+      });
+      if (!ld.some((d) => d?.["@type"] === "FAQPage" && d.mainEntity?.length >= 3)) fail(`${route.path} : JSON-LD FAQPage absent ou invalide`);
+      if (!/<meta name="description" content="[^"]*(législatives|européennes|municipales)/.test(html)) fail(`${route.path} : description sans les autres scrutins`);
+    }
+  }
+
   if (route.path.startsWith("/presidentielle-2027/candidats/")) {
     const ld = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => {
       try {

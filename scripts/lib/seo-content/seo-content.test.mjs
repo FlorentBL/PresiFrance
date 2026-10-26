@@ -26,12 +26,32 @@ describe("seo content", () => {
 
   it("builds a commune page with H1, table and internal links", () => {
     const nantes = generatedRoutes().find((r) => r.path === "/commune/44109");
-    expect(nantes.title).toBe("Résultats des élections à Nantes : présidentielles 1995-2022");
+    expect(nantes.title).toBe("Résultats des élections à Nantes");
     const html = buildBody(nantes);
     expect(html.match(/<h1>/g)).toHaveLength(1);
     expect(html).toContain("<table>");
     expect(html).toContain('href="/explorer/44"');
     expect(wordCount(html)).toBeGreaterThanOrEqual(80);
+  });
+
+  it("cites the other scrutins in the commune page, description and FAQ JSON-LD", () => {
+    const nantes = generatedRoutes().find((r) => r.path === "/commune/44109");
+    const html = buildBody(nantes);
+    expect(nantes.description).toContain("législatives 2022 et 2024, européennes 2019 et 2024 et municipales 2020 et 2026");
+    expect(html).toContain("Législatives, européennes et municipales à Nantes");
+    expect(html).toContain("Aux municipales 2026");
+    expect(html).toContain("Aux européennes 2024");
+    expect(html).toContain("Aux législatives 2024");
+    const [faq] = buildJsonLd(nantes);
+    expect(faq["@type"]).toBe("FAQPage");
+    expect(faq.mainEntity.length).toBeGreaterThanOrEqual(4);
+    expect(html).toContain(faq.mainEntity[0].name.replace(/&/g, "&amp;"));
+  });
+
+  it("adds the other scrutins to department pages", () => {
+    const html = buildBody({ path: "/explorer/44", title: "", description: "" });
+    expect(html).toContain("Législatives, européennes et municipales : Loire-Atlantique");
+    expect(html).toContain("Municipales 2026");
   });
 
   it("gives every static route at least 80 visible words and one H1", () => {

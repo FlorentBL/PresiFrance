@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "react-router-dom";
 import { ChevronLeft, MapPin, Search, Loader2 } from "lucide-react";
 import { PageHero, Section } from "@/components/design";
@@ -12,6 +13,8 @@ import { getDepartmentIntro } from "@/lib/departmentSeo";
 import { getDepartmentName } from "@/lib/departments";
 import { depensesDepartementUrl } from "@/lib/partnerSites";
 import DepensesPubliquesCard from "@/components/partner/DepensesPubliquesCard";
+import { ScrutinsSection } from "@/components/commune/ScrutinsSection";
+import { getAllScrutins } from "@/lib/api/scrutinsApi";
 
 const DepartmentExplorationPage = () => {
   const { depCode } = useParams<{ depCode: string }>();
@@ -30,6 +33,13 @@ const DepartmentExplorationPage = () => {
       });
     }
   }, [depCode]);
+
+  const { data: scrutins, isLoading: scrutinsLoading } = useQuery({
+    queryKey: ["scrutins-dep", depCode],
+    queryFn: () => getAllScrutins({ dep: depCode! }),
+    enabled: !!depCode,
+    staleTime: Infinity,
+  });
 
   const filteredCommunes = communes.filter((c) =>
     c.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -139,6 +149,15 @@ const DepartmentExplorationPage = () => {
             <SeoConnectorLinks context="department" departmentName={departmentName} />
           </div>
         </Section>
+
+        {depCode && (
+          <ScrutinsSection
+            name={`dans le département ${departmentName}`}
+            results={scrutins}
+            loading={scrutinsLoading}
+            aggregate
+          />
+        )}
       </main>
 
       <SiteFooter />

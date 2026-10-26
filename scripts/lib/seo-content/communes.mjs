@@ -1,11 +1,21 @@
 // Fiches /commune/<code> : routes, métadonnées et contenu prérendu (communes de 1 000 habitants et plus).
 import { departmentNames } from "../../seo-routes.mjs";
-import { COMMUNE_YEARS, LATEST_YEAR, eligibleCommunes, loadResults } from "./data.mjs";
+import {
+  SCRUTINS,
+  communeDescription,
+  communeScrutinsFaq,
+  communeTitle,
+  coverageLabel,
+  coveredIds,
+  leadSentence,
+  summaryRows,
+} from "../../../src/lib/scrutinsCore.mjs";
+import { COMMUNE_YEARS, LATEST_YEAR, eligibleCommunes, loadResults, loadScrutins } from "./data.mjs";
 import { candidateName, esc, fmtInt, fmtPct, link, page, table } from "./html.mjs";
 
 const NEIGHBOURS = 6;
 const SOURCE =
-  "Sources : résultats officiels des élections présidentielles (ministère de l'Intérieur, données ouvertes data.gouv.fr), populations légales de l'INSEE via geo.api.gouv.fr. Dernier scrutin présenté : présidentielle 2022.";
+  "Sources : résultats officiels des élections présidentielles, législatives, européennes et municipales (ministère de l'Intérieur, données ouvertes data.gouv.fr), populations légales de l'INSEE via geo.api.gouv.fr.";
 
 
 function distance(a, b) {
@@ -67,24 +77,53 @@ function summarySentences(name, years) {
   return parts;
 }
 
+const scrutinsOf = (code) => loadScrutins().byCommune.get(code);
+
+/** Scrutins hors présidentielle d'une commune de la page : phrases du dernier tour de chaque scrutin et tableau de synthèse. */
+function scrutinsSections(name, results) {
+  const ids = coveredIds(results);
+  if (!ids.length) return [];
+  const sentences = SCRUTINS.filter((s) => ids.includes(s.id)).flatMap((s) => {
+    const tour = [...s.tours].reverse().find((t) => results[s.id]?.[t]);
+    return [`<p>${esc(leadSentence(s, tour, name, results[s.id][tour]))}</p>`];
+  });
+  const rows = summaryRows(results).map((r) => [esc(r.label), esc(r.lead), fmtPct(r.pct), fmtPct(r.participation)]);
+  const faq = communeScrutinsFaq(name, results);
+  return [
+    `<section><h2>Législatives, européennes et municipales à ${esc(name)}</h2><p>${esc(`Résultats de ${name} aux ${coverageLabel(ids)}.`)}</p>${sentences.join("")}${table(
+      `Liste ou nuance arrivée en tête à ${name}, par scrutin`,
+      ["Scrutin", "En tête", "Part des exprimés", "Participation"],
+      rows,
+    )}</section>`,
+    `<section><h2>Questions fréquentes sur les élections à ${esc(name)}</h2>${faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join("")}</section>`,
+  ];
+}
+
 export function communeRoutes() {
   const { communes, nameCount } = context();
-  const { byCommune } = loadResults();
   return communes.map((c) => {
     const name = displayName(c, nameCount);
-    const years = byCommune.get(c.code);
-    const r2 = years[LATEST_YEAR]?.[2] ?? years[LATEST_YEAR]?.[1];
-    const lead = r2?.candidates?.length > 1 ? leaderLine(r2) : null;
-    const base = `${name} (${departmentNames[c.dep] ?? c.dep}) : vainqueur, participation et scores de chaque présidentielle de 1995 à 2022`;
     return {
       path: `/commune/${c.code}`,
-      title: `Résultats des élections à ${name} : présidentielles 1995-2022`,
-      description: lead
-        ? `${base}. En 2022, ${candidateName(lead.first.prenom, lead.first.nom)} arrive en tête (${fmtPct(lead.firstPct)}). Données officielles.`
-        : `${base}. Données officielles.`,
+      title: communeTitle(name),
+      description: communeDescription(name, coveredIds(scrutinsOf(c.code))),
       commune: c,
     };
   });
+}
+
+/** JSON-LD FAQPage de la fiche (questions bâties sur les scrutins disponibles), [] si trop peu de données. */
+export function buildCommuneJsonLd(route) {
+  const { nameCount } = context();
+  const faq = communeScrutinsFaq(displayName(route.commune, nameCount), scrutinsOf(route.commune.code));
+  if (faq.length < 2) return [];
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+    },
+  ];
 }
 
 export function buildCommuneBody(route) {
@@ -110,7 +149,9 @@ export function buildCommuneBody(route) {
   const pool = sameDep.length >= NEIGHBOURS ? sameDep : communes.filter((n) => n.code !== c.code && n.dep === c.dep);
   const neighbours = pool.sort((a, b) => distance(c, a) - distance(c, b)).slice(0, NEIGHBOURS);
 
-  const intro = `${esc(name)} est une commune du département ${esc(depName)} (code INSEE ${esc(c.code)}) qui compte ${fmtInt(c.population)} habitants. Cette page rassemble les résultats de l'élection présidentielle dans la commune de 1995 à 2022 : candidat arrivé en tête à chaque tour, part des suffrages exprimés et participation.`;
+  const results = scrutinsOf(c.code);
+  const coverage = coverageLabel(coveredIds(results));
+  const intro = `${esc(name)} est une commune du département ${esc(depName)} (code INSEE ${esc(c.code)}) qui compte ${fmtInt(c.population)} habitants. Cette page rassemble les résultats de l'élection présidentielle dans la commune de 1995 à 2022${coverage ? ` et ceux des ${esc(coverage)}` : ""} : candidat ou liste arrivé en tête à chaque tour, part des suffrages exprimés et participation.`;
   const summary = summarySentences(name, years).map((s) => `<p>${esc(s)}</p>`).join("");
 
   const sections = [
@@ -124,5 +165,6 @@ export function buildCommuneBody(route) {
       .map((n) => `<li>${link(`/commune/${n.code}`, `Résultats des élections à ${displayName(n, nameCount)}`)}</li>`)
       .join("")}<li>${link("/presidentielle-2022", "Résultats nationaux de la présidentielle 2022")}</li></ul></section>`,
   ];
-  return page({ h1: `Résultats des élections présidentielles à ${name}`, intro, sections, source: SOURCE });
+  sections.splice(2, 0, ...scrutinsSections(name, results));
+  return page({ h1: communeTitle(name), intro, sections, source: SOURCE });
 }

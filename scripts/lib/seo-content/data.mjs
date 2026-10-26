@@ -2,6 +2,8 @@
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import path from "node:path";
 
+import { SCRUTINS, aggregateScrutinFile, decodeScrutinRow } from "../../../src/lib/scrutinsCore.mjs";
+
 const root = path.resolve(import.meta.dirname, "../../..");
 const presidentialDir = path.join(root, "public/data/presidential");
 
@@ -110,6 +112,38 @@ export function loadResults() {
   }
   resultsCache = { byCommune, byDepartment };
   return resultsCache;
+}
+
+let scrutinsCache;
+/**
+ * Autres scrutins (public/data/scrutins) :
+ * byCommune : Map code -> { [id scrutin]: { [tour]: résultat } } (communes du snapshot uniquement)
+ * byDepartment : Map département -> { [id scrutin]: { [tour]: agrégat } }
+ */
+export function loadScrutins() {
+  if (scrutinsCache) return scrutinsCache;
+  const wanted = new Set(loadCommuneSnapshot().communes.map((c) => c.code));
+  const byCommune = new Map();
+  const byDepartment = new Map();
+  for (const scrutin of SCRUTINS) {
+    for (const tour of scrutin.tours) {
+      const dir = path.join(root, "public/data/scrutins", scrutin.id, `t${tour}`);
+      if (!existsSync(dir)) continue;
+      for (const name of readdirSync(dir)) {
+        const file = readJson(path.join(dir, name));
+        const dep = name.replace(/\.json$/, "");
+        ((byDepartment.get(dep) ?? byDepartment.set(dep, {}).get(dep))[scrutin.id] ??= {})[tour] = aggregateScrutinFile(file);
+        for (const code of Object.keys(file.rows)) {
+          if (!wanted.has(code)) continue;
+          const perScrutin = byCommune.get(code) ?? {};
+          (perScrutin[scrutin.id] ??= {})[tour] = decodeScrutinRow(file, code);
+          byCommune.set(code, perScrutin);
+        }
+      }
+    }
+  }
+  scrutinsCache = { byCommune, byDepartment };
+  return scrutinsCache;
 }
 
 let nationalCache;

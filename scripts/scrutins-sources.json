@@ -1,0 +1,84 @@
+{
+  "_note": "Sources des résultats par commune des autres scrutins (ministère de l'Intérieur, data.gouv.fr). Vérifiées le 26 octobre 2026. URL de ressources figées (horodatées) : un nouveau dépôt de fichier sur data.gouv.fr ne change pas ces adresses.",
+  "verifiedOn": "2026-10-26",
+  "scrutins": [
+    {
+      "id": "legislatives-2022",
+      "label": "Législatives 2022",
+      "title": "Élections législatives des 12 et 19 juin 2022",
+      "date": "2022-06-12",
+      "kind": "nuance",
+      "dataset": "https://www.data.gouv.fr/datasets/62a8c3f92b3b572a67d307f4",
+      "license": "non renseignée sur data.gouv.fr",
+      "tours": [
+        { "tour": 1, "url": "https://static.data.gouv.fr/resources/elections-legislatives-des-12-et-19-juin-2022-resultats-definitifs-du-premier-tour/20220614-192729/resultats-par-niveau-subcom-t1-france-entiere.txt", "encoding": "latin1", "delimiter": ";", "dataset": "https://www.data.gouv.fr/datasets/62a8c3f92b3b572a67d307f4" },
+        { "tour": 2, "url": "https://static.data.gouv.fr/resources/elections-legislatives-des-12-et-19-juin-2022-resultats-definitifs-du-second-tour/20220621-175945/resultats-par-niveau-subcom-t2-france-entiere.txt", "encoding": "latin1", "delimiter": ";", "dataset": "https://www.data.gouv.fr/datasets/62b1e903ee80a47a20129bf2" }
+      ]
+    },
+    {
+      "id": "legislatives-2024",
+      "label": "Législatives 2024",
+      "title": "Élections législatives des 30 juin et 7 juillet 2024",
+      "date": "2024-06-30",
+      "kind": "nuance",
+      "dataset": "https://www.data.gouv.fr/datasets/6682d0c255dcda5df20b1d90",
+      "license": "Licence Ouverte 2.0 (lov2)",
+      "tours": [
+        { "tour": 1, "url": "https://static.data.gouv.fr/resources/elections-legislatives-des-30-juin-et-7-juillet-2024-resultats-definitifs-du-1er-tour/20240711-075056/resultats-definitifs-par-communes.csv", "encoding": "utf8", "delimiter": ";", "dataset": "https://www.data.gouv.fr/datasets/6682d0c255dcda5df20b1d90" },
+        { "tour": 2, "url": "https://static.data.gouv.fr/resources/elections-legislatives-des-30-juin-et-7-juillet-2024-resultats-definitifs-du-2nd-tour/20240710-170606/resultats-definitifs-par-commune.csv", "encoding": "utf8", "delimiter": ";", "dataset": "https://www.data.gouv.fr/datasets/668b4092826ddcf70e9e62cd" }
+      ]
+    },
+    {
+      "id": "europeennes-2019",
+      "label": "Européennes 2019",
+      "title": "Élections européennes du 26 mai 2019",
+      "date": "2019-05-26",
+      "kind": "list",
+      "dataset": "https://www.data.gouv.fr/datasets/5ceba293634f411427c7d613",
+      "license": "Licence Ouverte 1.0 (fr-lo)",
+      "tours": [
+        { "tour": 1, "url": "https://static.data.gouv.fr/resources/resultats-des-elections-europeennes-2019/20190531-144212/resultats-definitifs-par-commune.txt", "encoding": "latin1", "delimiter": ";", "dataset": "https://www.data.gouv.fr/datasets/5ceba293634f411427c7d613" }
+      ]
+    },
+    {
+      "id": "europeennes-2024",
+      "label": "Européennes 2024",
+      "title": "Élections européennes du 9 juin 2024",
+      "date": "2024-06-09",
+      "kind": "list",
+      "dataset": "https://www.data.gouv.fr/datasets/666b1337471f4fe2f19f2573",
+      "license": "Licence Ouverte 2.0 (lov2)",
+      "tours": [
+        { "tour": 1, "url": "https://static.data.gouv.fr/resources/resultats-des-elections-europeennes-du-9-juin-2024/20240613-154634/resultats-definitifs-par-commune.csv", "encoding": "utf8", "delimiter": ";", "dataset": "https://www.data.gouv.fr/datasets/666b1337471f4fe2f19f2573" }
+      ]
+    },
+    {
+      "id": "municipales-2020",
+      "label": "Municipales 2020",
+      "title": "Élections municipales des 15 mars et 28 juin 2020 (communes de 1 000 habitants et plus)",
+      "date": "2020-03-15",
+      "kind": "local",
+      "onlyCommunes1000": false,
+      "dataset": "https://www.data.gouv.fr/datasets/5e7102d5ebe5d838b7581662",
+      "license": "non renseignée sur data.gouv.fr",
+      "tours": [
+        { "tour": 1, "url": "https://static.data.gouv.fr/resources/elections-municipales-2020-resultats/20200525-133704/2020-05-18-resultats-communes-de-1000-et-plus.txt", "encoding": "latin1", "delimiter": "\t", "dataset": "https://www.data.gouv.fr/datasets/5e7102d5ebe5d838b7581662" },
+        { "tour": 2, "url": "https://static.data.gouv.fr/resources/municipales-2020-resultats-2nd-tour/20200629-192435/2020-06-29-resultats-t2-communes-de-1000-hab-et-plus.txt", "encoding": "latin1", "delimiter": ";", "dataset": "https://www.data.gouv.fr/datasets/5efa23afd85990251fc9a197" }
+      ]
+    },
+    {
+      "id": "municipales-2026",
+      "label": "Municipales 2026",
+      "title": "Élections municipales des 15 et 22 mars 2026 (communes de 1 000 habitants et plus)",
+      "date": "2026-03-15",
+      "kind": "local",
+      "onlyCommunes1000": true,
+      "dataset": "https://www.data.gouv.fr/datasets/69b82a7de5d58cc06ad35ce0",
+      "license": "Licence Ouverte 2.0 (lov2)",
+      "tours": [
+        { "tour": 1, "url": "https://static.data.gouv.fr/resources/elections-municipales-2026-resultats-du-premier-tour/20260320-164339/municipales-2026-resultats-communes-2026-03-20.csv", "encoding": "utf8", "delimiter": ";", "dataset": "https://www.data.gouv.fr/datasets/69b82a7de5d58cc06ad35ce0" },
+        { "tour": 2, "url": "https://static.data.gouv.fr/resources/elections-municipales-2026-resultats-du-scond-tour/20260323-180124/municipales-2026-resultats-communes-2026-03-23-16h14.csv", "encoding": "utf8", "delimiter": ";", "dataset": "https://www.data.gouv.fr/datasets/69c17fed9f18c7781fd11a14" }
+      ]
+    }
+  ]
+}

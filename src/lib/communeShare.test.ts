@@ -60,9 +60,10 @@ describe("buildCommuneSummary", () => {
 
 describe("seo and urls", () => {
   it("builds title, description and url", () => {
-    expect(communeSeoTitle("Nantes")).toBe("Résultats de la présidentielle à Nantes depuis 1995");
+    expect(communeSeoTitle("Nantes")).toBe("Résultats des élections à Nantes");
     expect(communeSeoDescription("Nantes")).toContain("Nantes");
     expect(communeSeoDescription("Nantes", "Résumé.").startsWith("Résumé.")).toBe(true);
+    expect(communeSeoDescription("Nantes", undefined, ["municipales-2026", "legislatives-2024"])).toContain("législatives 2024 et municipales 2026");
     expect(communeShareUrl("44109", 2022, 1, "https://x.test")).toBe("https://x.test/commune/44109?year=2022&round=1");
     expect(shareFilename("Saint-Étienne", 2022)).toBe("presifrance-saint-etienne-2022.png");
     expect(fullName({ prenom: "JEAN-LUC", nom: "MÉLENCHON" })).toBe("Jean-Luc Mélenchon");

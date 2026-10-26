@@ -14,6 +14,7 @@ Sources principales :
 
 - data.gouv.fr : resultats des elections presidentielles et jeux de donnees publics associes.
 - Ministere de l'Interieur : resultats electoraux officiels publies en open data.
+- data.gouv.fr, Ministere de l'Interieur : resultats par commune des elections legislatives 2022 et 2024, europeennes 2019 et 2024 et municipales 2020 et 2026 (`public/data/scrutins`, genere par `scripts/build-scrutins.mjs`). Licences affichees sur data.gouv.fr : Licence Ouverte 1.0 (europeennes 2019), Licence Ouverte 2.0 (legislatives 2024, europeennes 2024, municipales 2026) ; non renseignee pour les legislatives 2022 et les municipales 2020 (informations publiques de l'Etat, reutilisation libre selon le code des relations entre le public et l'administration, art. L321-1 et suivants ; a confirmer aupres du ministere avant usage commercial). Jeux et URL dans `scripts/scrutins-sources.json` et `DATA.md`. Donnees agregees par PrésiFrance (nuances, regroupement des arrondissements de Paris, Lyon et Marseille), consultees le 26 octobre 2026.
 - Conseil constitutionnel via data.gouv.fr : parrainages des candidats.
 - geo.api.gouv.fr : donnees geographiques des communes.
 - IGN Admin Express COG 2018 (Licence Ouverte Etalab), via le depot gregoiredavid/france-geojson : contours simplifies des departements de la carte d'accueil (`public/data/geo/departements-paths.json`).

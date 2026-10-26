@@ -28,6 +28,7 @@
     "build:communes": "node scripts/build-communes-snapshot.mjs",
     "build:year-facts": "node scripts/build-year-facts.mjs",
     "build:data": "node scripts/build-election-data.mjs",
+    "build:scrutins": "node scripts/build-scrutins.mjs",
     "compact:data": "node scripts/compact-election-data.mjs",
     "build:parrainages": "node scripts/build-parrainages.mjs",
     "build:photos": "node scripts/fetch-candidate-photos.mjs",

@@ -65,9 +65,9 @@ export function communePage(code, dep, shard) {
   const row = shard.r[code];
   const name = row[0];
   const depName = shard.d;
-  const title = `Résultats des élections à ${name} : présidentielle 2022 et historique`;
+  const title = `Résultats des élections à ${name}`;
   const canonical = `/commune/${code}`;
-  const intro = `${name} est une commune du département ${depName} (code INSEE ${code}).`;
+  const intro = `${name} est une commune du département ${depName} (code INSEE ${code}). La fiche présente les résultats de la présidentielle et, lorsque la commune y figure, ceux des législatives et des européennes.`;
   const links = `<p><a href="/explorer/${escapeHtml(dep)}">Communes du département ${escapeHtml(depName)}</a> · <a href="/resultats-presidentielle-par-commune">Chercher une autre commune</a> · <a href="/">Accueil PrésiFrance</a></p>`;
 
   if (row.length < 8) {
