@@ -40,7 +40,7 @@
     "update:data": "bash scripts/update-data-2027.sh",
     "test": "vitest run",
     "test:watch": "vitest",
-    "postbuild": "node scripts/generate-sitemap.js && node scripts/prerender-seo-pages.mjs && node scripts/verify-seo-build.mjs"
+    "postbuild": "node scripts/generate-sitemap.js && node scripts/prerender-seo-pages.mjs && node scripts/build-commune-index.mjs && node scripts/verify-seo-build.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

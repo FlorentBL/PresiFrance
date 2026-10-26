@@ -40,7 +40,7 @@ function renderRouteHtml(baseHtml, route) {
   html = upsertMeta(html, 'property="og:url"', `<meta property="og:url" content="${escapeHtml(url)}" />`);
   html = upsertMeta(html, 'name="twitter:title"', `<meta name="twitter:title" content="${escapeHtml(route.title)}" />`);
   html = upsertMeta(html, 'name="twitter:description"', `<meta name="twitter:description" content="${escapeHtml(route.description)}" />`);
-  // dist/index.html sert aussi de fallback SPA (routes non prérendues) : pas de canonical, SEOHead le pose côté client.
+  // dist/index.html reste sans canonical sur "/" (SEOHead le pose côté client) ; le Worker utilise app-shell.html pour les autres routes.
   if (route.path !== "/") html = upsertCanonical(html, url);
   for (const data of buildJsonLd(route)) {
     // « < » échappé : un texte de réponse ne peut pas fermer la balise <script>.
@@ -59,6 +59,9 @@ function routeOutputPath(routePath) {
 const started = Date.now();
 const baseHtml = await readFile(path.join(distDir, "index.html"), "utf8");
 if (!baseHtml.includes('<div id="root"></div>')) throw new Error("[prerender] #root introuvable dans dist/index.html");
+
+// Gabarit vierge pour le Worker (404, fiches commune non prérendues) : écrit avant que "/" ne réécrive dist/index.html.
+await writeFile(path.join(distDir, "app-shell.html"), baseHtml, "utf8");
 
 const routes = [...seoPrerenderRoutes, ...generatedRoutes()];
 const paths = new Set();

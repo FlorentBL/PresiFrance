@@ -107,6 +107,32 @@ for (const name of sitemapFiles) {
 const missing = routes.filter((r) => r.commune && !sitemapLocs.has(`${siteUrl}${r.path}`));
 if (missing.length) fail(`sitemap : ${missing.length} fiches commune absentes (ex. ${missing[0].path})`);
 
+// Worker : gabarit vierge et index départementaux des communes (404 et fiches non prérendues).
+try {
+  const shell = await readFile(path.join(distDir, "app-shell.html"), "utf8");
+  if (!shell.includes('<div id="root"></div>')) fail("app-shell.html : #root vide introuvable");
+  if (/<link\s+rel="canonical"/i.test(shell)) fail("app-shell.html ne doit pas porter de canonical");
+} catch {
+  fail("app-shell.html absent (gabarit du Worker)");
+}
+let indexed = 0;
+for (const name of await readdir(path.join(distDir, "data/communes")).catch(() => [])) {
+  const shard = JSON.parse(await readFile(path.join(distDir, "data/communes", name), "utf8"));
+  for (const [code, row] of Object.entries(shard.r)) {
+    if (row.length > 1 && !sitemapLocs.has(`${siteUrl}/commune/${code}`)) fail(`sitemap : commune ${code} avec résultats absente`);
+    indexed += 1;
+  }
+}
+if (indexed < 30000) fail(`index des communes : ${indexed} communes (au moins 30 000 attendues)`);
+for (const r of routes.filter((r) => r.commune)) {
+  const dep = r.commune.dep;
+  const shard = JSON.parse(await readFile(path.join(distDir, "data/communes", `${dep}.json`), "utf8").catch(() => "{\"r\":{}}"));
+  if (!shard.r[r.commune.code]) {
+    fail(`index des communes : ${r.commune.code} (prérendue) absente`);
+    break;
+  }
+}
+
 const { files, bytes } = await walk(distDir);
 if (files > MAX_FILES) {
   fail(`dist contient ${files} fichiers (seuil ${MAX_FILES}) : limite Cloudflare Workers Static Assets, relever le seuil après vérification du plan`);

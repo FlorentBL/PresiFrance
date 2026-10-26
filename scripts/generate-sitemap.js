@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import { buildCommuneShards } from "./lib/commune-index.mjs";
 import { eligibleCommunes } from "./lib/seo-content/data.mjs";
 import { departmentRoutes, staticRoutes } from "./seo-routes.mjs";
 
@@ -46,8 +47,13 @@ function urlsetXml(routes) {
 export async function generateSitemaps() {
   await mkdir(distDir, { recursive: true });
 
-  // Fiches commune : mêmes communes que celles prérendues (1 000 habitants et plus, résultats disponibles).
-  const communeRoutes = eligibleCommunes().map(c => ({ loc: `${siteUrl}/commune/${c.code}`, priority: "0.5" }));
+  // Fiches commune : les communes prérendues (1 000 habitants et plus), puis les autres communes ayant des résultats 2022
+  // (le Worker leur sert un titre, une description, une canonique et un résumé chiffré). Sans résultats 2022 : noindex, hors sitemap.
+  const codes = new Set(eligibleCommunes().map(c => c.code));
+  for (const shard of buildCommuneShards().values()) {
+    for (const [code, row] of Object.entries(shard.r)) if (row.length > 1) codes.add(code);
+  }
+  const communeRoutes = [...codes].sort().map(code => ({ loc: `${siteUrl}/commune/${code}`, priority: "0.5" }));
 
   // sitemap.xml est un index : pages du site, puis fiches commune (découpées si besoin).
   const files = [{ name: "sitemap-pages.xml", routes: allRoutes }];
