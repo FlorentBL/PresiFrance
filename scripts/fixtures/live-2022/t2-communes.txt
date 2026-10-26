@@ -1,0 +1,9 @@
+Code du département;Libellé du département;Code de la commune;Libellé de la commune;Etat saisie;Inscrits;Abstentions;% Abs/Ins;Votants;% Vot/Ins;Blancs;% Blancs/Ins;% Blancs/Vot;Nuls;% Nuls/Ins;% Nuls/Vot;Exprimés;% Exp/Ins;% Exp/Vot;N°Panneau;Sexe;Nom;Prénom;Voix;% Voix/Ins;% Voix/Exp
+01;Ain;001;L'Abergement-Clémenciat;Complet;643;146;22,71;497;77,29;42;6,53;8,45;5;0,78;1,01;450;69,98;90,54;1;M;MACRON;Emmanuel;237;36,86;52,67;2;F;LE PEN;Marine;213;33,13;47,33
+01;Ain;002;L'Abergement-de-Varey;Complet;213;45;21,13;168;78,87;23;10,80;13,69;3;1,41;1,79;142;66,67;84,52;1;M;MACRON;Emmanuel;94;44,13;66,20;2;F;LE PEN;Marine;48;22,54;33,80
+01;Ain;004;Ambérieu-en-Bugey;Complet;8763;2448;27,94;6315;72,06;461;5,26;7,30;165;1,88;2,61;5689;64,92;90,09;1;M;MACRON;Emmanuel;3080;35,15;54,14;2;F;LE PEN;Marine;2609;29,77;45,86
+2A;Corse-du-Sud;001;Afa;Complet;2649;986;37,22;1663;62,78;110;4,15;6,61;41;1,55;2,47;1512;57,08;90,92;1;M;MACRON;Emmanuel;586;22,12;38,76;2;F;LE PEN;Marine;926;34,96;61,24
+2A;Corse-du-Sud;004;Ajaccio;Complet;36635;14835;40,49;21800;59,51;1159;3,16;5,32;541;1,48;2,48;20100;54,87;92,20;1;M;MACRON;Emmanuel;8280;22,60;41,19;2;F;LE PEN;Marine;11820;32,26;58,81
+75;Paris;056;Paris;Complet;1368623;354494;25,90;1014129;74,10;49446;3,61;4,88;15171;1,11;1,50;949512;69,38;93,63;1;M;MACRON;Emmanuel;808107;59,05;85,11;2;F;LE PEN;Marine;141405;10,33;14,89
+ZA;Guadeloupe;101;Les Abymes;Complet;40390;21773;53,91;18617;46,09;1145;2,83;6,15;1116;2,76;5,99;16356;40,50;87,86;1;M;MACRON;Emmanuel;4172;10,33;25,51;2;F;LE PEN;Marine;12184;30,17;74,49
+ZA;Guadeloupe;102;Anse-Bertrand;Complet;4726;2822;59,71;1904;40,29;76;1,61;3,99;105;2,22;5,51;1723;36,46;90,49;1;M;MACRON;Emmanuel;447;9,46;25,94;2;F;LE PEN;Marine;1276;27,00;74,06

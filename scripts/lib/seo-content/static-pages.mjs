@@ -10,6 +10,7 @@ import { buildSondagesBody } from "./sondages.mjs";
 import { buildCandidate2027Body } from "./candidate-2027.mjs";
 import { esc, fmtInt, link, linkList, page, table } from "./html.mjs";
 import { homeBody, presidentielle2027Body } from "./page-2027.mjs";
+import { buildResultats2027Body } from "./resultats-2027.mjs";
 
 const SOURCE_DATA =
   "Sources : résultats officiels des élections présidentielles (ministère de l'Intérieur, Conseil constitutionnel, données ouvertes data.gouv.fr) ; communes : geo.api.gouv.fr.";
@@ -71,6 +72,7 @@ const specific = new Map([
   ["/explorer", exploreBody],
   ["/presidentielle-2027", presidentielle2027Body],
   ["/sondages-presidentielle-2027", buildSondagesBody],
+  ["/presidentielle-2027/resultats", buildResultats2027Body],
 ]);
 
 export function buildStaticBody(route) {

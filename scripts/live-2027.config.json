@@ -1,0 +1,10 @@
+{
+  "enabled": false,
+  "round": null,
+  "final": false,
+  "sources": {
+    "t1": { "national": null, "departements": null, "communes": null, "label": null, "verifiedOn": null },
+    "t2": { "national": null, "departements": null, "communes": null, "label": null, "verifiedOn": null }
+  },
+  "inscritsReference": { "t1": null, "t2": null }
+}

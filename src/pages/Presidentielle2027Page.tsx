@@ -18,6 +18,7 @@ import {
   groupCandidatesByStatus,
 } from "@/lib/api/presidential2027Api";
 import type { GeoCommune } from "@/lib/api/geoApi";
+import { getLiveStatus, isLiveVisible } from "@/lib/api/live2027Api";
 import { DEFAULT_YEAR } from "@/lib/elections";
 import { DEPENSES_DETTE_FRANCE_URL, DEPENSES_PUBLIQUES_NAME } from "@/lib/partnerSites";
 
@@ -28,6 +29,9 @@ export default function Presidentielle2027Page() {
   const navigate = useNavigate();
   const candidates = useQuery({ queryKey: ["p2027-candidats"], queryFn: getCandidates2027, staleTime: 60 * 60 * 1000 });
   const calendar = useQuery({ queryKey: ["p2027-calendrier"], queryFn: getCalendar2027, staleTime: 60 * 60 * 1000 });
+
+  const live = useQuery({ queryKey: ["live2027-status"], queryFn: getLiveStatus, staleTime: 60 * 1000 });
+  const liveVisible = isLiveVisible(live.data);
 
   const faq = candidates.data && calendar.data ? buildFaq2027(candidates.data, calendar.data) : [];
   const firstRound = calendar.data?.evenements.find((e) => e.id === "t1");
@@ -58,6 +62,7 @@ export default function Presidentielle2027Page() {
             <>
               <Link to="/parrainages?year=2027" className={linkClass}>Parrainages 2027</Link>
               <Link to="/sondages-presidentielle-2027" className={linkClass}>Sondages 2027</Link>
+              {liveVisible && <Link to={`${PATH}/resultats`} className={linkClass}>Résultats en direct</Link>}
             </>
           }
         />
@@ -159,6 +164,7 @@ export default function Presidentielle2027Page() {
 
         <Section eyebrow="Données" title="Aller plus loin" width="narrow">
           <ul className="mb-8 space-y-2">
+            {liveVisible && <li><Link to={`${PATH}/resultats`} className={linkClass}>Résultats en direct de la présidentielle 2027</Link></li>}
             <li><Link to="/parrainages?year=2027" className={linkClass}>Parrainages de la présidentielle 2027</Link></li>
             <li><Link to="/sondages-presidentielle-2027" className={linkClass}>Sondages de la présidentielle 2027</Link></li>
             <li><Link to="/resultats-presidentielle-par-commune" className={linkClass}>Résultats de la présidentielle par commune</Link></li>
