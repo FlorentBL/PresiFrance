@@ -28,3 +28,10 @@ export async function getNationalResults(
   if (!yearData) return null;
   return yearData[`t${round}`] ?? null;
 }
+
+/** Tout le fichier national (toutes les années, 1er et 2nd tour). */
+export async function getAllNationalResults(): Promise<Record<string, { t1?: NationalResult; t2?: NationalResult }> | null> {
+  const res = await fetch(`/data/presidential/national-results.json`);
+  if (!res.ok) return null;
+  return (await res.json()) as Record<string, { t1?: NationalResult; t2?: NationalResult }>;
+}

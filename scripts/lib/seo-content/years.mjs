@@ -1,5 +1,6 @@
 // Pages /presidentielle-AAAA : tableau des résultats nationaux dans le HTML servi.
 import { presidentialYearSummaries, presidentialYears } from "../../seo-routes.mjs";
+import { buildYearPageBody } from "./years-content.mjs";
 import { loadNational } from "./data.mjs";
 import { candidateName, esc, fmtInt, fmtPct, link, page, table } from "./html.mjs";
 
@@ -19,6 +20,10 @@ export function matchYear(path) {
 }
 
 export function buildYearBody(year) {
+  return buildYearPageBody(year) ?? buildBasicYearBody(year);
+}
+
+function buildBasicYearBody(year) {
   const summary = presidentialYearSummaries.find((s) => s.year === year);
   const national = loadNational()[year];
   const idx = presidentialYears.indexOf(year);
