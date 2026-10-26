@@ -1,3 +1,6 @@
+// @ts-expect-error module .mjs du prérendu sans déclaration de types
+import { averages as prerenderAverages } from "../../../scripts/lib/seo-content/sondages.mjs";
+import realDataset from "../../../public/data/presidential/polls-2027-round1.json";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -130,5 +133,16 @@ describe("polls 2027", () => {
     expect(rows[rows.length - 1].date).toBe("2026-10-20");
     expect(rows[rows.length - 1].a).toBeDefined();
     expect(rows.every((r, i) => i === 0 || r.date > rows[i - 1].date)).toBe(true);
+  });
+
+  it("matches the averages computed for the prerendered page", () => {
+    const real = realDataset as unknown as Polls2027Dataset;
+    const to = real.meta.latestFieldworkEnd as string;
+    const entries = selectScores(real, null);
+    const ids = [...new Set(entries.flatMap((e) => Object.keys(e.scores)))];
+    const expected = averagesByCandidate(entries, ids, to, 30);
+    const actual = prerenderAverages(real) as Map<string, unknown>;
+    expect(actual.size).toBe(Object.keys(expected).length);
+    for (const [id, a] of Object.entries(expected)) expect(actual.get(id)).toEqual(a);
   });
 });

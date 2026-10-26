@@ -38,4 +38,20 @@ describe("seo content", () => {
       expect(wordCount(html), route.path).toBeGreaterThanOrEqual(80);
     }
   });
+
+  it("builds the polls page with latest poll, average table, candidate links and FAQ", () => {
+    const route = seoPrerenderRoutes.find((r) => r.path === "/sondages-presidentielle-2027");
+    const html = buildBody(route);
+    expect(html.match(/<h1>/g)).toHaveLength(1);
+    expect(html).toContain("Sondage présidentielle 2027");
+    expect(html).toContain("Dernier sondage de la présidentielle 2027");
+    expect(html).toContain("Moyenne des sondages par candidat");
+    expect(html).toContain('href="/presidentielle-2027/candidats/');
+    expect(html).toContain("commission-des-sondages.fr");
+    const ld = /<script type="application\/ld\+json">(.*?)<\/script>/s.exec(html);
+    const data = JSON.parse(ld[1]);
+    expect(data["@type"]).toBe("FAQPage");
+    expect(data.mainEntity.length).toBeGreaterThanOrEqual(4);
+    expect(wordCount(html)).toBeGreaterThan(300);
+  });
 });

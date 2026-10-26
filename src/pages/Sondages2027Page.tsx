@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, Loader2 } from "lucide-react";
 
+import faq from "@/content/sondages-faq.json";
 import SEOHead from "@/components/SEOHead";
 import JsonLd from "@/components/JsonLd";
 import SiteHeader from "@/components/SiteHeader";
@@ -156,23 +157,43 @@ export default function Sondages2027Page() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEOHead
-        title="Sondages présidentielle 2027 — 1er tour"
-        description="Agrégation des sondages de 1er tour de la présidentielle 2027 : moyennes par candidat, hypothèses testées, courbes de tendance et tableau des sondages avec notices."
+        title="Sondage présidentielle 2027 : dernier sondage et moyenne"
+        description="Dernier sondage de la présidentielle 2027 (institut, dates, échantillon, scores), moyenne des sondages par candidat, marge d'erreur et réponses aux questions fréquentes."
         path="/sondages-presidentielle-2027"
       />
       <JsonLd
         path="/sondages-presidentielle-2027"
         breadcrumbs={[{ name: "Sondages présidentielle 2027", path: "/sondages-presidentielle-2027" }]}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faq.map(({ q, a }) => ({
+              "@type": "Question",
+              name: q,
+              acceptedAnswer: { "@type": "Answer", text: a },
+            })),
+          }).replace(/</g, "\\u003c"),
+        }}
+      />
       <SiteHeader />
 
       <main id="contenu" tabIndex={-1} className="focus:outline-none flex-1">
         <PageHero
           eyebrow="Sondages · 2027"
-          title="Sondages présidentielle 2027 — 1er tour"
+          title="Sondage présidentielle 2027 : dernier sondage et moyenne des sondages"
           description={
             <>
               Agrégation des intentions de vote au 1er tour, d&apos;après les sondages publiés par les instituts.
+              {dataset ? (
+                <>
+                  {" "}
+                  Mise à jour des données : <strong className="text-foreground">{formatDate(dataset.meta.generatedAt)}</strong>.
+                </>
+              ) : null}
               {to ? (
                 <>
                   {" "}
@@ -479,6 +500,18 @@ export default function Sondages2027Page() {
             </div>
           </Section>
         )}
+
+        <Section width="wide" className="!pt-6">
+          <h2 className="font-heading text-xl font-semibold">Questions fréquentes sur les sondages</h2>
+          <div className="mt-4 space-y-5 text-sm leading-relaxed text-muted-foreground">
+            {faq.map(({ q, a }) => (
+              <div key={q}>
+                <h3 className="font-semibold text-foreground">{q}</h3>
+                <p className="mt-1">{a}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
       </main>
 
       <SiteFooter />

@@ -162,8 +162,8 @@ export const seoPrerenderRoutes = [
   },
   {
     path: "/sondages-presidentielle-2027",
-    title: `Sondages présidentielle 2027 — 1er tour — ${defaultSiteName}`,
-    description: "Agrégation des sondages de 1er tour de la présidentielle 2027 : moyennes par candidat, hypothèses testées, courbes de tendance et notices.",
+    title: `Sondage présidentielle 2027 : dernier sondage et moyenne — ${defaultSiteName}`,
+    description: "Dernier sondage de la présidentielle 2027 (institut, dates, échantillon, scores), moyenne des sondages par candidat, marge d'erreur et réponses aux questions fréquentes.",
   },
   {
     path: "/promesses-bilan",
