@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { buildBody, generatedRoutes } from "./lib/seo-content/index.mjs";
+import { buildBody, buildJsonLd, generatedRoutes } from "./lib/seo-content/index.mjs";
 import { seoPrerenderRoutes } from "./seo-routes.mjs";
 
 const distDir = path.resolve(process.cwd(), "dist");
@@ -42,6 +42,11 @@ function renderRouteHtml(baseHtml, route) {
   html = upsertMeta(html, 'name="twitter:description"', `<meta name="twitter:description" content="${escapeHtml(route.description)}" />`);
   // dist/index.html sert aussi de fallback SPA (routes non prérendues) : pas de canonical, SEOHead le pose côté client.
   if (route.path !== "/") html = upsertCanonical(html, url);
+  for (const data of buildJsonLd(route)) {
+    // « < » échappé : un texte de réponse ne peut pas fermer la balise <script>.
+    const json = JSON.stringify(data).replaceAll("<", "\\u003c");
+    html = html.replace("</head>", () => `  <script type="application/ld+json">${json}</script>\n</head>`);
+  }
   html = html.replace('<div id="root"></div>', () => `<div id="root">${buildBody(route)}</div>`);
   return html;
 }

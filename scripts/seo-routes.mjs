@@ -177,8 +177,8 @@ export const seoPrerenderRoutes = [
   },
   ...candidates2027.map((c) => ({
     path: `/presidentielle-2027/candidats/${c.slug}`,
-    title: `${c.prenom} ${c.nom} — présidentielle 2027 — ${defaultSiteName}`,
-    description: `Fiche de ${c.prenom} ${c.nom}, présidentielle 2027 : soutien, date de déclaration, source et historique électoral.`,
+    title: `${c.prenom} ${c.nom} : candidature présidentielle 2027, sondages et parcours`,
+    description: `${c.prenom} ${c.nom} et la présidentielle 2027 : statut de la candidature, sondages de 1er tour, résultats aux présidentielles passées et parrainages, avec les sources.`,
   })),
   {
     path: "/integrer",

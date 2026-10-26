@@ -1,5 +1,6 @@
 // Constructeur de contenu prérendu : un constructeur par type de route.
 // Pour ajouter un type : créer un module exportant (match, build) et l'enregistrer dans `builders`.
+import { buildCandidate2027JsonLd, findCandidate } from "./candidate-2027.mjs";
 import { buildCommuneBody, communeRoutes } from "./communes.mjs";
 import { buildDepartmentBody, matchDepartment } from "./departments.mjs";
 import { buildStaticBody } from "./static-pages.mjs";
@@ -20,4 +21,10 @@ export function buildBody(route) {
 /** Routes générées à partir des données (fiches commune), en plus de seoPrerenderRoutes. */
 export function generatedRoutes() {
   return communeRoutes();
+}
+
+/** Objets JSON-LD (FAQPage…) à placer dans <head> pour la route ; [] si aucun. */
+export function buildJsonLd(route) {
+  if (route.path.startsWith("/presidentielle-2027/candidats/") && findCandidate(route.path)) return buildCandidate2027JsonLd(route);
+  return [];
 }
