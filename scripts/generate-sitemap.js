@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import { eligibleCommunes } from "./lib/seo-content/data.mjs";
 import { departmentRoutes, staticRoutes } from "./seo-routes.mjs";
 
 const distDir = path.resolve(process.cwd(), "dist");
@@ -36,36 +37,36 @@ export function chunkSitemap(routes, chunkSize = 45000) {
   return chunks;
 }
 
-const sitemapChunks = chunkSitemap(allRoutes);
+function urlsetXml(routes) {
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    routes.map(r => `  <url>\n    <loc>${escapeXml(r.loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${r.priority}</priority>\n  </url>`).join("\n") +
+    `\n</urlset>\n`;
+}
 
 export async function generateSitemaps() {
   await mkdir(distDir, { recursive: true });
 
-  if (sitemapChunks.length === 1) {
-    // Single sitemap
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-      sitemapChunks[0].map(r => `  <url>\n    <loc>${escapeXml(r.loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${r.priority}</priority>\n  </url>`).join("\n") +
-      `\n</urlset>\n`;
-    await writeFile(path.join(distDir, "sitemap.xml"), xml, "utf8");
-  } else {
-    // Sitemap Index
-    const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-      sitemapChunks.map((_, i) => `  <sitemap>\n    <loc>${siteUrl}/sitemap-${i}.xml</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`).join("\n") +
-      `\n</sitemapindex>\n`;
-    await writeFile(path.join(distDir, "sitemap.xml"), sitemapIndexXml, "utf8");
+  // Fiches commune : mêmes communes que celles prérendues (1 000 habitants et plus, résultats disponibles).
+  const communeRoutes = eligibleCommunes().map(c => ({ loc: `${siteUrl}/commune/${c.code}`, priority: "0.5" }));
 
-    for (let i = 0; i < sitemapChunks.length; i++) {
-      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-        sitemapChunks[i].map(r => `  <url>\n    <loc>${escapeXml(r.loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${r.priority}</priority>\n  </url>`).join("\n") +
-        `\n</urlset>\n`;
-      await writeFile(path.join(distDir, `sitemap-${i}.xml`), xml, "utf8");
-    }
-  }
+  // sitemap.xml est un index : pages du site, puis fiches commune (découpées si besoin).
+  const files = [{ name: "sitemap-pages.xml", routes: allRoutes }];
+  chunkSitemap(communeRoutes).forEach((routes, i, all) => {
+    files.push({ name: all.length === 1 ? "sitemap-communes.xml" : `sitemap-communes-${i}.xml`, routes });
+  });
 
-  const robotsTxt = `User-agent: *\nAllow: /\nDisallow: /data/\nDisallow: /assets/\n\nUser-agent: GPTBot\nDisallow: /\n\nUser-agent: CCBot\nDisallow: /\n\nUser-agent: ClaudeBot\nDisallow: /\n\nUser-agent: PerplexityBot\nDisallow: /\n\nUser-agent: Amazonbot\nDisallow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`;
+  const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    files.map(f => `  <sitemap>\n    <loc>${siteUrl}/${f.name}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`).join("\n") +
+    `\n</sitemapindex>\n`;
+  await writeFile(path.join(distDir, "sitemap.xml"), sitemapIndexXml, "utf8");
+  for (const f of files) await writeFile(path.join(distDir, f.name), urlsetXml(f.routes), "utf8");
+
+  // Tous les robots sont admis (décision du 26/10/2026, y compris les robots des IA) ; seuls /data/ et /assets/ restent fermés.
+  const robotsTxt = `User-agent: *\nAllow: /\nDisallow: /data/\nDisallow: /assets/\n\nSitemap: ${siteUrl}/sitemap.xml\n`;
   await writeFile(path.join(distDir, "robots.txt"), robotsTxt, "utf8");
-  
-  console.log(`[sitemap] wrote ${allRoutes.length} URLs across ${sitemapChunks.length} file(s) (SITE_URL=${siteUrl})`);
+
+  const total = files.reduce((n, f) => n + f.routes.length, 0);
+  console.log(`[sitemap] wrote ${total} URLs across ${files.length} sitemap file(s) + index (SITE_URL=${siteUrl})`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

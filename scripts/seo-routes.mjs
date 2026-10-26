@@ -133,7 +133,7 @@ export const seoPrerenderRoutes = [
   })),
   {
     path: "/explorer",
-    title: `Résultats présidentielle par commune — ${defaultSiteName}`,
+    title: `Explorer les résultats de la présidentielle par département — ${defaultSiteName}`,
     description: "Parcourez les résultats électoraux de toutes les communes de France par département et accédez aux données officielles de la présidentielle.",
   },
   ...departmentRoutes.map((path) => {
