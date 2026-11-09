@@ -2,7 +2,7 @@
   "meta": {
     "election": 2027,
     "avertissement": "Liste établie à partir de sources de presse ; elle n'a aucune valeur officielle. La liste officielle est publiée par le Conseil constitutionnel après validation des parrainages. Les noms sont classés par ordre alphabétique.",
-    "dateVerification": "2026-11-02"
+    "dateVerification": "2026-11-09"
   },
   "candidats": [
     {
@@ -113,10 +113,10 @@
       "parti": "La France humaniste",
       "statut": "pressenti",
       "dateDeclaration": null,
-      "sourceUrl": "https://lcp.fr/actualites/presidentielle-2027-la-liste-des-candidats-deja-en-lice-et-des-pretendants-436373",
-      "sourceLabel": "LCP-Assemblée nationale, « Présidentielle 2027 : la liste des candidats déjà en lice et des prétendants » (mis à jour le 14/10/2026)",
-      "dateVerification": "2026-10-25",
-      "note": "Se déplace dans le pays ; pas encore officiellement candidat selon la source."
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/je-ne-suis-pas-encore-candidat-a-la-presidentielle-2027-indique-dominique-de-villepin_8265395.html",
+      "sourceLabel": "Franceinfo, « \"Je ne suis pas encore candidat\" à la présidentielle 2027, indique Dominique de Villepin » (03/11/2026)",
+      "dateVerification": "2026-11-09",
+      "note": "A déclaré le 3 novembre 2026 sur France Inter ne pas être « encore » candidat ; présenté comme candidat par d'autres médias."
     },
     {
       "slug": "nicolas-dupont-aignan",
