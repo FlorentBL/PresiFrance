@@ -2,7 +2,7 @@
   "meta": {
     "election": 2027,
     "avertissement": "Liste établie à partir de sources de presse ; elle n'a aucune valeur officielle. La liste officielle est publiée par le Conseil constitutionnel après validation des parrainages. Les noms sont classés par ordre alphabétique.",
-    "dateVerification": "2026-11-09"
+    "dateVerification": "2026-11-16"
   },
   "candidats": [
     {
@@ -527,6 +527,28 @@
       "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
       "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (34 candidats au 22/10/2026)",
       "dateVerification": "2026-10-26"
+    },
+    {
+      "slug": "teddy-riner",
+      "prenom": "Teddy",
+      "nom": "Riner",
+      "parti": "à confirmer",
+      "statut": "declare",
+      "dateDeclaration": "2026-11-09",
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (36 candidats au 09/11/2026)",
+      "dateVerification": "2026-11-16"
+    },
+    {
+      "slug": "joel-cheve",
+      "prenom": "Joël",
+      "nom": "Chevé",
+      "parti": "La France adulte",
+      "statut": "declare",
+      "dateDeclaration": null,
+      "sourceUrl": "https://www.franceinfo.fr/elections/presidentielle/portraits-qui-sont-les-candidats-declares-a-l-election-presidentielle-de-2027_8208032.html",
+      "sourceLabel": "franceinfo, « PORTRAITS. Qui sont les candidats (déjà) déclarés à l'élection présidentielle de 2027 ? » (36 candidats au 09/11/2026)",
+      "dateVerification": "2026-11-16"
     }
   ]
 }
